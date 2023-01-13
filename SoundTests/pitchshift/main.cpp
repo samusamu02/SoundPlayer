@@ -1,153 +1,57 @@
 #include <DxLib.h>
-#include <vector>
 #include <shlobj.h>
 #include <string>
-#include "sinc.h"
-#include "wave.h"
+#include "Definition.h"
+#include "PitchUp/PitchUp.h"
 
-// スクリーンの大きさ
-constexpr int SCREEN_W = 1280;
-constexpr int SCREEN_H = 720;
-
-// サンプル数
-constexpr int sampleNum = 32768;
-constexpr int fftsampleNam = 4096;
-
-// サウンドハンドル
-int SoftSoundHandle;
-int SoundHandle;
-
-// ループフラグ
-bool loopFlag = false;
-
-// サウンドの一時停止フラグ
-bool topPositionflag;
-
-// 周波数取得
-int frequency;
-
-// 再生位置
-LONGLONG TotalSampleCount;
-LONGLONG DrawStartSampleCount = 0;
-
-// 振幅スペクトル
-std::vector<float> paramList(sampleNum);
-LONGLONG samplePos;
-
-// 現在の再生時間
-int mmSecondSoundTime;
-
-// ボリューム
-int volume = 255;
-
-// ピッチシフト用
-STEREO_PCM pcm0 = {};
-STEREO_PCM pcm1 = {};
-STEREO_PCM pcm2 = {};
-
-// とりあえずすべて0を入れる
-double rate = 0.0;
-double rmax = 0.0;
-double t = 0.0;
-double pitch = 0.0;
-double* x;
-double* y;
-double* r;
-int template_size = 0;
-int pMin = 0;
-int pMax = 0;
-int p = 0;
-int q = 0;
-int offset0 = 0;
-int offset1 = 0;
-int N = 0;
-int ta = 0;
-int tb = 0;
-
-// 関数
-// ピッチシフト
-void PitchShift(void)
-{
-	wave_read_16bit_stereo(&pcm0, "Sound / 2_23_AM.mp3");		// 読み込み
-	rate = 5.0;
-
-	pcm1.fs = pcm0.fs;			// 標本化周波数
-	pcm1.bits = pcm0.bits;		// 量子化精度
-	pcm1.length = static_cast<int>(pcm0.length / rate) + 1;					// 音データの長さ
-	pcm1.sL = static_cast<double*>(calloc(pcm1.length, sizeof(double)));	// 音データの確保(左)
-	pcm1.sR = static_cast<double*>(calloc(pcm1.length, sizeof(double)));	// 音データの確保(右)
-
-	template_size = static_cast<int>(pcm1.fs * 0.01);		// 相関関数のサイズ
-	pMin = static_cast<int>(pcm1.fs * 0.005);				// ピークの探索範囲の下限
-	pMax = static_cast<int>(pcm1.fs * 0.02);				// ピークの探索範囲の上限
-
-	x = static_cast<double*>(calloc(template_size, sizeof(double)));	// メモリ確保
-	y = static_cast<double*>(calloc(template_size, sizeof(double)));	// メモリ確保
-	r = static_cast<double*>(calloc((pMax + 1), sizeof(double)));		// メモリ確保
-
-	offset0 = 0;
-	offset1 = 0;
-
-	while (offset1 + pMax * 2 < pcm0.length)
-	{
-		for (int n = 0; n < template_size; n++)
-		{
-			// 本来の音データ	
-			x[n] = pcm0.sL[offset0 + n];
-			x[n] = pcm0.sR[offset0 + n];
-		}
-
-		rmax = 0.0;
-		p = pMin;
-		for (int m = pMin; m <= pMax; m++)
-		{
-			for (int n = 0; n < template_size; n++)
-			{
-				// mサンプル分ずらした音データ
-				y[n] = pcm0.sL[offset0 + m + n];
-				y[n] = pcm0.sR[offset0 + m + n];
-			}
-		}
-	}
-}
+PitchUp* pitchUp_ = new PitchUp();
 
 // 初期化関数
 void SetBGM(void)
 {
+	// 元のサウンドファイル
+	SoundFileName[0] = L"Sound/Peak_test_A.wav";
+
+	// ピッチ変更後のファイル名の設定
+	SoundFileName[1] = L"Sound/PitchUp.wav";
+
+	// ピッチアップの生成
+	pitchUp_->GeneratePitchUpWaveFile(SoundFileName[0], SoundFileName[1]);
+
 	// サウンドファイルの読み込み
-	SoftSoundHandle = LoadSoftSound(L"Sound/2_23_AM.mp3");
-
-	// ソフトサウンドハンドルからサウンドハンドルを作成
-	SoundHandle = LoadSoundMemFromSoftSound(SoftSoundHandle);
-
-	// サウンドファイルが選択されなかった場合
-	if (SoftSoundHandle == -1)
+	for (int i = 0; i < fileNam; i++)
 	{
-		// 一旦削除する
-		DeleteSoundMem(SoundHandle);
-		MessageBox(NULL, L"サウンドファイルが見つかりませんでした", L"エラー", MB_OK);
-	}
-	else
-	{
-		// サウンドファイルの長さを取得
-		TotalSampleCount = GetSoftSoundSampleNum(SoftSoundHandle);
-	}
+		SoftSoundHandle[i] = LoadSoftSound(SoundFileName[i]);
 
-	// サウンドファイルの周波数を得る
-	frequency = GetFrequencySoundMem(SoundHandle);
+		// ソフトサウンドハンドルからサウンドハンドルを作成
+		SoundHandle[i] = LoadSoundMemFromSoftSound(SoftSoundHandle[i]);
 
-	// ボリュームのセット
-	SetVolumeMusicMem(volume, SoundHandle);
+		// サウンドファイルが選択されなかった場合
+		if (SoftSoundHandle[i] == -1)
+		{
+			// 一旦削除する
+			DeleteSoundMem(SoundHandle[i]);
+			MessageBox(NULL, L"サウンドファイルが見つかりませんでした", L"エラー", MB_OK);
+		}
+		else
+		{
+			// サウンドファイルの長さを取得
+			TotalSampleCount = GetSoftSoundSampleNum(SoftSoundHandle[i]);
+		}
+
+		// ボリュームのセット
+		SetVolumeMusicMem(volume, SoundHandle[i]);
+	}
 }
 
-// 再生・一時停止
+// 再生
 void Play(void)
 {
 	// サウンドの再生
 	if (CheckHitKey(KEY_INPUT_SPACE) == 1)
 	{
 		topPositionflag = false;
-		PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK, topPositionflag);
+		PlaySoundMem(SoundHandle[0], DX_PLAYTYPE_BACK, topPositionflag);
 	}
 
 	DrawFormatString(0, 30, 0xffffff, L"スペースキー:再生");
@@ -178,36 +82,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// BGMのセット
 	SetBGM();
 
-	// 周波数変更
-	int changeWave = 0;		// 読み込んだサウンドの周波数を変更する用の変数
-	int changeWaveSpeed = 1000;	// どれくれい周波数を変更するか
-
-	int count = 0;
-
 	// メインループ
 	while (ProcessMessage() == 0)
 	{
 		// 画面を消去
 		ClearDrawScreen();
 
-		if (CheckHitKey(KEY_INPUT_F5))
-		{
-			// 一旦削除する
-			DeleteSoundMem(SoundHandle);
-			// BGM をセットしなおす
-			SetBGM();
-
-			// もう一度再生をする
-			topPositionflag;
-			PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK, topPositionflag);
-			count = 0;
-		}
-
 		// 再生
 		Play();
 
 		// 現在の再生位置を取得
-		samplePos = GetCurrentPositionSoundMem(SoundHandle);
+		samplePos = GetCurrentPositionSoundMem(SoundHandle[0]);
 
 		// 取得した再生位置をサンプリングレートで割ってスクロール
 		DrawStartSampleCount += samplePos / 44.1;
@@ -233,7 +118,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		for (LONGLONG i = 0; i < SCREEN_W / 2 && i + DrawStartSampleCount < TotalSampleCount; i++)
 		{
 			// 波形の振幅値を取得
-			ReadSoftSoundData(SoftSoundHandle, i + DrawStartSampleCount, &Ch1, &Ch2);
+			ReadSoftSoundData(SoftSoundHandle[0], i + DrawStartSampleCount, &Ch1, &Ch2);
 
 			// 振幅値の高さの縦ラインを描画
 			DrawLine(i, SCREEN_H / 4, i, SCREEN_H / 4 + (Ch1 * (SCREEN_H / 4) / sampleNum), GetColor(0, 0, 255));
@@ -242,7 +127,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		// スペクトル描画
 		// 現在の再生位置から周波数分布を得る
-		GetFFTVibrationSoftSound(SoftSoundHandle, -1, samplePos, fftsampleNam, paramList.data(), fftsampleNam);
+		GetFFTVibrationSoftSound(SoftSoundHandle[0], -1, samplePos, fftsampleNam, paramList, fftsampleNam);
 
 		// 周波数分布を画面を描画する
 		int x = -1;
@@ -270,40 +155,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		// サウンドファイルの秒数
 		// 現在の再生位置をミリ秒で取得
-		mmSecondSoundTime = GetSoundCurrentTime(SoundHandle);
+		mmSecondSoundTime = GetSoundCurrentTime(SoundHandle[0]);
 		auto sec = mmSecondSoundTime / mmSec;			// 秒
 		DrawFormatString(0, SCREEN_H - 15, 0xffffff, L"再生時間: %d秒", sec);
-
-		int MinMax = 20000;
-
-		// 周波数変更
-		if (CheckHitKey(KEY_INPUT_UP))
-		{
-			if (changeWave < MinMax)
-			{
-				changeWave += changeWaveSpeed;
-			}
-		}
-		if (CheckHitKey(KEY_INPUT_DOWN))
-		{
-			if (changeWave > -MinMax)
-			{
-				changeWave -= changeWaveSpeed;
-			}
-		}
-		// どれくらい周波数を変更しているかをわかりやすく
-		auto ChangeWave = changeWave / 1000;
-		DrawFormatString(0, 60, 0xffffff, L"↑ ↓キー:倍速・低速 値 %d", ChangeWave);
-
-		// 曲が終わったか、先頭だったら周波数をもとに戻す
-		if (samplePos >= TotalSampleCount || samplePos == 0)
-		{
-			changeWave = 0;
-		}
-
-		// 現在の周波数
-		auto nowWave = frequency + changeWave;
-		SetFrequencySoundMem(nowWave, SoundHandle);
 
 		// ループフラグのオンオフ
 		if (CheckHitKey(KEY_INPUT_1))
@@ -316,33 +170,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			loopFlag = false;
 		}
 
-		// 再生位置の移動
-		if (samplePos <= TotalSampleCount)
-		{
-			if (CheckHitKey(KEY_INPUT_RIGHT))
-			{
-				// 一旦再生を止める
-				StopSoundMem(SoundHandle);
-				// 現在の再生時間を取得
-				int nowTime = GetSoundCurrentTime(SoundHandle);
-				// 時間指定
-				LONGLONG time = 0 * 1000;
-				time += 1000;
-				SetStreamSoundCurrentTime(nowTime + time, SoundHandle);
-			}
-			if (CheckHitKey(KEY_INPUT_LEFT))
-			{
-				StopSoundMem(SoundHandle);
-				// 現在の再生時間を取得
-				int nowTime = GetSoundCurrentTime(SoundHandle);
-				// 時間指定
-				LONGLONG time = 0 * 1000;
-				time -= 1000;
-				SetStreamSoundCurrentTime(nowTime + time, SoundHandle);
-			}
-		}
-		DrawFormatString(300, 60, 0xffffff, L"← → キー:再生時間を戻す・進める");
-
 		// 音量
 		if (CheckHitKey(KEY_INPUT_E))
 		{
@@ -350,7 +177,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			{
 				volume++;
 			}
-			ChangeVolumeSoundMem(volume, SoundHandle);
+			ChangeVolumeSoundMem(volume, SoundHandle[0]);
 		}
 
 		if (CheckHitKey(KEY_INPUT_Q))
@@ -359,21 +186,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			{
 				volume--;
 			}
-			ChangeVolumeSoundMem(volume, SoundHandle);
+			ChangeVolumeSoundMem(volume, SoundHandle[0]);
 		}
 
 		DrawFormatString(150, SCREEN_H - 15, 0xffffff, L"ボリューム: %d", volume);
-
-		// ループ処理(再生中だったら処理をする）
-		if (loopFlag == true)
-		{
-			// 曲の終わりを見る
-			if (samplePos == TotalSampleCount || samplePos == 0)
-			{
-				topPositionflag = true;
-				PlaySoundMem(SoundHandle, DX_PLAYTYPE_BACK, topPositionflag);
-			}
-		}
 
 		DrawFormatString(0, 90, 0xffffff, L"1キー: ループフラグ ON\n2キー: ループフラグ OFF");
 		if (loopFlag)
@@ -385,7 +201,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 			DrawFormatString(0, 140, 0xffffff, L"ループ: OFF");
 		}
 
-		DrawFormatString(0, 0, 0xffffff, L"F5: BGM選択");
+		// ループ処理(再生中だったら処理をする）
+		if (loopFlag == true)
+		{
+			// 曲の終わりを見る
+			if (samplePos == TotalSampleCount || samplePos == 0)
+			{
+				topPositionflag = true;
+				PlaySoundMem(SoundHandle[0], DX_PLAYTYPE_BACK, topPositionflag);
+			}
+		}
+
 		// 裏画面の内容を表画面に反映
 		ScreenFlip();
 	}
