@@ -18,27 +18,33 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="PitchUp\PitchUp.cpp">
+    <ClCompile Include="Wave\Wave.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Wav\Wav.cpp">
+    <ClCompile Include="PitchShift\PitchUp.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="PitchShift\PitchShift.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PitchUp\sinc.h">
+    <ClInclude Include="PitchShift\sinc.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Definition.h">
+    <ClInclude Include="Wave\Wave.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="PitchUp\PitchUp.h">
+    <ClInclude Include="Wave\PCM.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Wav\Wav.h">
+    <ClInclude Include="PitchShift\PitchUp.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Wav\PCM.h">
+    <ClInclude Include="PitchShift\PitchShift.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PitchShift\Channel.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

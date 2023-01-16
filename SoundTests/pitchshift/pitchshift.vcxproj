@@ -146,15 +146,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PitchUp\PitchUp.cpp" />
-    <ClCompile Include="Wav\Wav.cpp" />
+    <ClCompile Include="PitchShift\PitchShift.cpp" />
+    <ClCompile Include="PitchShift\PitchUp.cpp" />
+    <ClCompile Include="Wave\Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Definition.h" />
-    <ClInclude Include="PitchUp\PitchUp.h" />
-    <ClInclude Include="PitchUp\sinc.h" />
-    <ClInclude Include="Wav\PCM.h" />
-    <ClInclude Include="Wav\Wav.h" />
+    <ClInclude Include="PitchShift\Channel.h" />
+    <ClInclude Include="PitchShift\PitchShift.h" />
+    <ClInclude Include="PitchShift\PitchUp.h" />
+    <ClInclude Include="PitchShift\sinc.h" />
+    <ClInclude Include="Wave\PCM.h" />
+    <ClInclude Include="Wave\Wave.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
