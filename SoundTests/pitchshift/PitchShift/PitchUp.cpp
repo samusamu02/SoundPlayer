@@ -5,26 +5,37 @@
 
 PitchUp::PitchUp()
 {
-
+	rate = 0.8;	// 音の高さを2倍にする
 }
 
 PitchUp::~PitchUp()
 {
+	// メモリ解放
+	free(pcm0_.sL);
+	free(pcm0_.sR);
+	free(pcm1_.sL);
+	free(pcm1_.sR);
+	free(pcm2_.sL);
+	free(pcm2_.sR);
+	free(channelL_.x);
+	free(channelL_.y);
+	free(channelL_.r);
+	free(channelR_.x);
+	free(channelR_.y);
+	free(channelR_.r);
 }
 
 void PitchUp::GenelatePitchUpWaveFile(void)
 {
 	lpWave.wave_read_16bit_stereo(pcm0_, L"Sound/Peak_test_A.wav");
 
-	rate = 0.8;	// 音の高さを2倍にする
-
-	pcm1_.fs = pcm0_.fs;					// 標本化周波数
-	pcm1_.bits = pcm0_.bits;				// 量子化精度
-	pcm1_.length = (int)(pcm0_.length / rate) + 1;			// 音のデータの長さ
+	pcm1_.fs = pcm0_.fs;										// 標本化周波数
+	pcm1_.bits = pcm0_.bits;									// 量子化精度
+	pcm1_.length = (int)(pcm0_.length / rate) + 1;				// 音のデータの長さ
 	pcm1_.sL = (double*)calloc(pcm1_.length, sizeof(double));	// 音のデータ
 	pcm1_.sR = (double*)calloc(pcm1_.length, sizeof(double));	// 音のデータ
 
-	template_size = (int)(pcm1_.fs * 0.01);		// 相関関数のサイズ
+	template_size = (int)(pcm1_.fs * 0.01);			// 相関関数のサイズ
 
 	// 左右チャンネルで分ける
 	channelL_.pmin = (int)(pcm1_.fs * 0.005);		// ピークの捜索範囲の下限
@@ -212,16 +223,4 @@ void PitchUp::GenelatePitchUpWaveFile(void)
 	lpWave.wave_write_16bit_stereo(pcm2_, L"Sound/ex11_5.wav");
 
 	// 出力できたらメモリを解放
-	free(pcm0_.sL);
-	free(pcm0_.sR);
-	free(pcm1_.sL);
-	free(pcm1_.sR);
-	free(pcm2_.sL);
-	free(pcm2_.sR);
-	free(channelL_.x);
-	free(channelL_.y);
-	free(channelL_.r);
-	free(channelR_.x);
-	free(channelR_.y);
-	free(channelR_.r);
 }
