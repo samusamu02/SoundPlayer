@@ -1,5 +1,5 @@
 #pragma once
-#include "PCM.h"
+#include "PCMDef.h"
 
 #define lpWave Wave::Get()
 
@@ -14,12 +14,17 @@ public:
     };
 
     // 16bitのwavの読み込み
-    void wave_read_16bit_mono(MONO_PCM& pcm, const wchar_t* file_name);        // モノラル
-    void wave_read_16bit_stereo(STEREO_PCM& pcm, const wchar_t* file_name);    // ステレオ
+    void WaveRead(MONO_PCM& pcm, const wchar_t* file_name);               // モノラル
+    void WaveRead(STEREO_PCM& pcm, const wchar_t* file_name);    // ステレオ
 
     // 16bitのwavの書き込み
-    void wave_write_16bit_mono(MONO_PCM& pcm, const wchar_t* file_name);       // モノラル
-    void wave_write_16bit_stereo(STEREO_PCM& pcm, const wchar_t* file_name);   // ステレオ
+    bool WaveWrite(MONO_PCM& pcm, const wchar_t* file_name);       // モノラル
+    bool WaveWrite(STEREO_PCM& pcm, const wchar_t* file_name);   // ステレオ
+
+    bool GetFlag();     // フラグの状態を取得
+
+
+    bool writeFinish; // 書き込みフラグ
 private:
 
     Wave();

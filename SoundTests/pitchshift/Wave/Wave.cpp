@@ -3,7 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-void Wave::wave_read_16bit_mono(MONO_PCM& pcm, const wchar_t* file_name)
+void Wave::WaveRead(MONO_PCM& pcm, const wchar_t* file_name)
 {
     FILE* fp;
     char riff_chunk_ID[4];
@@ -54,7 +54,8 @@ void Wave::wave_read_16bit_mono(MONO_PCM& pcm, const wchar_t* file_name)
 
     fclose(fp);
 }
-void Wave::wave_read_16bit_stereo(STEREO_PCM& pcm, const wchar_t* file_name)
+
+void Wave::WaveRead(STEREO_PCM& pcm, const wchar_t* file_name)
 {
     FILE* fp;
     char riff_chunk_ID[4];
@@ -112,7 +113,8 @@ void Wave::wave_read_16bit_stereo(STEREO_PCM& pcm, const wchar_t* file_name)
 
     fclose(fp);
 }
-void Wave::wave_write_16bit_mono(MONO_PCM& pcm, const wchar_t* file_name)
+
+bool Wave::WaveWrite(MONO_PCM& pcm, const wchar_t* file_name)
 {
     FILE* fp;
     char riff_chunk_ID[4];
@@ -162,40 +164,54 @@ void Wave::wave_write_16bit_mono(MONO_PCM& pcm, const wchar_t* file_name)
 
     fp = _wfopen(file_name, L"wb");
 
-    fwrite(riff_chunk_ID, 1, 4, fp);
-    fwrite(&riff_chunk_size, 4, 1, fp);
-    fwrite(file_format_type, 1, 4, fp);
-    fwrite(fmt_chunk_ID, 1, 4, fp);
-    fwrite(&fmt_chunk_size, 4, 1, fp);
-    fwrite(&wave_format_type, 2, 1, fp);
-    fwrite(&channel, 2, 1, fp);
-    fwrite(&samples_per_sec, 4, 1, fp);
-    fwrite(&bytes_per_sec, 4, 1, fp);
-    fwrite(&block_size, 2, 1, fp);
-    fwrite(&bits_per_sample, 2, 1, fp);
-    fwrite(data_chunk_ID, 1, 4, fp);
-    fwrite(&data_chunk_size, 4, 1, fp);
-
-    for (n = 0; n < pcm.length; n++)
+    if (writeFinish == false)
     {
-        s = (pcm.s[n] + 1.0) / 2.0 * 65536.0;
+        fwrite(riff_chunk_ID, 1, 4, fp);
+        fwrite(&riff_chunk_size, 4, 1, fp);
+        fwrite(file_format_type, 1, 4, fp);
+        fwrite(fmt_chunk_ID, 1, 4, fp);
+        fwrite(&fmt_chunk_size, 4, 1, fp);
+        fwrite(&wave_format_type, 2, 1, fp);
+        fwrite(&channel, 2, 1, fp);
+        fwrite(&samples_per_sec, 4, 1, fp);
+        fwrite(&bytes_per_sec, 4, 1, fp);
+        fwrite(&block_size, 2, 1, fp);
+        fwrite(&bits_per_sample, 2, 1, fp);
+        fwrite(data_chunk_ID, 1, 4, fp);
+        fwrite(&data_chunk_size, 4, 1, fp);
 
-        if (s > 65535.0)
+        for (n = 0; n < pcm.length; n++)
         {
-            s = 65535.0; // クリッピング 
-        }
-        else if (s < 0.0)
-        {
-            s = 0.0; // クリッピング 
+            s = (pcm.s[n] + 1.0) / 2.0 * 65536.0;
+
+            if (s > 65535.0)
+            {
+                s = 65535.0; // クリッピング 
+            }
+            else if (s < 0.0)
+            {
+                s = 0.0; // クリッピング 
+            }
+
+            data = (short)((int)(s + 0.5) - 32768); // 四捨五入とオフセットの調節 
+            fwrite(&data, 2, 1, fp);                // 音データの書き出し 
         }
 
-        data = (short)((int)(s + 0.5) - 32768); // 四捨五入とオフセットの調節 
-        fwrite(&data, 2, 1, fp); // 音データの書き出し 
+        // ここまで来たら書き込み完了フラグをtrueにする
+        writeFinish = true;
     }
 
-    fclose(fp);
+    // 書きみ完了フラグがtrueになったら処理を行う
+    if (writeFinish == true)
+    {
+        fclose(fp);
+        writeFinish = false; // falseに戻す
+    }
+
+    return writeFinish;
 }
-void Wave::wave_write_16bit_stereo(STEREO_PCM& pcm, const wchar_t* file_name)
+
+bool Wave::WaveWrite(STEREO_PCM& pcm, const wchar_t* file_name)
 {
     FILE* fp;
     char riff_chunk_ID[4];
@@ -245,53 +261,70 @@ void Wave::wave_write_16bit_stereo(STEREO_PCM& pcm, const wchar_t* file_name)
     data_chunk_size = pcm.length * 4;
 
     fp = _wfopen(file_name, L"wb");
-
-    fwrite(riff_chunk_ID, 1, 4, fp);
-    fwrite(&riff_chunk_size, 4, 1, fp);
-    fwrite(file_format_type, 1, 4, fp);
-    fwrite(fmt_chunk_ID, 1, 4, fp);
-    fwrite(&fmt_chunk_size, 4, 1, fp);
-    fwrite(&wave_format_type, 2, 1, fp);
-    fwrite(&channel, 2, 1, fp);
-    fwrite(&samples_per_sec, 4, 1, fp);
-    fwrite(&bytes_per_sec, 4, 1, fp);
-    fwrite(&block_size, 2, 1, fp);
-    fwrite(&bits_per_sample, 2, 1, fp);
-    fwrite(data_chunk_ID, 1, 4, fp);
-    fwrite(&data_chunk_size, 4, 1, fp);
-
-    for (n = 0; n < pcm.length; n++)
+    if (writeFinish == false)
     {
-        sL = (pcm.sL[n] + 1.0) / 2.0 * 65536.0;
+        fwrite(riff_chunk_ID, 1, 4, fp);
+        fwrite(&riff_chunk_size, 4, 1, fp);
+        fwrite(file_format_type, 1, 4, fp);
+        fwrite(fmt_chunk_ID, 1, 4, fp);
+        fwrite(&fmt_chunk_size, 4, 1, fp);
+        fwrite(&wave_format_type, 2, 1, fp);
+        fwrite(&channel, 2, 1, fp);
+        fwrite(&samples_per_sec, 4, 1, fp);
+        fwrite(&bytes_per_sec, 4, 1, fp);
+        fwrite(&block_size, 2, 1, fp);
+        fwrite(&bits_per_sample, 2, 1, fp);
+        fwrite(data_chunk_ID, 1, 4, fp);
+        fwrite(&data_chunk_size, 4, 1, fp);
 
-        if (sL > 65535.0)
+        for (n = 0; n < pcm.length; n++)
         {
-            sL = 65535.0; // クリッピング 
-        }
-        else if (sL < 0.0)
-        {
-            sL = 0.0; // クリッピング 
-        }
+            sL = (pcm.sL[n] + 1.0) / 2.0 * 65536.0;
 
-        data = (short)((int)(sL + 0.5) - 32768); // 四捨五入とオフセットの調節 
-        fwrite(&data, 2, 1, fp); // 音データ（Lチャンネル）の書き出し 
+            if (sL > 65535.0)
+            {
+                sL = 65535.0; // クリッピング 
+            }
+            else if (sL < 0.0)
+            {
+                sL = 0.0; // クリッピング 
+            }
 
-        sR = (pcm.sR[n] + 1.0) / 2.0 * 65536.0;
+            data = (short)((int)(sL + 0.5) - 32768); // 四捨五入とオフセットの調節 
+            fwrite(&data, 2, 1, fp); // 音データ（Lチャンネル）の書き出し 
 
-        if (sR > 65535.0)
-        {
-            sR = 65535.0; // クリッピング 
+            sR = (pcm.sR[n] + 1.0) / 2.0 * 65536.0;
+
+            if (sR > 65535.0)
+            {
+                sR = 65535.0; // クリッピング 
+            }
+            else if (sR < 0.0)
+            {
+                sR = 0.0; // クリッピング 
+            }
+
+            data = (short)((int)(sR + 0.5) - 32768); // 四捨五入とオフセットの調節 
+            fwrite(&data, 2, 1, fp); // 音データ（Rチャンネル）の書き出し 
+
+
+            // ここまで来たら書き込み完了フラグをtrueにする
+            writeFinish = true;
         }
-        else if (sR < 0.0)
-        {
-            sR = 0.0; // クリッピング 
-        }
-
-        data = (short)((int)(sR + 0.5) - 32768); // 四捨五入とオフセットの調節 
-        fwrite(&data, 2, 1, fp); // 音データ（Rチャンネル）の書き出し 
     }
 
-    fclose(fp);
+    if (writeFinish == true)
+    {
+        fclose(fp);
+        writeFinish = false;     // falseに戻す
+    }
+
+    return writeFinish;
+}
+
+bool Wave::GetFlag()
+{
+    return writeFinish;
 }
 
 Wave::Wave()
