@@ -42,6 +42,7 @@ const wchar_t* file_2 = L"Sound/pitchup.wav";
 
 int count = 0;
 
+// はいかいいえかを押されたかの確認
 bool flag = false;
 
 // 関数
@@ -118,6 +119,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	else
 	{
 		flag = false;
+	}
+
+	if (flag == true)
+	{
+		MessageBox(nullptr, L"変換を行います", L"",0);
 	}
 
 	// BGMのセット

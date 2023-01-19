@@ -33,21 +33,26 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 
 	pcmSet_->PCMSetPitchUp(pcm1_, pcm0_,rate_);
 
-	template_size_ = (int)(pcm1_.fs * 0.01);			// 相関関数のサイズ
+	// 相関関数のサイズ
+	template_size_ = (int)(pcm1_.fs * 0.001);			// 標本化周波数の1000分の1のサイズ
 
 	// 左右チャンネルで分ける
-	channelL_.pmin = (int)(pcm1_.fs * 0.005);		// ピークの捜索範囲の下限
-	channelL_.pmax = (int)(pcm1_.fs * 0.02);		// ピークの探索範囲の上限
+	// 左チャンネル
+	channelL_.pmin = (int)(pcm1_.fs * 0.005);			// ピークの捜索範囲の下限(L)
+	channelL_.pmax = (int)(pcm1_.fs * 0.02);			// ピークの探索範囲の上限(L)
 
-	channelL_.x = (double*)calloc(template_size_, sizeof(double));
-	channelL_.y = (double*)calloc(template_size_, sizeof(double));
+	// メモリ確保(L)
+	channelL_.x = (double*)calloc(template_size_, sizeof(double));	// 相関関数分のメモリサイズの確保
+	channelL_.y = (double*)calloc(template_size_, sizeof(double));	// 相関関数分のメモリサイズの確保
 	channelL_.r = (double*)calloc((channelL_.pmax + 1), sizeof(double));
 
-	channelR_.pmin = (int)(pcm1_.fs * 0.005);		// ピークの捜索範囲の下限
-	channelR_.pmax = (int)(pcm1_.fs * 0.02);		// ピークの探索範囲の上限
+	// 右チャンネル
+	channelR_.pmin = (int)(pcm1_.fs * 0.005);		// ピークの捜索範囲の下限(R)
+	channelR_.pmax = (int)(pcm1_.fs * 0.02);		// ピークの探索範囲の上限(R)
 
-	channelR_.x = (double*)calloc(template_size_, sizeof(double));
-	channelR_.y = (double*)calloc(template_size_, sizeof(double));
+	// メモリ確保(R)
+	channelR_.x = (double*)calloc(template_size_, sizeof(double));	// 相関関数分のメモリサイズの確保
+	channelR_.y = (double*)calloc(template_size_, sizeof(double));	// 相関関数分のメモリサイズの確保
 	channelR_.r = (double*)calloc((channelR_.pmax + 1), sizeof(double));
 
 	channelL_.offset0 = 0;
@@ -56,12 +61,12 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 	channelR_.offset0 = 0;
 	channelR_.offset1 = 0;
 
-	// チェンネルL用の処理
+	// チェンネルL用の音を伸ばす処理(タイムストレッチ)
 	while (channelL_.offset0 + channelL_.pmax * 2 < pcm0_.length)
 	{
 		for (int n = 0; n < template_size_; n++)
 		{
-			channelL_.x[n] = pcm0_.sL[channelL_.offset0 + n];		// 本来の音データ	
+			channelL_.x[n] = pcm0_.sL[channelL_.offset0 + n];			// 本来の音データ	
 		}
 
 		rmax_ = 0.0;
@@ -104,11 +109,11 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 			pcm1_.sL[channelL_.offset1 + channelL_.p + n] = pcm0_.sL[channelL_.offset0 + n];
 		}
 
-		channelL_.offset0 += channelL_.q;		// offset0の更新
+		channelL_.offset0 += channelL_.q;						// offset0の更新
 		channelL_.offset1 += channelL_.p + channelL_.q;			// offset1の更新
 	}
 
-	// チャンネルR用の処理
+	// チャンネルR用の音を伸ばす処理(タイムストレッチ)
 	while (channelR_.offset0 + channelR_.pmax * 2 < pcm0_.length)
 	{
 		for (int n = 0; n < template_size_; n++)
@@ -131,7 +136,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 			}
 			if (channelR_.r[m] > rmax_)
 			{
-				rmax_ = channelR_.r[m];	// 相関関数のピーク
+				rmax_ = channelR_.r[m];		// 相関関数のピーク
 				channelR_.p = m;			// 波形の周期
 			}
 		}
@@ -143,7 +148,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		for (int n = 0; n < channelR_.p; n++)
 		{
 			pcm1_.sR[channelR_.offset1 + channelR_.p + n] = pcm0_.sR[channelR_.offset0 + channelR_.p + n] * (channelR_.p - n) / channelR_.p;	// 単調減少の重み付け
-			pcm1_.sR[channelR_.offset1 + channelR_.p + n] += pcm0_.sR[channelR_.offset0 + n] * n / channelR_.p;			// 単調増加の重み付け
+			pcm1_.sR[channelR_.offset1 + channelR_.p + n] += pcm0_.sR[channelR_.offset0 + n] * n / channelR_.p;									// 単調増加の重み付け
 		}
 
 		channelR_.q = (int)(channelR_.p * rate_/ (1.0 - rate_) + 0.5);
@@ -157,19 +162,25 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		}
 
 		channelR_.offset0 += channelR_.q;							// offset0の更新
-		channelR_.offset1 += channelR_.p + channelR_.q;			// offset1の更新
+		channelR_.offset1 += channelR_.p + channelR_.q;				// offset1の更新
 	}
 
+	// 両チャンネルのタイムストレッチが完了したらピッチの変更を行う
 	pitch_ = 1.0 / rate_;
+
 
 	pcmSet_->PCMSetNormal(pcm2_, pcm0_);
 
-	N_ = 128;		// ハニング窓のサイズ
+	// シンク関数を打ち切るため
+	N_ = 64;		// ハニング窓のサイズ
 
+	// 実際にピッチシフトを行う(L)
 	for (int n = 0; n < pcm2_.length; n++)
 	{
+		// ピッチの変更を曲の長さ分行う
 		t_ = pitch_ * n;
 
+		// 
 		channelL_.ta = (int)t_;
 
 		if (t_ == channelL_.ta)
@@ -185,11 +196,13 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		{
 			if (m >= 0 && m < pcm1_.length)
 			{
+				// sinc関数を使ってリサンプリグによって音の高さを変える
 				pcm2_.sL[n] += pcm1_.sL[m] * sinc(M_PI * (t_ - m)) * (0.5 + 0.5 * cos(2.0 * M_PI * (t_ - m) / (N_ * 2 + 1)));
 			}
 		}
 	}
 
+	// 実際にピッチシフトを行う(R)
 	for (int n = 0; n < pcm2_.length; n++)
 	{
 		t_ = pitch_ * n;
@@ -209,6 +222,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		{
 			if (m >= 0 && m < pcm1_.length)
 			{
+				// sinc関数を使ってフィルタをかける
 				pcm2_.sR[n] += pcm1_.sR[m] * sinc(M_PI * (t_ - m)) * (0.5 + 0.5 * cos(2.0 * M_PI * (t_ - m) / (N_ * 2 + 1)));
 			}
 		}
