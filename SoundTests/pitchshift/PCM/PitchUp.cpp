@@ -19,12 +19,14 @@ PitchUp::~PitchUp()
 	free(pcm1_.sR);
 	free(pcm2_.sL);
 	free(pcm2_.sR);
-	free(channelL_.x);
-	free(channelL_.y);
-	free(channelL_.r);
-	free(channelR_.x);
-	free(channelR_.y);
-	free(channelR_.r);
+
+	// std::vectorの解放
+	channelL_.x.clear();
+	channelL_.y.clear();
+	channelL_.r.clear();
+	channelR_.x.clear();
+	channelR_.y.clear();
+	channelR_.r.clear();
 }
 
 void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* afterFileName)
@@ -42,18 +44,18 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 	channelL_.pmax = (int)(pcm1_.fs * 0.02);			// ピークの探索範囲の上限(L)
 
 	// メモリ確保(L)
-	channelL_.x = (double*)calloc(template_size_, sizeof(double));	// 相関関数分のメモリサイズの確保
-	channelL_.y = (double*)calloc(template_size_, sizeof(double));	// 相関関数分のメモリサイズの確保
-	channelL_.r = (double*)calloc((channelL_.pmax + 1), sizeof(double));
+	channelL_.x.resize(template_size_);		// 相関関数分のメモリサイズの確保
+	channelL_.y.resize(template_size_);		// 相関関数分のメモリサイズの確保
+	channelL_.r.resize(channelL_.pmax + 1);
 
 	// 右チャンネル
 	channelR_.pmin = (int)(pcm1_.fs * 0.005);		// ピークの捜索範囲の下限(R)
 	channelR_.pmax = (int)(pcm1_.fs * 0.02);		// ピークの探索範囲の上限(R)
 
 	// メモリ確保(R)
-	channelR_.x = (double*)calloc(template_size_, sizeof(double));	// 相関関数分のメモリサイズの確保
-	channelR_.y = (double*)calloc(template_size_, sizeof(double));	// 相関関数分のメモリサイズの確保
-	channelR_.r = (double*)calloc((channelR_.pmax + 1), sizeof(double));
+	channelR_.x.resize(template_size_);		// 相関関数分のメモリサイズの確保
+	channelR_.y.resize(template_size_);		// 相関関数分のメモリサイズの確保
+	channelR_.r.resize(channelR_.pmax + 1);
 
 	channelL_.offset0 = 0;
 	channelL_.offset1 = 0;

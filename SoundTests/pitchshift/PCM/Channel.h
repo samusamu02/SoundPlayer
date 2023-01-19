@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 struct ChannelL
 {
 	int pmin;
@@ -10,9 +11,9 @@ struct ChannelL
 	int ta;
 	int tb;
 
-	double* x;
-	double* y;
-	double* r;
+	std::vector<double> x;
+	std::vector<double> y;
+	std::vector<double> r;
 };
 
 struct ChannelR
@@ -26,7 +27,7 @@ struct ChannelR
 	int ta;
 	int tb;
 
-	double* x;
-	double* y;
-	double* r;
+	std::vector<double> x;
+	std::vector<double> y;
+	std::vector<double> r;
 };
