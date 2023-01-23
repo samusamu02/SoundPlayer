@@ -17,7 +17,7 @@ constexpr int fftsampleNam = 4096;
 // サウンドハンドル
 int SoftSoundHandle;
 int SoundHandle;
-
+// ｊふぉえｆｊうぇいお
 // 周波数取得
 int frequency;
 
