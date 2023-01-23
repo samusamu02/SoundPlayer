@@ -64,6 +64,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 	channelR_.offset1 = 0;
 
 	// チェンネルL用の音を伸ばす処理(タイムストレッチ)
+	// 
 	while (channelL_.offset0 + channelL_.pmax * 2 < pcm0_.length)
 	{
 		for (int n = 0; n < template_size_; n++)

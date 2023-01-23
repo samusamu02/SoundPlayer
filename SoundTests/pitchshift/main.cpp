@@ -165,6 +165,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		// 右チャンネル、左チャンネル
 		int Ch1, Ch2;
 		// 波形を描画
+		// 1サンプルずつ処理を行う
 		for (LONGLONG i = 0; i < SCREEN_W / 2 && i + DrawStartSampleCount < TotalSampleCount; i++)
 		{
 			// 波形の振幅値を取得
@@ -181,17 +182,26 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 		// 周波数分布を画面を描画する
 		int x = -1;
-		int j = 0;
+		int j =	0;
+
+		// 軸の間隔
 		int offset = 15;
+		// サンプル数分処理を行う
 		for (int a = 0; a < fftsampleNam; a++)
 		{
-			if ((int)(log10((double)a) * 10) != x)
+			// 対数が同じでない場合のみ値を変える
+			auto log = (int)(log10((double)a) * 10);
+			if (log != x)
 			{
+				// 描画位置
 				j++;
+
+				// 横軸に対してlogで対数をとる
 				x = (int)(log10((double)a) * 10);
-
+				
+				// パラメーター
 				float Param;
-
+	
 				// 関数から取得できる値を描画に適した値に調整
 				Param = pow(paramList[a], 0.5f) * 0.8f;
 
