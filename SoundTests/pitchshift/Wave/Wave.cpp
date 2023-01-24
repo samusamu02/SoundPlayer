@@ -38,15 +38,15 @@ void Wave::WaveRead(MONO_PCM& pcm, const wchar_t* file_name)
     fread(data_chunk_ID, 1, 4, fp);
     fread(&data_chunk_size, 4, 1, fp);
 
-    pcm.fs = samples_per_sec; // 標本化周波数 
-    pcm.bits = bits_per_sample; // 量子化精度 
+    pcm.fs = samples_per_sec;         // 標本化周波数 
+    pcm.bits = bits_per_sample;       // 量子化精度 
     pcm.length = data_chunk_size / 2; // 音データの長さ 
-    pcm.s = (double*)calloc(pcm.length, sizeof(double)); // メモリの確保 
+    pcm.s.resize(pcm.length);         // メモリの確保 
 
     for (n = 0; n < pcm.length; n++)
     {
         fread(&data, 2, 1, fp); // 音データの読み取り 
-        if (pcm.s != nullptr)
+        if (!pcm.s.empty())
         {
             pcm.s[n] = (double)data / 32768.0; // 音データを-1以上1未満の範囲に正規化する 
         }
@@ -90,24 +90,24 @@ void Wave::WaveRead(STEREO_PCM& pcm, const wchar_t* file_name)
     fread(data_chunk_ID, 1, 4, fp);
     fread(&data_chunk_size, 4, 1, fp);
 
-    pcm.fs = samples_per_sec; // 標本化周波数 
-    pcm.bits = bits_per_sample; // 量子化精度 
-    pcm.length = data_chunk_size / 4; // 音データの長さ 
-    pcm.sL = (double*)calloc(pcm.length, sizeof(double)); // メモリの確保 
-    pcm.sR = (double*)calloc(pcm.length, sizeof(double)); // メモリの確保 
+    pcm.fs = samples_per_sec;               // 標本化周波数 
+    pcm.bits = bits_per_sample;             // 量子化精度 
+    pcm.length = data_chunk_size / 4;       // 音データの長さ 
+    pcm.sL.resize(pcm.length);              // メモリの確保 
+    pcm.sR.resize(pcm.length);              // メモリの確保 
 
     for (n = 0; n < pcm.length; n++)
     {
-        fread(&data, 2, 1, fp); // 音データ（Lチャンネル）の読み取り 
-        if (pcm.sL != nullptr)
+        fread(&data, 2, 1, fp);                     // 音データ（Lチャンネル）の読み取り 
+        if (!pcm.sL.empty())
         {
-            pcm.sL[n] = (double)data / 32768.0; // 音データを-1以上1未満の範囲に正規化する 
+            pcm.sL[n] = (double)data / 32768.0;     // 音データを-1以上1未満の範囲に正規化する 
         }
 
-        fread(&data, 2, 1, fp); // 音データ（Rチャンネル）の読み取り 
-        if (pcm.sR != nullptr)
+        fread(&data, 2, 1, fp);                     // 音データ（Rチャンネル）の読み取り 
+        if (!pcm.sR.empty())
         {
-            pcm.sR[n] = (double)data / 32768.0; // 音データを-1以上1未満の範囲に正規化する 
+            pcm.sR[n] = (double)data / 32768.0;     // 音データを-1以上1未満の範囲に正規化する 
         }
     }
 

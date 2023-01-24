@@ -73,8 +73,6 @@ void SetBGM(const wchar_t* fileName,bool genelateFlag)
 
 	// ボリュームのセット
 	SetVolumeMusicMem(volume, SoundHandle);
-
-	MessageBox(nullptr, L"変換完了が完了しました", L"変換完了", 0);
 }
 
 // 再生・一時停止
@@ -131,6 +129,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// BGMのセット
 	SetBGM(file, flag);
+
+
+
 
 	// メインループ
 	while (ProcessMessage() == 0)
