@@ -95,7 +95,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		for (int n = 0; n < channelL_->p; n++)
 		{
 			pcm1_->sL[channelL_->offset1 + channelL_->p + n] = pcm0_->sL[channelL_->offset0 + channelL_->p + n] * (channelL_->p - n) / channelL_->p;	// 単調減少の重み付け
-			pcm1_->sL[channelL_->offset1 + channelL_->p + n] += pcm0_->sL[channelL_->offset0 + n] * n / channelL_->p;								// 単調増加の重み付け
+			pcm1_->sL[channelL_->offset1 + channelL_->p + n] += pcm0_->sL[channelL_->offset0 + n] * n / channelL_->p;									// 単調増加の重み付け
 		}
 
 		channelL_->q = (int)(channelL_->p * rate_ / (1.0 - rate_) + 0.5);
@@ -181,7 +181,6 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		// ピッチの変更を曲の長さ分行う
 		t_ = pitch_ * n;
 
-		// 
 		channelL_->ta = (int)t_;
 
 		if (t_ == channelL_->ta)
@@ -229,6 +228,9 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		}
 	}
 
+	// すべてのサンプルのピッチアップが完了したら新しくwavファイルを書き込む
 	lpWave.WaveWrite(*pcm2_,afterFileName);
+
+	// 完了できたら変換完了のメッセージボックスを表示する
 	MessageBox(nullptr, L"変換完了が完了しました", L"変換完了", 0);
 }
