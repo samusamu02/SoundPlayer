@@ -108,7 +108,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 			pcm1_->sL[channelL_->offset1 + channelL_->p + n] = pcm0_->sL[channelL_->offset0 + n];
 		}
 
-		channelL_->offset0 += channelL_->q;						// offset0の更新
+		channelL_->offset0 += channelL_->q;							// offset0の更新
 		channelL_->offset1 += channelL_->p + channelL_->q;			// offset1の更新
 	}
 

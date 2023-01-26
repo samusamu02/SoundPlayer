@@ -101,6 +101,11 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	// バックグラウンド
 	SetAlwaysRunFlag(true);
 
+	// アイコンの生成
+	SetWindowIconID(001);
+
+	SetWindowText(L"ピッチアップ変更テスト");
+
 	// ＤＸライブラリ初期化処理
 	if (DxLib_Init() == -1)
 	{
@@ -129,9 +134,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// BGMのセット
 	SetBGM(file, flag);
-
-
-
 
 	// メインループ
 	while (ProcessMessage() == 0)
