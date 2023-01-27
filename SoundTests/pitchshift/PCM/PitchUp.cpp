@@ -181,7 +181,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		// ピッチの変更を曲の長さ分行う
 		t_ = pitch_ * n;
 
-		channelL_->ta = (int)t_;
+		channelL_->ta = static_cast<int>(t_);
 
 		if (t_ == channelL_->ta)
 		{
