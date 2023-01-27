@@ -8,6 +8,7 @@ PitchUp::PitchUp(double rate)
 {
 	rate_ = rate;	// 音の高さの変更
 
+	// オブジェクト生成
 	pcm0_ = std::make_unique<STEREO_PCM>();
 	pcm1_ = std::make_unique<STEREO_PCM>();
 	pcm2_ = std::make_unique<STEREO_PCM>();

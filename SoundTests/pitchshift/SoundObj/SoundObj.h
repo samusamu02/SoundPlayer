@@ -11,11 +11,6 @@ public:
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 protected:
-
-	// サンプル数
-	const int sampleNum_ = 32768;
-	const int fftsampleNam_ = 4096;
-
 	// サウンドハンドル
 	int softSoundHandle_;
 	int soundHandle_;
@@ -26,9 +21,6 @@ protected:
 	// サウンドファイル
 	const wchar_t* file_ = L"Sound/Peak_test_A.wav";
 	const wchar_t* file_2_ = L"Sound/pitchup.wav";
-
-	// フーリエ変換を行った結果を代入
-	std::vector<float> paramList_;
 
 	// ループ内で一回のみ処理を行うよう
 	int loopCount_;

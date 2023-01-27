@@ -83,13 +83,6 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		// 現在の再生位置を取得
 		samplePos = GetCurrentPositionSoundMem(SoundHandle);
 
-		// 取得した再生位置をサンプリングレートで割ってスクロール
-		DrawStartSampleCount += samplePos / 44.1;
-		// 描画範囲（今回は端から端まで)
-		if (DrawStartSampleCount + SCREEN_W > samplePos)
-		{
-			DrawStartSampleCount = samplePos;
-		}
 
 		// 画面のセンターライン
 		DrawLine(SCREEN_W / 2, 0, SCREEN_W / 2, SCREEN_W, 0xffffff);
@@ -100,6 +93,17 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		// 左チャンネルと右チャンネルのセンターラインを描画
 		DrawLine(0, SCREEN_H / 4, SCREEN_W / 2, SCREEN_H / 4, GetColor(0, 0, 255));
 		DrawLine(0, SCREEN_H - SCREEN_H / 4, SCREEN_W / 2, SCREEN_H - SCREEN_H / 4, GetColor(0, 0, 255));
+
+
+
+		// 取得した再生位置をサンプリングレートで割ってスクロール
+		DrawStartSampleCount += samplePos / 44.1;
+		// 描画範囲（今回は端から端まで)
+		if (DrawStartSampleCount + SCREEN_W > samplePos)
+		{
+			DrawStartSampleCount = samplePos;
+		}
+
 
 		// 右チャンネル、左チャンネル
 		int Ch1, Ch2;

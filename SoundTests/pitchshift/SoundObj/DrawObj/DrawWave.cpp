@@ -1,10 +1,6 @@
 #include <DxLib.h>
 #include "DrawWave.h"
 
-// スクリーンの大きさ
-constexpr int SCREEN_W = 1280;
-constexpr int SCREEN_H = 720;
-
 DrawWave::DrawWave()
 {
 	// 初期化呼び出し
@@ -22,7 +18,18 @@ void DrawWave::Init()
 	totalSampleCount_ = GetSoftSoundSampleNum(softSoundHandle_);
 }
 
-void DrawWave::DrawSoundWave()
+void DrawWave::Update()
+{
+	// 取得した再生位置をサンプリングレートで割ってスクロール
+	drawStartSampleCount_ += samplePos_ / 44.1;
+	// 描画範囲（今回は端から端まで)
+	if (drawStartSampleCount_ + SCREEN_W > samplePos_)
+	{
+		drawStartSampleCount_ = samplePos_;
+	}
+}
+
+void DrawWave::Draw()
 {
 	// 右チャンネル、左チャンネル
 	int Ch1, Ch2;

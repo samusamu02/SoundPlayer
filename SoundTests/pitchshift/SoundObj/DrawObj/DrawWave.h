@@ -8,7 +8,8 @@ public:
     DrawWave();
     ~DrawWave();
     void Init();
-    void DrawSoundWave();
+    void Update();
+    void Draw();
 private:
 
     // çƒê∂à íu
