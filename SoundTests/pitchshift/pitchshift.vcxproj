@@ -149,6 +149,12 @@
     <ClCompile Include="PCM\PCM.cpp" />
     <ClCompile Include="PCM\PCMSet.cpp" />
     <ClCompile Include="PCM\PitchUp.cpp" />
+    <ClCompile Include="Scene\SceneMag.cpp" />
+    <ClCompile Include="SoundObj\DrawObj\DrawBG.cpp" />
+    <ClCompile Include="SoundObj\DrawObj\DrawObj.cpp" />
+    <ClCompile Include="SoundObj\DrawObj\DrawObjMag.cpp" />
+    <ClCompile Include="SoundObj\SoundObj.cpp" />
+    <ClCompile Include="SoundObj\SoundObjMag.cpp" />
     <ClCompile Include="Wave\Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +163,12 @@
     <ClInclude Include="PCM\PCMSet.h" />
     <ClInclude Include="PCM\PitchUp.h" />
     <ClInclude Include="PCM\sinc.h" />
+    <ClInclude Include="Scene\SceneMag.h" />
+    <ClInclude Include="SoundObj\DrawObj\DrawBG.h" />
+    <ClInclude Include="SoundObj\DrawObj\DrawObj.h" />
+    <ClInclude Include="SoundObj\DrawObj\DrawObjMag.h" />
+    <ClInclude Include="SoundObj\SoundObj.h" />
+    <ClInclude Include="SoundObj\SoundObjMag.h" />
     <ClInclude Include="Wave\PCMDef.h" />
     <ClInclude Include="Wave\Wave.h" />
   </ItemGroup>

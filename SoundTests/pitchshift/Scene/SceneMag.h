@@ -1,30 +1,73 @@
 #pragma once
-#include "../SoundObj/SoundObjeMag.h"
-#include <memory>
 
-#define lpSceneMag SceneMag::GetInstance()
+#include "../PCM/PitchUp.h"
+#include <vector>
+#include <memory>
+#include "../SoundObj/SoundObjMag.h"
+#define lpScenMag SceneMag::GetInstance()
 
 class SceneMag
 {
 public:
 	static SceneMag& GetInstance()
 	{
-		static SceneMag sceneMag;
-		return sceneMag;
+		static SceneMag s_Instance;
+		return s_Instance;
 	}
+
 	void Run();
 	void Update();
 	void Draw();
 
+	int GetSCREEN_H(void);
+	int GetSCREEN_W(void);
 private:
 	bool SysInit();
 	bool sysInit_;
 
-	// サウンドオブジェクト
-	std::unique_ptr<SoundObjeMag> soundObjMag_;
+	/// <summary>
+	/// サウンドをセットする
+	/// </summary>
+	/// <param name="fileName">変換するファイル名</param>
+	/// <param name="genelateFlag"></param>
+	void SetBGM(const wchar_t* fileName, bool genelateFlag);
 
-	// キー操作
-	std::unique_ptr<SoundCtl> soundCtl_;
+	// 再生・一時停止
+	void Play(void);
+
+	// サウンドハンドル
+	int SoftSoundHandle;
+	int SoundHandle;
+
+
+	// 周波数取得
+	int frequency;
+
+	// 再生位置
+	long long TotalSampleCount;
+	long long DrawStartSampleCount;
+
+	// 振幅スペクトル
+	std::vector<float> paramList;
+	long long samplePos;
+
+	// 現在の再生時間
+	int mmSecondSoundTime;
+
+	// ボリューム
+	int volume = 255;
+
+	std::unique_ptr<PitchUp> pitchUp = std::make_unique<PitchUp>(0.8);
+
+	std::unique_ptr<SoundObjMag> soundObjMag_;
+
+	const wchar_t* file = L"Sound/Peak_test_A.wav";
+	const wchar_t* file_2 = L"Sound/pitchup.wav";
+
+	int count = 0;
+
+	// はいかいいえかを押されたかの確認
+	bool flag = false;
 
 	SceneMag();
 	~SceneMag();
