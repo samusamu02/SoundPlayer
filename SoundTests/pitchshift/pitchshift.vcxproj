@@ -145,7 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DrawWave\DrawWave.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PCM\PCM.cpp" />
     <ClCompile Include="PCM\PCMSet.cpp" />
@@ -153,7 +152,6 @@
     <ClCompile Include="Wave\Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DrawWave\DrawWave.h" />
     <ClInclude Include="PCM\Channel.h" />
     <ClInclude Include="PCM\PCM.h" />
     <ClInclude Include="PCM\PCMSet.h" />
