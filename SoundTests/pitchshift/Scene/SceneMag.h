@@ -61,9 +61,6 @@ private:
 
 	std::unique_ptr<SoundObjMag> soundObjMag_;
 
-	const wchar_t* file = L"Sound/Peak_test_A.wav";
-	const wchar_t* file_2 = L"Sound/pitchup.wav";
-
 	int count = 0;
 
 	// ‚Í‚¢‚©‚¢‚¢‚¦‚©‚ð‰Ÿ‚³‚ê‚½‚©‚ÌŠm”F

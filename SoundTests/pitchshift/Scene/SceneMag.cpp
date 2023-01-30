@@ -6,7 +6,7 @@ constexpr int SCREEN_W = 1280;
 constexpr int SCREEN_H = 720;
 
 // サンプル数
-constexpr int sampleNum = 32768;
+constexpr int sampleNum_ = 32768;
 constexpr int fftsampleNam = 4096;
 
 void SceneMag::Run()
@@ -39,16 +39,26 @@ void SceneMag::Run()
 	// BGMのセット
 	SetBGM(file, flag);
 
+	// サウンドオブジェクト管理クラスのインスタンス
 	soundObjMag_ = std::make_unique<SoundObjMag>();
+
+	// サウンドオブジェクト管理クラスの初期化関数呼び出し
+	soundObjMag_->Init();
 
 	// メインループ
 	while (ProcessMessage() == 0)
 	{
+		// サウンドオブジェクト管理クラスの更新関数呼び出し
+		soundObjMag_->Update();
+
 		// 描画先を裏画面に変更
 		SetDrawScreen(DX_SCREEN_BACK);
 
 		// 画面を消去
 		ClearDrawScreen();
+
+		// 	// サウンドオブジェクト管理クラスの描画関数呼び出し
+		soundObjMag_->Draw();
 
 		// 再生
 		Play();
@@ -56,7 +66,7 @@ void SceneMag::Run()
 		// 現在の再生位置を取得
 		samplePos = GetCurrentPositionSoundMem(SoundHandle);
 
-		paramList.resize(sampleNum);
+		paramList.resize(sampleNum_);
 
 		soundObjMag_->Draw();
 
@@ -78,8 +88,8 @@ void SceneMag::Run()
 			ReadSoftSoundData(SoftSoundHandle, i + DrawStartSampleCount, &Ch1, &Ch2);
 
 			// 振幅値の高さの縦ラインを描画
-			DrawLine(i, SCREEN_H / 4, i, SCREEN_H / 4 + (Ch1 * (SCREEN_H / 4) / sampleNum), GetColor(0, 0, 255));
-			DrawLine(i, SCREEN_H - SCREEN_H / 4, i, SCREEN_H - SCREEN_H / 4 + (Ch2 * (SCREEN_H / 4) / sampleNum), GetColor(0, 0, 255));
+			DrawLine(i, SCREEN_H / 4, i, SCREEN_H / 4 + (Ch1 * (SCREEN_H / 4) / sampleNum_), GetColor(0, 0, 255));
+			DrawLine(i, SCREEN_H - SCREEN_H / 4, i, SCREEN_H - SCREEN_H / 4 + (Ch2 * (SCREEN_H / 4) / sampleNum_), GetColor(0, 0, 255));
 		}
 
 		// スペクトル描画
@@ -124,27 +134,6 @@ void SceneMag::Run()
 		mmSecondSoundTime = GetSoundCurrentTime(SoundHandle);
 		auto sec = mmSecondSoundTime / mmSec;	// 秒
 		DrawFormatString(0, SCREEN_H - 15, 0xffffff, L"再生時間: %d秒", sec);
-
-		// 音量
-		if (CheckHitKey(KEY_INPUT_E))
-		{
-			if (volume < 255)
-			{
-				volume++;
-			}
-			ChangeVolumeSoundMem(volume, SoundHandle);
-		}
-
-		if (CheckHitKey(KEY_INPUT_Q))
-		{
-			if (volume > 0)
-			{
-				volume--;
-			}
-			ChangeVolumeSoundMem(volume, SoundHandle);
-		}
-
-		DrawFormatString(150, SCREEN_H - 15, 0xffffff, L"ボリューム: %d", volume);
 
 		// フラグがtrueのみ処理を行う
 		if (flag == true)

@@ -1,11 +1,11 @@
 #pragma once
 #include "DrawObj.h"
-class DrawBG :
+class DrawWave :
     public DrawObj
 {
 public:
-    DrawBG();
-    ~DrawBG();
+    DrawWave();
+    ~DrawWave();
 
     void Init(void);
     void Update(void);

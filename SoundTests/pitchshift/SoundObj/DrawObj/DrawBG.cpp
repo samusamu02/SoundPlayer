@@ -2,19 +2,31 @@
 #include "../../Scene/SceneMag.h"
 DrawBG::DrawBG()
 {
+	// 処理なし
 }
 
 DrawBG::~DrawBG()
 {
+	// 処理なし
+}
+
+void DrawBG::Init(void)
+{
+	// 処理なし
+}
+
+void DrawBG::Update(void)
+{
+	// 処理なし
 }
 
 void DrawBG::Draw(void)
 {
+	// スクリーンサイズ
+	auto screen_w = lpScenMag.GetSCREEN_W();	// 幅
+	auto screen_h = lpScenMag.GetSCREEN_H();	// 高さ
+
 	// 画面のセンターライン
-
-	auto screen_w = lpScenMag.GetSCREEN_W();
-	auto screen_h = lpScenMag.GetSCREEN_H();
-
 	DrawLine(screen_w / 2, 0, screen_w / 2, screen_w, 0xffffff);
 
 	// 左チャンネルと右チャンネルを区切るラインを描画

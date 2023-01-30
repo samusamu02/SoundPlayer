@@ -13,6 +13,5 @@ public:
 
 private:
 	std::unique_ptr<DrawObjMag> drawObjMag_;
-
 };
 
