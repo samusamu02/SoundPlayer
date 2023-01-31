@@ -16,5 +16,9 @@ public:
 private:
     SoundFile soundFile_;
     int loopCount_;
+
+    int samplePos_;
+    int drawStartSampleCount_;
+    int totalSampleCount_;
 };
 

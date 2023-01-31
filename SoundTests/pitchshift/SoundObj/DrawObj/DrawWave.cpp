@@ -40,6 +40,7 @@ void DrawWave::Update(void)
 		auto totalSampleCount = lpSoundSet.GetTotalSampleCount();
 		if (samplePos == totalSampleCount)
 		{
+			// •ÏŠ·Œã‚ÌƒTƒEƒ“ƒh‚ğÄ¶‚·‚é
 			lpSoundSet.SoundInit(soundFile_.beforeFileName, false);
 			PlaySoundMem(soundHande, DX_PLAYTYPE_BACK);
 			loopCount_ = 1;

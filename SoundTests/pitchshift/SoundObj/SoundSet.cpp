@@ -13,6 +13,7 @@ void SoundSet::SoundInit(const wchar_t* fileName, bool genelateFlag)
 	// ピッチアップ(flagがtrueの場合のみ新しくwavファイルを生成する
 	if (genelateFlag == true)
 	{
+		pitchUp_ = std::make_unique<PitchUp>(0.8);
 		pitchUp_->GenelatePitchUpWaveFile(fileName, soundFile_.afterFilenName);
 	}
 
