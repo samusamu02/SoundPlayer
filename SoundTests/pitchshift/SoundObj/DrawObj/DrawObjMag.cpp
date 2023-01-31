@@ -2,9 +2,9 @@
 DrawObjMag::DrawObjMag()
 {
 	// インスタンス
-	drawBG_ = std::make_unique<DrawBG>();
-	drawWave_ = std::make_unique<DrawWave>();
-	drawSpectrum_ = std::make_unique<DrawSpectrum>();
+	drawBG_ = std::make_shared<DrawBG>();
+	drawWave_ = std::make_shared<DrawWave>();
+	drawSpectrum_ = std::make_shared<DrawSpectrum>();
 }
 
 DrawObjMag::~DrawObjMag()

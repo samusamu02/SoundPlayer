@@ -157,6 +157,7 @@
     <ClCompile Include="SoundObj\DrawObj\DrawWave.cpp" />
     <ClCompile Include="SoundObj\SoundObj.cpp" />
     <ClCompile Include="SoundObj\SoundObjMag.cpp" />
+    <ClCompile Include="SoundObj\SoundSet.cpp" />
     <ClCompile Include="Wave\Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +175,7 @@
     <ClInclude Include="SoundObj\DrawObj\DrawWave.h" />
     <ClInclude Include="SoundObj\SoundObj.h" />
     <ClInclude Include="SoundObj\SoundObjMag.h" />
+    <ClInclude Include="SoundObj\SoundSet.h" />
     <ClInclude Include="Wave\PCMDef.h" />
     <ClInclude Include="Wave\Wave.h" />
   </ItemGroup>

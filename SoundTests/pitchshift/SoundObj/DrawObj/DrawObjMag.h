@@ -16,12 +16,12 @@ public:
 
 private:
 	// 背景オブジェクト
-	std::unique_ptr<DrawBG> drawBG_;
+	std::shared_ptr<DrawBG> drawBG_;
 
 	// 波形オブジェクト
-	std::unique_ptr<DrawWave> drawWave_;
+	std::shared_ptr<DrawWave> drawWave_;
 
 	// スペクトルオブジェクト
-	std::unique_ptr<DrawSpectrum> drawSpectrum_;
+	std::shared_ptr<DrawSpectrum> drawSpectrum_;
 };
 
