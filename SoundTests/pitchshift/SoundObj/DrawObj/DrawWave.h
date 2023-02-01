@@ -15,10 +15,12 @@ public:
     void Draw(void);
 private:
     SoundFile soundFile_;
-    int loopCount_;
 
-    int samplePos_;
+    int screen_w_;
+    int screen_h_;
     int drawStartSampleCount_;
     int totalSampleCount_;
+
+
 };
 

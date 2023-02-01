@@ -17,5 +17,8 @@ private:
 
     // FFT‚Ég‚¤ƒTƒ“ƒvƒ‹”
     int fftSampleNum_;
+
+    int screen_w_;
+    int screen_h_;
 };
 

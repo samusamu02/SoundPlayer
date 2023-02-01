@@ -24,5 +24,8 @@ private:
 
 	// メッセージボックスの状態
 	bool YESNOflag_;
+
+	// ループカウント
+	int loopCount_;
 };
 

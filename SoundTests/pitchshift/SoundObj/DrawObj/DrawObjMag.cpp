@@ -28,9 +28,6 @@ void DrawObjMag::Update(void)
 {
 	// 背景の更新関数の呼び出し
 	drawBG_->Update();
-
-	// 波形の更新関数の呼び出し
-	drawWave_->Update();
 }
 
 void DrawObjMag::Draw(void)
