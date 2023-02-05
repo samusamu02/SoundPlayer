@@ -15,8 +15,3 @@ void DrawObj::Init(void)
 	// ƒTƒ“ƒvƒ‹”
 	sampleNum_ = 32768;
 }
-
-void DrawObj::Update(void)
-{
-
-}

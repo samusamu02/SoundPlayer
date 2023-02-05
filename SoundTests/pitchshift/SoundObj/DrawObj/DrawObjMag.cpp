@@ -24,12 +24,6 @@ void DrawObjMag::Init(void)
 	drawSpectrum_->Init();
 }
 
-void DrawObjMag::Update(void)
-{
-	// ”wŒi‚ÌXVŠÖ”‚ÌŒÄ‚Ño‚µ
-	drawBG_->Update();
-}
-
 void DrawObjMag::Draw(void)
 {
 	// ”wŒi‚Ì•`‰æŠÖ”‚ÌŒÄ‚Ño‚µ

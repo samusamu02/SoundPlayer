@@ -15,11 +15,6 @@ void DrawBG::Init(void)
 	// 処理なし
 }
 
-void DrawBG::Update(void)
-{
-	// 処理なし
-}
-
 void DrawBG::Draw(void)
 {
 	// スクリーンサイズ

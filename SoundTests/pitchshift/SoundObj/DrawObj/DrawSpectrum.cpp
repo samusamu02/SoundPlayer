@@ -22,10 +22,6 @@ void DrawSpectrum::Init(void)
 	fftSampleNum_ = 4096;
 }
 
-void DrawSpectrum::Update(void)
-{
-}
-
 void DrawSpectrum::Draw(void)
 {
 	auto softSoundHandle = lpSoundSet.GetSouftSoundHandle();

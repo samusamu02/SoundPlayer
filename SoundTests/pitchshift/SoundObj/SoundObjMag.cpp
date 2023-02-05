@@ -47,9 +47,6 @@ void SoundObjMag::Init(void)
 
 void SoundObjMag::Update(void)
 {
-	// 描画管理クラスの更新関数呼び出し
-	drawObjMag_->Update();
-
 	// 終了チェック
 	if (loopCount_ == 0)
 	{
