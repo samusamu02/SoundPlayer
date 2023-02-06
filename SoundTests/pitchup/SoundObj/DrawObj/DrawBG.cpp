@@ -2,7 +2,7 @@
 #include "../../Scene/SceneMag.h"
 DrawBG::DrawBG()
 {
-	// 処理なし
+
 }
 
 DrawBG::~DrawBG()
@@ -17,9 +17,8 @@ void DrawBG::Init(void)
 
 void DrawBG::Draw(void)
 {
-	// スクリーンサイズ
-	auto screen_w = lpScenMag.GetSCREEN_W();	// 幅
-	auto screen_h = lpScenMag.GetSCREEN_H();	// 高さ
+	screen_w = lpScenMag.GetScreen_W();	// 幅
+	screen_h = lpScenMag.GetScreen_H();	// 高さ
 
 	// 画面のセンターライン
 	DrawLine(screen_w / 2, 0, screen_w / 2, screen_w, 0xffffff);

@@ -8,12 +8,12 @@ PitchUp::PitchUp(double rate)
 {
 	rate_ = rate;	// 音の高さの変更
 
+	// インスタンス
 	pcm0_ = std::make_unique<STEREO_PCM>();
 	pcm1_ = std::make_unique<STEREO_PCM>();
 	pcm2_ = std::make_unique<STEREO_PCM>();
 	channelL_ = std::make_unique<ChannelL>();
 	channelR_ = std::make_unique<ChannelR>();
-
 	pcmSet_ = std::make_unique<PCMSet>();
 }
 
@@ -39,8 +39,8 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 	channelL_->pmax = (int)(pcm1_->fs * 0.02);			// ピークの探索範囲の上限(L)
 
 	// メモリ確保(L)
-	channelL_->x.resize(template_size_);					// 相関関数分のメモリサイズの確保
-	channelL_->y.resize(template_size_);					// 相関関数分のメモリサイズの確保
+	channelL_->x.resize(template_size_);				// 相関関数分のメモリサイズの確保
+	channelL_->y.resize(template_size_);				// 相関関数分のメモリサイズの確保
 	channelL_->r.resize(channelL_->pmax + 1);
 
 	// 右チャンネル
@@ -48,10 +48,11 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 	channelR_->pmax = (int)(pcm1_->fs * 0.02);			// ピークの探索範囲の上限(R)
 
 	// メモリ確保(R)
-	channelR_->x.resize(template_size_);					// 相関関数分のメモリサイズの確保
-	channelR_->y.resize(template_size_);					// 相関関数分のメモリサイズの確保
+	channelR_->x.resize(template_size_);				// 相関関数分のメモリサイズの確保
+	channelR_->y.resize(template_size_);				// 相関関数分のメモリサイズの確保
 	channelR_->r.resize(channelR_->pmax + 1);
 
+	// オフセットの初期化
 	channelL_->offset0 = 0;
 	channelL_->offset1 = 0;
 
@@ -181,7 +182,6 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		// ピッチの変更を曲の長さ分行う
 		t_ = pitch_ * n;
 
-		// 
 		channelL_->ta = (int)t_;
 
 		if (t_ == channelL_->ta)

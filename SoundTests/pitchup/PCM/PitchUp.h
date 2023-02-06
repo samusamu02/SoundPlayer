@@ -14,6 +14,7 @@ public:
 	void GenelatePitchUpWaveFile(const wchar_t* fileName, const wchar_t* afterFileName);
 
 private:
+	// PCMの初期化のオブジェクト
 	std::unique_ptr<PCMSet> pcmSet_;
 };
 

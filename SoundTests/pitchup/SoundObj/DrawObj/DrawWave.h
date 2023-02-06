@@ -14,7 +14,9 @@ public:
     void Update(void);
     void Draw(void);
 private:
+    // サウンドのファイル場所
     SoundFile soundFile_;
+
 
     int screen_w_;
     int screen_h_;

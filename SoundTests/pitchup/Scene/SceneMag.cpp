@@ -7,6 +7,7 @@ constexpr int SCREEN_H = 720;
 
 void SceneMag::Run()
 {
+	// システムが初期化できていなかったら処理を行わない
 	if (!sysInit_)
 	{
 		if (!SysInit())
@@ -40,16 +41,8 @@ void SceneMag::Run()
 		ScreenFlip();
 	}
 
-	// ＤＸライブラリの後始末
+	//Dxlibの終了
 	DxLib_End();
-}
-
-void SceneMag::Update()
-{
-}
-
-void SceneMag::Draw()
-{
 }
 
 bool SceneMag::SysInit()
@@ -80,22 +73,23 @@ bool SceneMag::SysInit()
 	return true;
 }
 
-int SceneMag::GetSCREEN_H(void)
+int SceneMag::GetScreen_H(void)
 {
 	return SCREEN_H;
 }
 
-int SceneMag::GetSCREEN_W(void)
+int SceneMag::GetScreen_W(void)
 {
 	return SCREEN_W;
 }
 
-
 SceneMag::SceneMag()
 {
+	// システムの状態の取得
 	sysInit_ = SysInit();
 }
 
 SceneMag::~SceneMag()
 {
+	// 処理のなし
 }

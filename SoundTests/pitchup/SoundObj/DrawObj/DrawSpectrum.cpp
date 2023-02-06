@@ -12,8 +12,8 @@ DrawSpectrum::~DrawSpectrum()
 void DrawSpectrum::Init(void)
 {
 	// スクリーンサイズ
-	screen_w_ = lpScenMag.GetSCREEN_W();	// 幅
-	screen_h_ = lpScenMag.GetSCREEN_H();	// 広さ
+	screen_w_ = lpScenMag.GetScreen_W();	// 幅
+	screen_h_ = lpScenMag.GetScreen_H();	// 広さ
 
 	// サンプル数分要素数を確保する
 	paramList.resize(sampleNum_);
@@ -24,6 +24,7 @@ void DrawSpectrum::Init(void)
 
 void DrawSpectrum::Draw(void)
 {
+	// サウンドハンドルの取得
 	auto softSoundHandle = lpSoundSet.GetSouftSoundHandle();
 
 	// スペクトル描画

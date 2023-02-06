@@ -1,5 +1,6 @@
 #include "DrawWave.h"
 #include "../../Scene/SceneMag.h"
+
 DrawWave::DrawWave()
 {
 }
@@ -11,8 +12,8 @@ DrawWave::~DrawWave()
 void DrawWave::Init(void)
 {
 	// 初期化
-	screen_w_ = lpScenMag.GetSCREEN_W();	// 幅
-	screen_h_ = lpScenMag.GetSCREEN_H();	// 高さ
+	screen_w_ = lpScenMag.GetScreen_W();	// 幅
+	screen_h_ = lpScenMag.GetScreen_H();	// 高さ
 
 	// 総サンプル数の取得
 	totalSampleCount_ = lpSoundSet.GetTotalSampleCount();
@@ -26,6 +27,7 @@ void DrawWave::Update(void)
 	// 現在のサウンドハンドルの取得
 	auto soundHande = lpSoundSet.GetSoundHandle();
 
+	// 現在のサンプルの位置
 	auto samplePos = GetCurrentPositionSoundMem(soundHande);
 
 	// 取得した再生位置をサンプリングレートで割ってスクロール

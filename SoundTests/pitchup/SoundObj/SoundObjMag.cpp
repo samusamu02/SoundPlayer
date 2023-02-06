@@ -50,7 +50,6 @@ void SoundObjMag::Update(void)
 	// 終了チェック
 	if (loopCount_ == 0)
 	{
-		// 曲の終わりを見る
 		// 変換前のサウンドハンドルの取得
 		auto beforesoundHandle = lpSoundSet.GetSoundHandle();
 		// 総サンプル数の取得
