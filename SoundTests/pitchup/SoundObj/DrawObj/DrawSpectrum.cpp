@@ -46,14 +46,14 @@ void DrawSpectrum::Draw(void)
 	for (int a = 0; a < fftSampleNum_; a++)
 	{
 		// 対数が同じでない場合のみ値を変える
-		auto log = (int)(log10((double)a) * 10);
+		auto log = static_cast<int>((log10(static_cast<double>(a)) * 10));
 		if (log != x)
 		{
 			// 描画位置
 			j++;
 
 			// 横軸に対してlogで対数をとる
-			x = (int)(log10((double)a) * 10);
+			x = static_cast<int>((log10((double)a) * 10));
 
 			// パラメーター
 			float Param;

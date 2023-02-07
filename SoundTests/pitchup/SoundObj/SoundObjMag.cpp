@@ -16,9 +16,9 @@ void SoundObjMag::Init(void)
 	// 変換を行うかどうかのチェック
 	auto YESNO = MessageBox(nullptr, L"変換を行いますか?", L"ピッチアップ", MB_YESNO);
 
+	// YESを選択したらフラグをtrueにする
 	if (YESNO == IDYES)
 	{
-
 		YESNOflag_ = true;
 	}
 	else
