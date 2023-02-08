@@ -41,7 +41,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 	// メモリ確保(L)
 	channelL_->x.resize(template_size_);				// 相関関数分のメモリサイズの確保
 	channelL_->y.resize(template_size_);				// 相関関数分のメモリサイズの確保
-	channelL_->r.resize(channelL_->pmax + 1);
+	channelL_->r.resize(channelL_->pmax + 1);			// ピークの探索範囲の上限分のメモリ確保
 
 	// 右チャンネル
 	channelR_->pmin = static_cast<int>(pcm1_->fs * 0.005);			// ピークの捜索範囲の下限(R)
@@ -50,7 +50,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 	// メモリ確保(R)
 	channelR_->x.resize(template_size_);				// 相関関数分のメモリサイズの確保
 	channelR_->y.resize(template_size_);				// 相関関数分のメモリサイズの確保
-	channelR_->r.resize(channelR_->pmax + 1);
+	channelR_->r.resize(channelR_->pmax + 1);			// ピークの探索範囲の上限分のメモリ確保
 
 	// オフセットの初期化
 	channelL_->offset0 = 0;
@@ -112,9 +112,10 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 			}
 			pcm1_->sL[channelL_->offset1 + channelL_->p + n] = pcm0_->sL[channelL_->offset0 + n];
 		}
-		// offset0の更新
+
+		// オフセットの更新
+		// 更新したら次のサンプルへ
 		channelL_->offset0 += channelL_->q;				
-		// offset1の更新
 		channelL_->offset1 += channelL_->p + channelL_->q;			
 	}
 
@@ -153,6 +154,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 
 		for (int n = 0; n < channelR_->p; n++)
 		{
+			// offset0とnサンプル数を格納
 			pcm1_->sR[channelR_->offset1 + n] = pcm0_->sR[channelR_->offset0 + n];
 
 			// 単調減少の重み付け
@@ -161,18 +163,23 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 			pcm1_->sR[channelR_->offset1 + channelR_->p + n] += pcm0_->sR[channelR_->offset0 + n] * n / channelR_->p;
 		}
 
+		// 基準時刻の更新
 		channelR_->q = static_cast<int>(channelR_->p * rate_/ (1.0 - rate_) + 0.5);
 		for (int n = channelR_->p; n < channelR_->q; n++)
 		{
+			// 元の音データの長さと同じになったらループを抜ける
 			if (channelR_->offset0 + n >= pcm0_->length)
 			{
 				break;
 			}
+			// サンプルのコピー
 			pcm1_->sR[channelR_->offset1 + channelR_->p + n] = pcm0_->sR[channelR_->offset0 + n];
 		}
 
-		channelR_->offset0 += channelR_->q;								// offset0の更新
-		channelR_->offset1 += channelR_->p + channelR_->q;				// offset1の更新
+		// offset0の更新
+		channelR_->offset0 += channelR_->q;						
+		// offset1の更新
+		channelR_->offset1 += channelR_->p + channelR_->q;				
 	}
 
 	// ピッチ変更の割合を求める
@@ -188,21 +195,25 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 	// 実際にピッチシフトを行う
 	for (int n = 0; n < pcm2_->length; n++)
 	{
-		// ピッチの変更を曲の長さ分行う
+		// ピッチの変更をすべてのサンプルに対して行う
 		t_ = pitch_ * n;
 
 		// 左チャンネルのピッチ変更
 		channelL_->ta = static_cast<int>(t_);
 
+		// 整数と小数点以下がある場合で分ける
 		if (t_ == channelL_->ta)
 		{
+			// taの値を代入
 			channelL_->tb = channelL_->ta;
 		}
 		else
 		{
+			// taの値+1を代入
 			channelL_->tb = channelL_->ta + 1;
 		}
 
+		// すべてのサンプルに対して処理を行う
 		for (int m = channelL_->tb - N_ / 2; m <= channelL_->ta + N_ / 2; m++)
 		{
 			if (m >= 0 && m < pcm1_->length)
@@ -212,7 +223,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 			}
 		}
 
-		// 右チャンネルのピッチ変更
+		// 右チャンネルのピッチ変更（左チャンネルと同じ処理を行う）
 		channelR_->ta = static_cast<int>(t_);
 
 		if (t_ == channelR_->ta)

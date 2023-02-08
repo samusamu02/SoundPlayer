@@ -22,10 +22,10 @@ protected:
 	std::unique_ptr<ChannelL> channelL_;
 	std::unique_ptr<ChannelR> channelR_;
 
-	double rate_;
-	double rmax_;
-	double t_;
-	double pitch_;
+	double rate_;		// 再生速度
+	double rmax_;		// 相関関数のピーク
+	double t_;			// ピッチ変更する値とサンプル数を計算する
+	double pitch_;		// ピッチ変更の値
 
 	// ハニング窓のサイズ
 	int N_;
