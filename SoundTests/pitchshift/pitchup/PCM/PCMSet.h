@@ -8,20 +8,6 @@ public:
     ~PCMSet();
 
     /// <summary>
-    /// ピッチシフト用の変換前ののPCMを変換するPCMに代入関数
-    /// </summary>
-    /// <param name="after">代入されるPCM</param>
-    /// <param name="before">元データ</param>
-    void PCMSetPitchUp(MONO_PCM& after, MONO_PCM& before,double rate);
-
-    /// <summary>
-    /// ピッチシフト用の変換前ののPCMを変換するPCMに代入する関数
-    /// </summary>
-    /// <param name="after">代入されるPCM</param>
-    /// <param name="before">元データ</param>
-    void PCMSetPitchUp(STEREO_PCM& after, STEREO_PCM& before,double rate);
-
-    /// <summary>
     /// 変換前ののPCMを変換するPCMに代入する関数
     /// </summary>
     /// <param name="after">代入されるPCM</param>
