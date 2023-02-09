@@ -93,6 +93,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 			}
 		}
 
+		// ‰¹‚ğ‰º‚°‚é
 		for (int n = 0; n < channelL_->p; n++)
 		{
 			pcm1_->sL[channelL_->offset1 + n] = pcm0_->sL[channelL_->offset0 + n];
@@ -152,6 +153,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 			}
 		}
 
+		// ‰¹‚ğ‰º‚°‚é
 		for (int n = 0; n < channelR_->p; n++)
 		{
 			// offset0‚ÆnƒTƒ“ƒvƒ‹”‚ğŠi”[
