@@ -2,14 +2,14 @@
 #include <vector>
 struct ChannelL
 {
-	int pmin;		// ピークの下限
-	int pmax;		// ピークの上限
-	int p;			// 波形の周期
-	int q;			// 基準時刻の更新
-	int offset0;	// 入力音声の開始位置
-	int offset1;	// 生成音声の開始位置
-	int ta;			// ピッチ変更前のサンプルデータ	
-	int tb;			// ピッチ変更後のサンプルデータ
+	double pmin;		// ピークの下限
+	double pmax;		// ピークの上限
+	double p;			// 波形の周期
+	double q;			// 基準時刻の更新
+	double offset0;		// 入力音声の開始位置
+	double offset1;		// 生成音声の開始位置
+	double ta;			// ピッチ変更前のサンプルデータ	
+	double tb;			// ピッチ変更後のサンプルデータ
 
 	std::vector<double> x;		// 元の音データを格納
 	std::vector<double> y;		// mサンプルずらした音データを格納
@@ -18,14 +18,14 @@ struct ChannelL
 
 struct ChannelR
 {
-	int pmin;		// ピークの下限
-	int pmax;		// ピークの上限
-	int p;			// 波形の周期
-	int q;			// 基準時刻の更新
-	int offset0;	// 入力音声の開始位置
-	int offset1;	// 生成音声の開始位置
-	int ta;			// ピッチ変更前のサンプルデータ	
-	int tb;			// ピッチ変更後のサンプルデータ
+	double pmin;		// ピークの下限
+	double pmax;		// ピークの上限
+	double p;			// 波形の周期
+	double q;			// 基準時刻の更新
+	double offset0;		// 入力音声の開始位置
+	double offset1;		// 生成音声の開始位置
+	double ta;			// ピッチ変更前のサンプルデータ	
+	double tb;			// ピッチ変更後のサンプルデータ
 
 	std::vector<double> x;		// 元の音データを格納
 	std::vector<double> y;		// mサンプルずらした音データを格納

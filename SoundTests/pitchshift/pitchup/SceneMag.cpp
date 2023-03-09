@@ -1,5 +1,7 @@
-#include "SceneMag.h"
 #include <DxLib.h>
+#include "SceneMag.h"
+#include "Scene/SoundSelectScene.h"
+
 
 // スクリーンの大きさ
 constexpr int SCREEN_W = 1280;
@@ -17,16 +19,13 @@ void SceneMag::Run()
 	}
 
 	// サウンドオブジェクト管理クラスのインスタンス
-	soundObjMag_ = std::make_unique<SoundObjMag>();
-
-	// サウンドオブジェクト管理クラスの初期化関数呼び出し
-	soundObjMag_->Init();
+	scene_ = std::make_unique<SoundSelectScene>();
 
 	// メインループ
 	while (ProcessMessage() == 0)
 	{
 		// サウンドオブジェクト管理クラスの更新関数呼び出し
-		soundObjMag_->Update();
+		scene_ = scene_->Update(std::move(scene_));
 
 		// 描画先を裏画面に変更
 		SetDrawScreen(DX_SCREEN_BACK);
@@ -35,7 +34,7 @@ void SceneMag::Run()
 		ClearDrawScreen();
 
 		// 	// サウンドオブジェクト管理クラスの描画関数呼び出し
-		soundObjMag_->Draw();
+		scene_->Draw();
 
 		// 裏画面の内容を表画面に反映
 		ScreenFlip();

@@ -1,9 +1,10 @@
 #pragma once
-
-#include "../PCM/PitchUp.h"
+#include "PCM/PitchShift/PitchUp.h"
 #include <vector>
 #include <memory>
-#include "../SoundObj/SoundObjMag.h"
+#include "SoundObj/SoundObjMag.h"
+#include "Scene/SoundPlayScene.h"
+
 #define lpScenMag SceneMag::GetInstance()
 
 class SceneMag
@@ -30,7 +31,7 @@ private:
 	bool sysInit_;
 	
 	// サウンド関係のオブジェクト
-	std::unique_ptr<SoundObjMag> soundObjMag_;
+	uniqueBase scene_;
 
 	SceneMag();
 	~SceneMag();

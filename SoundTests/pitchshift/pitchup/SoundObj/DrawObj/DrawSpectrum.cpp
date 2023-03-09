@@ -1,5 +1,5 @@
 #include "DrawSpectrum.h"
-#include "../../Scene/SceneMag.h"
+#include "../../SceneMag.h"
 
 DrawSpectrum::DrawSpectrum()
 {
@@ -22,17 +22,23 @@ void DrawSpectrum::Init(void)
 	fftSampleNum_ = 4096;
 }
 
+void DrawSpectrum::Update(void)
+{
+	// 処理なし
+}
+
 void DrawSpectrum::Draw(void)
 {
 	// サウンドハンドルの取得
 	auto softSoundHandle = lpSoundSet.GetSouftSoundHandle();
 
 	// スペクトル描画
-	// 現在の再生位置から周波数分布を得る
 	// 現在のサウンドハンドルの取得
 	auto soundHande = lpSoundSet.GetSoundHandle();
+
 	// 現在の再生位置を取得
 	auto samplePos = GetCurrentPositionSoundMem(soundHande);
+
 	// FFTにより周波数分布を取得
 	GetFFTVibrationSoftSound(softSoundHandle, -1, samplePos, fftSampleNum_, paramList.data(), fftSampleNum_);
 

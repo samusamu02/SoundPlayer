@@ -1,5 +1,5 @@
 #include "DrawObj.h"
-#include "../SoundSet.h"
+#include "../../SoundData/SoundData.h"
 
 DrawObj::DrawObj()
 {

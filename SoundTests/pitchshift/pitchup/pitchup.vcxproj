@@ -149,8 +149,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PCM\PCM.cpp" />
     <ClCompile Include="PCM\PCMSet.cpp" />
-    <ClCompile Include="PCM\PitchUp.cpp" />
-    <ClCompile Include="Scene\SceneMag.cpp" />
+    <ClCompile Include="PCM\PitchShift\PitchDown.cpp" />
+    <ClCompile Include="PCM\PitchShift\PitchUp.cpp" />
+    <ClCompile Include="PCM\PitchShift\PitchShift.cpp" />
+    <ClCompile Include="Scene\BaseScene.cpp" />
+    <ClCompile Include="SceneMag.cpp" />
+    <ClCompile Include="Scene\GenelateEffectScene.cpp" />
+    <ClCompile Include="Scene\SoundPlayScene.cpp" />
+    <ClCompile Include="Scene\SoundSelectScene.cpp" />
     <ClCompile Include="SoundObj\DrawObj\DrawBG.cpp" />
     <ClCompile Include="SoundObj\DrawObj\DrawObj.cpp" />
     <ClCompile Include="SoundObj\DrawObj\DrawObjMag.cpp" />
@@ -158,16 +164,23 @@
     <ClCompile Include="SoundObj\DrawObj\DrawWave.cpp" />
     <ClCompile Include="SoundObj\SoundObj.cpp" />
     <ClCompile Include="SoundObj\SoundObjMag.cpp" />
-    <ClCompile Include="SoundObj\SoundSet.cpp" />
+    <ClCompile Include="SoundData\SoundData.cpp" />
     <ClCompile Include="Wave\Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PCM\Channel.h" />
     <ClInclude Include="PCM\PCM.h" />
     <ClInclude Include="PCM\PCMSet.h" />
-    <ClInclude Include="PCM\PitchUp.h" />
+    <ClInclude Include="PCM\PitchShift\PitchDown.h" />
+    <ClInclude Include="PCM\PitchShift\PitchUp.h" />
     <ClInclude Include="PCM\sinc.h" />
-    <ClInclude Include="Scene\SceneMag.h" />
+    <ClInclude Include="PCM\PitchShift\PitchShift.h" />
+    <ClInclude Include="Scene\BaseScene.h" />
+    <ClInclude Include="Scene\GenelateEffectScene.h" />
+    <ClInclude Include="Scene\SceneID.h" />
+    <ClInclude Include="SceneMag.h" />
+    <ClInclude Include="Scene\SoundPlayScene.h" />
+    <ClInclude Include="Scene\SoundSelectScene.h" />
     <ClInclude Include="SoundObj\DrawObj\DrawSpectrum.h" />
     <ClInclude Include="SoundObj\SoundFile.h" />
     <ClInclude Include="SoundObj\DrawObj\DrawBG.h" />
@@ -176,7 +189,7 @@
     <ClInclude Include="SoundObj\DrawObj\DrawWave.h" />
     <ClInclude Include="SoundObj\SoundObj.h" />
     <ClInclude Include="SoundObj\SoundObjMag.h" />
-    <ClInclude Include="SoundObj\SoundSet.h" />
+    <ClInclude Include="SoundData\SoundData.h" />
     <ClInclude Include="Wave\PCMDef.h" />
     <ClInclude Include="Wave\Wave.h" />
   </ItemGroup>

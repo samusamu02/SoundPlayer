@@ -1,5 +1,6 @@
 #pragma once
 #include "PCM.h"
+#include "../Wave/PCMDef.h"
 class PCMSet :
     public PCM
 {

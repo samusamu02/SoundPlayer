@@ -1,20 +1,10 @@
-#include "PitchUp.h"
-#include "../Wave/Wave.h"
-
-#include "sinc.h"
 #include <Windows.h>
+#include "PitchUp.h"
+#include "../sinc.h"
+#include "../../Wave/Wave.h"
 
-PitchUp::PitchUp(double rate)
+PitchUp::PitchUp()
 {
-	rate_ = rate;	// 音の高さの変更
-
-	// インスタンス
-	pcm0_ = std::make_unique<STEREO_PCM>();
-	pcm1_ = std::make_unique<STEREO_PCM>();
-	pcm2_ = std::make_unique<STEREO_PCM>();
-	channelL_ = std::make_unique<ChannelL>();
-	channelR_ = std::make_unique<ChannelR>();
-	pcmSet_ = std::make_unique<PCMSet>();
 }
 
 PitchUp::~PitchUp()
@@ -22,14 +12,42 @@ PitchUp::~PitchUp()
 	// スマートポインタで管理しているので解放の処理は書く必要なし
 }
 
-void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* afterFileName)
+bool PitchUp::GenelatePitchShiftFile(const double rate ,const wchar_t* fileName,const wchar_t* afterFileName)
 {
+	if (rate < 0.0)
+	{
+		return false;
+	}
+
 	// Wavを読み込む
 	lpWave.WaveRead(*pcm0_, fileName);
+	
+	// ピッチの倍率を代入
+	rate_ = rate;
 
 	// 元のPCMと変換後のPCMの値をセットする
 	pcmSet_->PCMSetPitchUp(*pcm1_, *pcm0_,rate_);
 
+	// 初期化
+	Init();
+
+	// タイムストレッチ
+	Timestretching();
+
+	// タイムストレッチが完了したら出力用のPCMにデータをセット
+	pcmSet_->PCMSetNormal(*pcm2_, *pcm0_);
+
+	// リサンプリング
+	Resampling();
+
+	// 書き込み
+	lpWave.WaveWrite(*pcm2_, afterFileName);
+
+	return true;
+}
+
+void PitchUp::Init(void)
+{
 	// 相関関数のサイズ
 	template_size_ = static_cast<int>(pcm1_->fs * 0.001);			// 標本化周波数の1000分の1のサイズ
 
@@ -39,18 +57,18 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 	channelL_->pmax = static_cast<int>(pcm1_->fs * 0.02);			// ピークの探索範囲の上限(L)
 
 	// メモリ確保(L)
-	channelL_->x.resize(template_size_);				// 相関関数分のメモリサイズの確保
-	channelL_->y.resize(template_size_);				// 相関関数分のメモリサイズの確保
-	channelL_->r.resize(channelL_->pmax + 1);			// ピークの探索範囲の上限分のメモリ確保
+	channelL_->x.resize(template_size_);							// 相関関数分のメモリサイズの確保
+	channelL_->y.resize(template_size_);							// 相関関数分のメモリサイズの確保
+	channelL_->r.resize(channelL_->pmax + 1.0);						// ピークの探索範囲の上限分のメモリ確保
 
 	// 右チャンネル
 	channelR_->pmin = static_cast<int>(pcm1_->fs * 0.005);			// ピークの捜索範囲の下限(R)
 	channelR_->pmax = static_cast<int>(pcm1_->fs * 0.02);			// ピークの探索範囲の上限(R)
 
 	// メモリ確保(R)
-	channelR_->x.resize(template_size_);				// 相関関数分のメモリサイズの確保
-	channelR_->y.resize(template_size_);				// 相関関数分のメモリサイズの確保
-	channelR_->r.resize(channelR_->pmax + 1);			// ピークの探索範囲の上限分のメモリ確保
+	channelR_->x.resize(template_size_);							// 相関関数分のメモリサイズの確保
+	channelR_->y.resize(template_size_);							// 相関関数分のメモリサイズの確保
+	channelR_->r.resize(channelR_->pmax + 1.0);						// ピークの探索範囲の上限分のメモリ確保
 
 	// オフセットの初期化
 	channelL_->offset0 = 0;
@@ -58,7 +76,10 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 
 	channelR_->offset0 = 0;
 	channelR_->offset1 = 0;
+}
 
+void PitchUp::Timestretching(void)
+{
 	// チェンネルL用の音を伸ばす処理(タイムストレッチ)
 	// 1サンプル毎に処理を行う
 	while (channelL_->offset0 + channelL_->pmax * 2 < pcm0_->length)
@@ -66,7 +87,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		for (int n = 0; n < template_size_; n++)
 		{
 			// 元の音データを格納する
-			channelL_->x[n] = pcm0_->sL[channelL_->offset0 + n];			
+			channelL_->x[n] = pcm0_->sL[channelL_->offset0 + n];
 		}
 
 		rmax_ = 0.0;
@@ -76,20 +97,20 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 			for (int n = 0; n < template_size_; n++)
 			{
 				// mサンプルずらした音データ
-				channelL_->y[n] = pcm0_->sL[channelL_->offset0 + m + n];	
+				channelL_->y[n] = pcm0_->sL[channelL_->offset0 + m + n];
 			}
 			channelL_->r[m] = 0.0;
 			for (int n = 0; n < template_size_; n++)
 			{
 				// 相関関数
-				channelL_->r[m] += channelL_->x[n] * channelL_->y[n];	
+				channelL_->r[m] += channelL_->x[n] * channelL_->y[n];
 			}
 			if (channelL_->r[m] > rmax_)
 			{
 				// 相関関数のピーク
 				rmax_ = channelL_->r[m];
 				// 波形の周期
-				channelL_->p = m;										
+				channelL_->p = m;
 			}
 		}
 
@@ -116,8 +137,8 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 
 		// オフセットの更新
 		// 更新したら次のサンプルへ
-		channelL_->offset0 += channelL_->q;				
-		channelL_->offset1 += channelL_->p + channelL_->q;			
+		channelL_->offset0 += channelL_->q;
+		channelL_->offset1 += channelL_->p + channelL_->q;
 	}
 
 	// チャンネルR用の音を伸ばす処理(タイムストレッチ)
@@ -126,7 +147,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		for (int n = 0; n < template_size_; n++)
 		{
 			// 元のデータを格納する
-			channelR_->x[n] = pcm0_->sR[channelR_->offset0 + n];		
+			channelR_->x[n] = pcm0_->sR[channelR_->offset0 + n];
 		}
 
 		rmax_ = 0.0;
@@ -136,20 +157,20 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 			for (int n = 0; n < template_size_; n++)
 			{
 				// mサンプルずらした音データ
-				channelR_->y[n] = pcm0_->sR[channelR_->offset0 + m + n];	
+				channelR_->y[n] = pcm0_->sR[channelR_->offset0 + m + n];
 			}
 			channelR_->r[m] = 0.0;
 			for (int n = 0; n < template_size_; n++)
 			{
 				// 相関関数
-				channelR_->r[m] += channelR_->x[n] * channelR_->y[n];	
+				channelR_->r[m] += channelR_->x[n] * channelR_->y[n];
 			}
 			if (channelR_->r[m] > rmax_)
 			{
 				// 相関関数のピーク
-				rmax_ = channelR_->r[m];	
+				rmax_ = channelR_->r[m];
 				// 波形の周期
-				channelR_->p = m;				
+				channelR_->p = m;
 			}
 		}
 
@@ -166,7 +187,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		}
 
 		// 基準時刻の更新
-		channelR_->q = static_cast<int>(channelR_->p * rate_/ (1.0 - rate_) + 0.5);
+		channelR_->q = static_cast<int>(channelR_->p * rate_ / (1.0 - rate_) + 0.5);
 		for (int n = channelR_->p; n < channelR_->q; n++)
 		{
 			// 元の音データの長さと同じになったらループを抜ける
@@ -179,22 +200,22 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		}
 
 		// offset0の更新
-		channelR_->offset0 += channelR_->q;						
+		channelR_->offset0 += channelR_->q;
 		// offset1の更新
-		channelR_->offset1 += channelR_->p + channelR_->q;				
+		channelR_->offset1 += channelR_->p + channelR_->q;
 	}
+}
 
+void PitchUp::Resampling(void)
+{
 	// ピッチ変更の割合を求める
 	pitch_ = 1.0 / rate_;
 
-	// タイムストレッチが完了したら出力ようのPCMにデータをセット
-	pcmSet_->PCMSetNormal(*pcm2_, *pcm0_);
-
 	// シンク関数を打ち切るためにハニング窓を使用する
 	// ハニング窓のサイズ
-	N_ = 128;	
+	N_ = 128;
 
-	// 実際にピッチシフトを行う
+	// リサンプリング
 	for (int n = 0; n < pcm2_->length; n++)
 	{
 		// ピッチの変更をすべてのサンプルに対して行う
@@ -216,7 +237,7 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 		}
 
 		// すべてのサンプルに対して処理を行う
-		for (int m = channelL_->tb - N_ / 2; m <= channelL_->ta + N_ / 2; m++)
+		for (double m = channelL_->tb - N_ / 2; m <= channelL_->ta + N_ / 2; m++)
 		{
 			if (m >= 0 && m < pcm1_->length)
 			{
@@ -246,7 +267,4 @@ void PitchUp::GenelatePitchUpWaveFile(const wchar_t* fileName,const wchar_t* aft
 			}
 		}
 	}
-
-	lpWave.WaveWrite(*pcm2_,afterFileName);
-	MessageBox(nullptr, L"変換完了が完了しました", L"変換完了", 0);
 }

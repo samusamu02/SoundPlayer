@@ -1,21 +1,21 @@
 #pragma once
 #include <memory>
-#include "../PCM/PitchUp.h"
-#include "SoundFile.h"
+#include "../PCM/PitchShift/PitchUp.h"
+#include "../SoundObj/SoundFile.h"
 
-#define lpSoundSet SoundSet::GetInstance()
+#define lpSoundSet SoundData::GetInstance()
 
-class SoundSet 
+class SoundData 
 {
 public:
-    static SoundSet& GetInstance()
+    static SoundData& GetInstance()
     {
-        static SoundSet s_Instance;
+        static SoundData s_Instance;
         return s_Instance;
     }
 
     // サウンドの初期化
-    void SoundInit(const wchar_t* fileName, bool genelateFlag);
+    void SoundDataInit(const wchar_t* fileName);
 
     // ソフトハンドルの取得
     int GetSouftSoundHandle(void);
@@ -29,11 +29,12 @@ public:
     // 現在のサンプル数の取得
     long long GetDrawStartSampleCount(void);
 private:
-    SoundSet();
-    ~SoundSet();
+    SoundData();
+    ~SoundData();
 
     // ソフトサウンドハンドル
     int softSoundHandle_;
+
     // サウンドハンドル
     int soundHandle_;
 
@@ -42,9 +43,6 @@ private:
 
     // 現在のサンプルの位置の取得
     long long drawStartSampleCount_;
-
-    // ピッチアップのオブジェクト
-    std::unique_ptr<PitchUp> pitchUp_;
 
     // サウンドのファイル
     SoundFile soundFile_;

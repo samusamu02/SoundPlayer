@@ -10,6 +10,7 @@ public:
     ~DrawObj();
 
     virtual void Init(void);
+    virtual void Update(void) = 0;
     virtual void Draw(void) = 0;
 protected:
     // ƒTƒ“ƒvƒ‹”

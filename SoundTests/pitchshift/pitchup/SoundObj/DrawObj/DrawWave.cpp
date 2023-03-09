@@ -1,6 +1,5 @@
 #include "DrawWave.h"
-#include "../../Scene/SceneMag.h"
-
+#include "../../SceneMag.h"
 DrawWave::DrawWave()
 {
 }
@@ -43,9 +42,6 @@ void DrawWave::Update(void)
 
 void DrawWave::Draw(void)
 {
-	// ここで更新処理を呼ぶ
-	Update();
-
 	// 現在のソフトサウンドハンドルの取得
 	auto softSoundHandle = lpSoundSet.GetSouftSoundHandle();
 

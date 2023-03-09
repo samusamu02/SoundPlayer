@@ -13,25 +13,19 @@ public:
 	virtual ~PCM();
 protected:
 
-	// ピッチシフト用
+	// ワウ用pcmデータ
 	std::unique_ptr<STEREO_PCM> pcm0_;
 	std::unique_ptr<STEREO_PCM> pcm1_;
-	std::unique_ptr<STEREO_PCM> pcm2_;
 
 	// 左右分け
 	std::unique_ptr<ChannelL> channelL_;
 	std::unique_ptr<ChannelR> channelR_;
 
-	double rate_;		// 再生速度
-	double rmax_;		// 相関関数のピーク
-	double t_;			// ピッチ変更する値とサンプル数を計算する
-	double pitch_;		// ピッチ変更の値
+	// 遅延器の数
+	long I;
+	long J;
 
-	// ハニング窓のサイズ
-	int N_;
-
-	// 相関関数のサイズ
-	int template_size_;
+	// クオリティファクタ
 
 private:
 };
