@@ -3,6 +3,8 @@
 #include <thread>
 #include "BaseScene.h"
 #include "../PCM/PitchShift/PitchUp.h"
+#include "../PCM/PitchShift/PitchDown.h"
+#include "../SoundObj/SoundFile.h"
 
 class GenelateEffectScene :
     public BaseScene
@@ -16,6 +18,9 @@ private:
     void DrawOwnScreen(void)override;
 
     std::unique_ptr<PitchUp> pitchUp_;
+    std::unique_ptr<PitchDown> pitchDown_;
+
+    SoundFile soundFile_;
 
     // ÉVÅ[ÉìIDéÊìæ
     SceneID GetSceneID(void)override

@@ -1,5 +1,7 @@
 #pragma once
 #include "BaseScene.h"
+#include "../SoundObj/SoundFile.h"
+
 class SoundSelectScene :
     public BaseScene
 {
@@ -10,6 +12,8 @@ private:
     void Init(void)override;
     uniqueBase Update(uniqueBase ownScene)override;
     void DrawOwnScreen(void)override;
+    
+    SoundFile soundFile_;
 
     // ƒV[ƒ“IDæ“¾
     SceneID GetSceneID(void)override

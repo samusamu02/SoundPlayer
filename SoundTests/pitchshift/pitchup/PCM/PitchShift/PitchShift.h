@@ -17,11 +17,23 @@ protected:
 	// 初期化
 	virtual void Init(void) = 0;
 
-	// タイムストレッチ
-	virtual void Timestretching(void) = 0;
+	// 左チャンネルの変数初期化
+	virtual void ChannelL_Init(void) = 0;
 
-	// リサンプリング
-	virtual void Resampling(void) = 0;
+	// 右チャンネルの変数初期化
+	virtual void ChannelR_Init(void) = 0;
+
+	// 左チャンネルのタイムストレッチ
+	virtual void ChannelL_Timestretching(void) = 0;
+
+	// 右チャンネルのタイムストレッチ
+	virtual void ChannelR_Timestretching(void) = 0;
+
+	// 左チャンネルのリサンプリング
+	virtual void ChannelL_Resampling(void) = 0;
+
+	// 右チャンネルのリサンプリング
+	virtual void ChannelR_Resampling(void) = 0;
 
 	/// <summary>
 	/// 新しくピッチ変更されたwavファイルを生成する

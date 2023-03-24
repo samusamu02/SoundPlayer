@@ -13,7 +13,7 @@ PCMSet::~PCMSet()
 	// 特になし
 }
 
-void PCMSet::PCMSetPitchUp(MONO_PCM& after, MONO_PCM& before,double rate)
+void PCMSet::PCMSetPitchShift(MONO_PCM& after, MONO_PCM& before,double rate)
 {
 
 	after.fs = before.fs;										// 標本化周波数
@@ -23,7 +23,7 @@ void PCMSet::PCMSetPitchUp(MONO_PCM& after, MONO_PCM& before,double rate)
 
 }
 
-void PCMSet::PCMSetPitchUp(STEREO_PCM& after, STEREO_PCM& before,double rate)
+void PCMSet::PCMSetPitchShift(STEREO_PCM& after, STEREO_PCM& before,double rate)
 {
 	
 	after.fs = before.fs;										// 標本化周波数

@@ -1,7 +1,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-double sinc(double x)
+inline double sinc(double x)
 {
   double y;
   

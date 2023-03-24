@@ -26,19 +26,31 @@ bool PitchUp::GenelatePitchShiftFile(const double rate ,const wchar_t* fileName,
 	rate_ = rate;
 
 	// 元のPCMと変換後のPCMの値をセットする
-	pcmSet_->PCMSetPitchUp(*pcm1_, *pcm0_,rate_);
+	pcmSet_->PCMSetPitchShift(*pcm1_, *pcm0_,rate_);
 
-	// 初期化
+	// 変数初期化
 	Init();
 
-	// タイムストレッチ
-	Timestretching();
+	// 左チャンネルの変数初期化
+	ChannelL_Init();
 
-	// タイムストレッチが完了したら出力用のPCMにデータをセット
+	// 右チャンネルの変数初期化
+	ChannelR_Init();
+
+	// 左チャンネルのタイムストレッチ
+	ChannelL_Timestretching();
+
+	// 右チャンネルのタイムストレッチ
+	ChannelR_Timestretching();
+
+	// 両チャンネルのタイムストレッチが完了したら出力用のPCMにデータをセット
 	pcmSet_->PCMSetNormal(*pcm2_, *pcm0_);
 
-	// リサンプリング
-	Resampling();
+	// 左チャンネルのリサンプリング
+	ChannelL_Resampling();
+
+	// 右チャンネルのリサンプリング
+	ChannelR_Resampling();
 
 	// 書き込み
 	lpWave.WaveWrite(*pcm2_, afterFileName);
@@ -48,40 +60,43 @@ bool PitchUp::GenelatePitchShiftFile(const double rate ,const wchar_t* fileName,
 
 void PitchUp::Init(void)
 {
-	// 相関関数のサイズ
-	template_size_ = static_cast<int>(pcm1_->fs * 0.001);			// 標本化周波数の1000分の1のサイズ
+	template_size_ = static_cast<int>(pcm1_->fs * 0.001);				
 
-	// 左右チャンネルで分ける
-	// 左チャンネル
-	channelL_->pmin = static_cast<int>(pcm1_->fs * 0.005);			// ピークの捜索範囲の下限(L)
-	channelL_->pmax = static_cast<int>(pcm1_->fs * 0.02);			// ピークの探索範囲の上限(L)
+	// ピッチ変更の割合を求める
+	pitch_ = 1.0 / rate_;
 
-	// メモリ確保(L)
-	channelL_->x.resize(template_size_);							// 相関関数分のメモリサイズの確保
-	channelL_->y.resize(template_size_);							// 相関関数分のメモリサイズの確保
-	channelL_->r.resize(channelL_->pmax + 1.0);						// ピークの探索範囲の上限分のメモリ確保
+	// ハニング窓のサイズ
+	N_ = 128;
+}
 
-	// 右チャンネル
-	channelR_->pmin = static_cast<int>(pcm1_->fs * 0.005);			// ピークの捜索範囲の下限(R)
-	channelR_->pmax = static_cast<int>(pcm1_->fs * 0.02);			// ピークの探索範囲の上限(R)
+void PitchUp::ChannelL_Init(void)
+{
+	channelL_->pmin = static_cast<int>(pcm1_->fs * 0.005);
+	channelL_->pmax = static_cast<int>(pcm1_->fs * 0.02);
 
-	// メモリ確保(R)
-	channelR_->x.resize(template_size_);							// 相関関数分のメモリサイズの確保
-	channelR_->y.resize(template_size_);							// 相関関数分のメモリサイズの確保
-	channelR_->r.resize(channelR_->pmax + 1.0);						// ピークの探索範囲の上限分のメモリ確保
+	channelL_->x.resize(template_size_);
+	channelL_->y.resize(template_size_);
+	channelL_->r.resize(channelL_->pmax + 1.0);
 
-	// オフセットの初期化
 	channelL_->offset0 = 0;
 	channelL_->offset1 = 0;
+}
+
+void PitchUp::ChannelR_Init(void)
+{
+	channelR_->pmin = static_cast<int>(pcm1_->fs * 0.005);
+	channelR_->pmax = static_cast<int>(pcm1_->fs * 0.02);
+
+	channelR_->x.resize(template_size_);
+	channelR_->y.resize(template_size_);
+	channelR_->r.resize(channelR_->pmax + 1.0);
 
 	channelR_->offset0 = 0;
 	channelR_->offset1 = 0;
 }
 
-void PitchUp::Timestretching(void)
+void PitchUp::ChannelL_Timestretching(void)
 {
-	// チェンネルL用の音を伸ばす処理(タイムストレッチ)
-	// 1サンプル毎に処理を行う
 	while (channelL_->offset0 + channelL_->pmax * 2 < pcm0_->length)
 	{
 		for (int n = 0; n < template_size_; n++)
@@ -91,7 +106,9 @@ void PitchUp::Timestretching(void)
 		}
 
 		rmax_ = 0.0;
-		channelL_->p = channelL_->pmin;
+
+		// 相関関数のピークの位置
+		int peakPos = channelL_->pmin;
 		for (int m = channelL_->pmin; m <= channelL_->pmax; m++)
 		{
 			for (int n = 0; n < template_size_; n++)
@@ -110,38 +127,40 @@ void PitchUp::Timestretching(void)
 				// 相関関数のピーク
 				rmax_ = channelL_->r[m];
 				// 波形の周期
-				channelL_->p = m;
+				peakPos = m;
 			}
 		}
 
-		// 音を下げる
-		for (int n = 0; n < channelL_->p; n++)
+		// 音を上げる
+		for (int n = 0; n < peakPos; n++)
 		{
 			pcm1_->sL[channelL_->offset1 + n] = pcm0_->sL[channelL_->offset0 + n];
 
 			// 単調減少の重み付け
-			pcm1_->sL[channelL_->offset1 + channelL_->p + n] = pcm0_->sL[channelL_->offset0 + channelL_->p + n] * (channelL_->p - n) / channelL_->p;
+			pcm1_->sL[channelL_->offset1 + peakPos + n] = pcm0_->sL[channelL_->offset0 + peakPos + n] * (peakPos - n) / peakPos;
 			// 単調増加の重み付け
-			pcm1_->sL[channelL_->offset1 + channelL_->p + n] += pcm0_->sL[channelL_->offset0 + n] * n / channelL_->p;
+			pcm1_->sL[channelL_->offset1 + peakPos + n] += pcm0_->sL[channelL_->offset0 + n] * n / peakPos;
 		}
 
-		channelL_->q = static_cast<int>(channelL_->p * rate_ / (1.0 - rate_) + 0.5);
-		for (int n = channelL_->p; n < channelL_->q; n++)
+		channelL_->q = static_cast<int>(peakPos * rate_ / (1.0 - rate_) + 0.5);
+		for (int n = peakPos; n < channelL_->q; n++)
 		{
 			if (channelL_->offset0 + n >= pcm0_->length)
 			{
 				break;
 			}
-			pcm1_->sL[channelL_->offset1 + channelL_->p + n] = pcm0_->sL[channelL_->offset0 + n];
+			pcm1_->sL[channelL_->offset1 + peakPos + n] = pcm0_->sL[channelL_->offset0 + n];
 		}
 
 		// オフセットの更新
 		// 更新したら次のサンプルへ
 		channelL_->offset0 += channelL_->q;
-		channelL_->offset1 += channelL_->p + channelL_->q;
+		channelL_->offset1 += peakPos + channelL_->q;
 	}
+}
 
-	// チャンネルR用の音を伸ばす処理(タイムストレッチ)
+void PitchUp::ChannelR_Timestretching(void)
+{
 	while (channelR_->offset0 + channelR_->pmax * 2 < pcm0_->length)
 	{
 		for (int n = 0; n < template_size_; n++)
@@ -151,7 +170,9 @@ void PitchUp::Timestretching(void)
 		}
 
 		rmax_ = 0.0;
-		channelR_->p = channelR_->pmin;
+
+		int peakPos = channelR_->pmin;
+
 		for (int m = channelR_->pmin; m <= channelR_->pmax; m++)
 		{
 			for (int n = 0; n < template_size_; n++)
@@ -170,83 +191,71 @@ void PitchUp::Timestretching(void)
 				// 相関関数のピーク
 				rmax_ = channelR_->r[m];
 				// 波形の周期
-				channelR_->p = m;
+				peakPos = m;
 			}
 		}
 
-		// 音を下げる
-		for (int n = 0; n < channelR_->p; n++)
+		// 音を上げる
+		for (int n = 0; n < peakPos; n++)
 		{
-			// offset0とnサンプル数を格納
 			pcm1_->sR[channelR_->offset1 + n] = pcm0_->sR[channelR_->offset0 + n];
 
-			// 単調減少の重み付け
-			pcm1_->sR[channelR_->offset1 + channelR_->p + n] = pcm0_->sR[channelR_->offset0 + channelR_->p + n] * (channelR_->p - n) / channelR_->p;
-			// 単調増加の重み付け
-			pcm1_->sR[channelR_->offset1 + channelR_->p + n] += pcm0_->sR[channelR_->offset0 + n] * n / channelR_->p;
+			pcm1_->sR[channelR_->offset1 + peakPos + n] = pcm0_->sR[channelR_->offset0 + peakPos + n] * (peakPos - n) / peakPos;
+			pcm1_->sR[channelR_->offset1 + peakPos + n] += pcm0_->sR[channelR_->offset0 + n] * n / peakPos;
 		}
 
-		// 基準時刻の更新
-		channelR_->q = static_cast<int>(channelR_->p * rate_ / (1.0 - rate_) + 0.5);
-		for (int n = channelR_->p; n < channelR_->q; n++)
+		channelR_->q = static_cast<int>(peakPos * rate_ / (1.0 - rate_) + 0.5);
+		for (int n = peakPos; n < channelR_->q; n++)
 		{
-			// 元の音データの長さと同じになったらループを抜ける
 			if (channelR_->offset0 + n >= pcm0_->length)
 			{
 				break;
 			}
-			// サンプルのコピー
-			pcm1_->sR[channelR_->offset1 + channelR_->p + n] = pcm0_->sR[channelR_->offset0 + n];
+			pcm1_->sR[channelR_->offset1 + peakPos + n] = pcm0_->sR[channelR_->offset0 + n];
 		}
 
-		// offset0の更新
 		channelR_->offset0 += channelR_->q;
-		// offset1の更新
-		channelR_->offset1 += channelR_->p + channelR_->q;
+
+		channelR_->offset1 += peakPos + channelR_->q;
 	}
 }
 
-void PitchUp::Resampling(void)
+void PitchUp::ChannelL_Resampling(void)
 {
-	// ピッチ変更の割合を求める
-	pitch_ = 1.0 / rate_;
-
-	// シンク関数を打ち切るためにハニング窓を使用する
-	// ハニング窓のサイズ
-	N_ = 128;
-
-	// リサンプリング
 	for (int n = 0; n < pcm2_->length; n++)
 	{
-		// ピッチの変更をすべてのサンプルに対して行う
+
 		t_ = pitch_ * n;
 
-		// 左チャンネルのピッチ変更
 		channelL_->ta = static_cast<int>(t_);
 
-		// 整数と小数点以下がある場合で分ける
 		if (t_ == channelL_->ta)
 		{
-			// taの値を代入
+
 			channelL_->tb = channelL_->ta;
 		}
 		else
 		{
-			// taの値+1を代入
+
 			channelL_->tb = channelL_->ta + 1;
 		}
 
-		// すべてのサンプルに対して処理を行う
 		for (double m = channelL_->tb - N_ / 2; m <= channelL_->ta + N_ / 2; m++)
 		{
 			if (m >= 0 && m < pcm1_->length)
 			{
-				// sinc関数を使ってフィルタをかける
 				pcm2_->sL[n] += pcm1_->sL[m] * sinc(M_PI * (t_ - m)) * (0.5 + 0.5 * cos(2.0 * M_PI * (t_ - m) / (N_ * 2 + 1)));
 			}
 		}
+	}
+}
 
-		// 右チャンネルのピッチ変更（左チャンネルと同じ処理を行う）
+void PitchUp::ChannelR_Resampling(void)
+{
+	for (int n = 0; n < pcm2_->length; n++)
+	{
+		t_ = pitch_ * n;
+
 		channelR_->ta = static_cast<int>(t_);
 
 		if (t_ == channelR_->ta)
@@ -262,7 +271,6 @@ void PitchUp::Resampling(void)
 		{
 			if (m >= 0 && m < pcm1_->length)
 			{
-				// sinc関数を使ってフィルタをかける
 				pcm2_->sR[n] += pcm1_->sR[m] * sinc(M_PI * (t_ - m)) * (0.5 + 0.5 * cos(2.0 * M_PI * (t_ - m) / (N_ * 2 + 1)));
 			}
 		}

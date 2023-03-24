@@ -1,4 +1,5 @@
 #include "PitchShift.h"
+
 PitchShift::PitchShift()
 {
 	// PCMの初期化のオブジェクト

@@ -2,7 +2,9 @@
 #include "SoundSelectScene.h"
 #include "SoundPlayScene.h"
 #include "GenelateEffectScene.h"
+#include "../Daialog/Dialog.h"
 #include "../SoundData/SoundData.h"
+
 
 SoundSelectScene::SoundSelectScene()
 {
@@ -16,7 +18,7 @@ SoundSelectScene::~SoundSelectScene()
 
 void SoundSelectScene::Init(void)
 {
-	lpSoundSet.SoundDataInit(L"Sound/Peak_test_A.wav");
+	lpSoundSet.SoundDataInit(soundFile_.beforeFileName);
 }
 
 uniqueBase SoundSelectScene::Update(uniqueBase ownScene)
