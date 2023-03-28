@@ -11,7 +11,7 @@ PitchDown::~PitchDown()
 {
 }
 
-bool PitchDown::GenelatePitchShiftFile(const double rate, const wchar_t* fileName, const wchar_t* afterFileName)
+bool PitchDown::GenelateEffectWaveFile(const double rate, const wchar_t* fileName, const wchar_t* afterFileName)
 {
 	if (rate < 1.0)
 	{

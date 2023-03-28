@@ -12,7 +12,7 @@ PitchUp::~PitchUp()
 	// スマートポインタで管理しているので解放の処理は書く必要なし
 }
 
-bool PitchUp::GenelatePitchShiftFile(const double rate ,const wchar_t* fileName,const wchar_t* afterFileName)
+bool PitchUp::GenelateEffectWaveFile(const double rate ,const wchar_t* fileName,const wchar_t* afterFileName)
 {
 	if (rate < 0.0)
 	{

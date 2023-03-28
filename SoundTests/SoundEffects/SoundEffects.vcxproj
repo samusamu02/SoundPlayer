@@ -154,6 +154,7 @@
     <ClCompile Include="PCM\PitchShift\PitchDown.cpp" />
     <ClCompile Include="PCM\PitchShift\PitchUp.cpp" />
     <ClCompile Include="PCM\PitchShift\PitchShift.cpp" />
+    <ClCompile Include="PCM\Wah\Wah.cpp" />
     <ClCompile Include="Scene\BaseScene.cpp" />
     <ClCompile Include="SceneMag.cpp" />
     <ClCompile Include="Scene\GenelateEffectScene.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="PCM\PitchShift\PitchUp.h" />
     <ClInclude Include="PCM\sinc.h" />
     <ClInclude Include="PCM\PitchShift\PitchShift.h" />
+    <ClInclude Include="PCM\Wah\Wah.h" />
     <ClInclude Include="Scene\BaseScene.h" />
     <ClInclude Include="Scene\GenelateEffectScene.h" />
     <ClInclude Include="Scene\SceneID.h" />

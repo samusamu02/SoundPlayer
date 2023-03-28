@@ -41,5 +41,7 @@ void SoundPlayScene::DrawOwnScreen(void)
 {
 	SetDrawScreen(screenID_);
 	ClsDrawScreen();
+
+	// サウンドオブジェクトの描画処理
 	soundObjMag_->Draw();
 }

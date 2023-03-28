@@ -35,14 +35,6 @@ protected:
 	// 右チャンネルのリサンプリング
 	virtual void ChannelR_Resampling(void) = 0;
 
-	/// <summary>
-	/// 新しくピッチ変更されたwavファイルを生成する
-	/// </summary>
-	/// <param name="rate">ピッチ変更の倍率</param>
-	/// <param name="fileName">変更前</param>
-	/// <param name="afterFileName">変更後</param>
-	virtual bool GenelatePitchShiftFile(const double rate, const wchar_t* fileName, const wchar_t* afterFileName) = 0;
-
 	// PCMの初期化のオブジェクト
 	std::unique_ptr<PCMSet> pcmSet_;
 
@@ -51,8 +43,9 @@ protected:
 	std::unique_ptr<STEREO_PCM> pcm1_;
 	std::unique_ptr<STEREO_PCM> pcm2_;
 
-	// 左右分け
+	// 左チャンネル
 	std::unique_ptr<ChannelL> channelL_;
+	// 右チャンネル
 	std::unique_ptr<ChannelR> channelR_;
 
 	// 再生速度

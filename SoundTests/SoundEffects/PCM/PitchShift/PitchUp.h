@@ -9,8 +9,8 @@ public:
 	PitchUp();
 	~PitchUp();
 
-	// ピッチシフト
-	bool GenelatePitchShiftFile(const double rate, const wchar_t* fileName, const wchar_t* afterFileName) override;
+	// 新しくwavファイルを生成
+	bool GenelateEffectWaveFile(const double rate, const wchar_t* fileName, const wchar_t* afterFileName) override;
 
 private:
 	// 初期化

@@ -9,30 +9,30 @@ public:
     ~PCMSet();
 
     /// <summary>
-    /// ピッチシフト用の変換前ののPCMを変換するPCMに代入関数
+    /// ピッチシフト用のエフェクト適用前のサウンドファイルのデータをコピーする関数
     /// </summary>
-    /// <param name="after">代入されるPCM</param>
+    /// <param name="after">コピーする変数</param>
     /// <param name="before">元データ</param>
     void PCMSetPitchShift(MONO_PCM& after, MONO_PCM& before,double rate);
 
     /// <summary>
-    /// ピッチシフト用の変換前ののPCMを変換するPCMに代入する関数
+    /// ピッチシフト用のエフェクト適用前のサウンドファイルのデータをコピーする関数
     /// </summary>
     /// <param name="after">代入されるPCM</param>
     /// <param name="before">元データ</param>
     void PCMSetPitchShift(STEREO_PCM& after, STEREO_PCM& before,double rate);
 
     /// <summary>
-    /// 変換前ののPCMを変換するPCMに代入する関数
+    /// エフェクト適用前のサウンドファイルのデータをコピーする関数
     /// </summary>
     /// <param name="after">代入されるPCM</param>
     /// <param name="before">元データ</param>
     void PCMSetNormal(MONO_PCM& after, MONO_PCM& before);
 
     /// <summary>
-    /// 変換前ののPCMを変換するPCMに代入する関数
+    /// エフェクト適用前のサウンドファイルのデータをコピーする関数
     /// </summary>
-    /// <param name="after">代入されるPCM</param>
+    /// <param name="after">コピーする変数</param>
     /// <param name="before">元データ</param>
     void PCMSetNormal(STEREO_PCM& after, STEREO_PCM& before);
 
