@@ -70,6 +70,7 @@ void PitchDown::Init(void)
 
 void PitchDown::ChannelL_Init(void)
 {
+	// 左チャンネルの変数の初期化
 	channelL_->pmin = static_cast<int>(pcm1_->fs * 0.005);
 	channelL_->pmax = static_cast<int>(pcm1_->fs * 0.02);
 
@@ -83,6 +84,7 @@ void PitchDown::ChannelL_Init(void)
 
 void PitchDown::ChannelR_Init(void)
 {
+	// 右チャンネルの変数の初期化
 	channelR_->pmin = static_cast<int>(pcm1_->fs * 0.005);
 	channelR_->pmax = static_cast<int>(pcm1_->fs * 0.02);
 

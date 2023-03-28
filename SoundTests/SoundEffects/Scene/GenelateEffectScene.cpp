@@ -23,9 +23,11 @@ uniqueBase GenelateEffectScene::Update(uniqueBase ownScene)
 {
 	DrawOwnScreen();
 
+	// 別スレッド
 	std::thread th_1([&] {pitchDown_->GenelatePitchShiftFile(1.2, soundFile_.beforeFileName, soundFile_.afterFilenName); });
 	th_1.join();
 
+	// スレッドの処理が完了したら次のシーンへ
 	if (th_1.joinable() == false)
 	{
 		return std::make_unique<SoundPlayScene>();
@@ -38,4 +40,5 @@ void GenelateEffectScene::DrawOwnScreen(void)
 {
 	SetDrawScreen(screenID_);
 	ClsDrawScreen();
+	DrawFormatString(10, 0, 0xffffff, L"エフェクトにサウンドを適用中です");
 }

@@ -213,6 +213,7 @@ void PitchUp::ChannelR_Timestretching(void)
 			pcm1_->sR[channelR_->offset1 + peakPos + n] = pcm0_->sR[channelR_->offset0 + n];
 		}
 
+		// オフセットの更新
 		channelR_->offset0 += channelR_->q;
 		channelR_->offset1 += peakPos + channelR_->q;
 	}
@@ -253,17 +254,21 @@ void PitchUp::ChannelR_Resampling(void)
 	{
 		t_ = pitch_ * n;
 
+		// 整数を求める
 		channelR_->ta = static_cast<int>(t_);
 
+		//　整数と浮動小数点を分ける
 		if (t_ == channelR_->ta)
 		{
 			channelR_->tb = channelR_->ta;
 		}
 		else
 		{
+			// 浮動小数点の場合+1をする
 			channelR_->tb = channelR_->ta + 1;
 		}
 
+		// フィルターをかける
 		for (double m = channelR_->tb - N_ / 2; m <= channelR_->ta + N_ / 2; m++)
 		{
 			if (m >= 0 && m < pcm1_->length)
