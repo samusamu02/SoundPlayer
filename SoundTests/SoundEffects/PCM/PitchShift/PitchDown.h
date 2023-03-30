@@ -8,7 +8,7 @@ public:
     ~PitchDown();
 
 	// 新しくwavファイルを生成
-	bool GenelateEffectWaveFile(const double rate, const wchar_t* fileName, const wchar_t* afterFileName) override;
+	void GenelatePitchShiftWaveFile(const double rate, const wchar_t* fileName, const wchar_t* afterFileName) override;
 
 private:
 	// 初期化

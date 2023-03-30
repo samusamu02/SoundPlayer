@@ -14,6 +14,7 @@ public:
 	virtual ~PitchShift();
 
 protected:
+
 	// 初期化
 	virtual void Init(void) = 0;
 
@@ -34,6 +35,14 @@ protected:
 
 	// 右チャンネルのリサンプリング
 	virtual void ChannelR_Resampling(void) = 0;
+
+	/// <summary>
+	/// 新しくピッチシフトが適用されたwavファイルを生成する
+	/// </summary>
+	/// <param name="rate">ピッチ変更の倍率</param>
+	/// <param name="fileName">ピッチシフトが適用前のファイル</param>
+	/// <param name="afterFileName">ピッチシフトが適用後のファイル</param>
+	virtual void GenelatePitchShiftWaveFile(const double rate, const wchar_t* fileName, const wchar_t* afterFileName) = 0;
 
 	// PCMの初期化のオブジェクト
 	std::unique_ptr<PCMSet> pcmSet_;

@@ -24,7 +24,7 @@ uniqueBase GenelateEffectScene::Update(uniqueBase ownScene)
 	DrawOwnScreen();
 
 	// 別スレッド
-	std::thread th_1([&] {pitchDown_->GenelateEffectWaveFile(1.2, soundFile_.beforeFileName, soundFile_.afterFilenName); });
+	std::thread th_1([&] {pitchDown_->GenelatePitchShiftWaveFile(1.2, soundFile_.beforeFileName, soundFile_.afterFilenName); });
 	th_1.join();
 
 	// スレッドの処理が完了したら次のシーンへ

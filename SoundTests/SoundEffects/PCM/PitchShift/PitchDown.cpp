@@ -5,56 +5,12 @@
 
 PitchDown::PitchDown()
 {
+
 }
 
 PitchDown::~PitchDown()
 {
-}
 
-bool PitchDown::GenelateEffectWaveFile(const double rate, const wchar_t* fileName, const wchar_t* afterFileName)
-{
-	if (rate < 1.0)
-	{
-		return false;
-	}
-
-	// Wavを読み込む
-	lpWave.WaveRead(*pcm0_, fileName);
-
-	// ピッチの倍率を代入
-	rate_ = rate;
-
-	// 元のPCMと変換後のPCMの値をセットする
-	pcmSet_->PCMSetPitchShift(*pcm1_, *pcm0_, rate_);
-
-	// 変数初期化
-	Init();
-
-	// 左チャンネルの変数初期化
-	ChannelL_Init();
-
-	// 右チャンネルの変数初期化
-	ChannelR_Init();
-
-	// 左チャンネルのタイムストレッチ
-	ChannelL_Timestretching();
-
-	// 右チャンネルのタイムストレッチ
-	ChannelR_Timestretching();
-
-	// 両チャンネルのタイムストレッチが完了したら出力用のPCMにデータをセット
-	pcmSet_->PCMSetNormal(*pcm2_, *pcm0_);
-
-	// 左チャンネルのリサンプリング
-	ChannelL_Resampling();
-
-	// 右チャンネルのリサンプリング
-	ChannelR_Resampling();
-
-	// 書き込み
-	lpWave.WaveWrite(*pcm2_, afterFileName);
-
-	return true;
 }
 
 void PitchDown::Init(void)
@@ -286,4 +242,43 @@ void PitchDown::ChannelR_Resampling(void)
 			}
 		}
 	}
+}
+
+void PitchDown::GenelatePitchShiftWaveFile(const double rate, const wchar_t* fileName, const wchar_t* afterFileName)
+{
+	// Wavを読み込む
+	lpWave.WaveRead(*pcm0_, fileName);
+
+	// ピッチの倍率を代入
+	rate_ = rate;
+
+	// 元のPCMと変換後のPCMの値をセットする
+	pcmSet_->PCMSetPitchShift(*pcm1_, *pcm0_, rate_);
+
+	// 変数初期化
+	Init();
+
+	// 左チャンネルの変数初期化
+	ChannelL_Init();
+
+	// 右チャンネルの変数初期化
+	ChannelR_Init();
+
+	// 左チャンネルのタイムストレッチ
+	ChannelL_Timestretching();
+
+	// 右チャンネルのタイムストレッチ
+	ChannelR_Timestretching();
+
+	// 両チャンネルのタイムストレッチが完了したら出力用のPCMにデータをセット
+	pcmSet_->PCMSetNormal(*pcm2_, *pcm0_);
+
+	// 左チャンネルのリサンプリング
+	ChannelL_Resampling();
+
+	// 右チャンネルのリサンプリング
+	ChannelR_Resampling();
+
+	// 書き込み
+	lpWave.WaveWrite(*pcm2_, afterFileName);
 }
