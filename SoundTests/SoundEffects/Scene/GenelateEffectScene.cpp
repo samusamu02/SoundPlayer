@@ -15,6 +15,7 @@ GenelateEffectScene::~GenelateEffectScene()
 
 void GenelateEffectScene::Init(void)
 {
+	pitchUp_ = std::make_unique<PitchUp>();
 	pitchDown_ = std::make_unique<PitchDown>();
 	wah_ = std::make_unique<Wah>();
 	delay_ = std::make_unique<Delay>();
@@ -27,6 +28,9 @@ uniqueBase GenelateEffectScene::Update(uniqueBase ownScene)
 	DrawOwnScreen();
 
 	// •ÊƒXƒŒƒbƒh‚Æ‚µ‚Äˆ—
+	//std::thread th_1([&] {pitchDown_->GenelatePitchShiftWaveFile(1.2,soundFile_.beforeFileName, soundFile_.afterFilenName); });
+	//th_1.join();
+	
 	std::thread th_1([&] {equalizer_->GenelateEquaLizerWaveFile(soundFile_.beforeFileName, soundFile_.afterFilenName); });
 	th_1.join();
 

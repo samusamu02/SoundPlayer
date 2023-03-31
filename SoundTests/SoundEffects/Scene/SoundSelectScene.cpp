@@ -26,16 +26,11 @@ uniqueBase SoundSelectScene::Update(uniqueBase ownScene)
 	// æ‚É•`‰æ‚ðs‚¤
 	DrawOwnScreen();
 
-	//
 	auto soundHandle = lpSoundSet.GetSoundHandle();
 
 	if (soundHandle > 0)
 	{
 		return std::make_unique<GenelateEffectScene>();
-	}
-	else
-	{
-
 	}
 
 	return ownScene;
