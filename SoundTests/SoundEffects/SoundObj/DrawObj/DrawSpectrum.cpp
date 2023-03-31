@@ -47,7 +47,7 @@ void DrawSpectrum::Draw(void)
 	GetFFTVibrationSoftSound(softSoundHandle, -1, samplePos, fftSampleNum_, paramList.data(), fftSampleNum_);
 
 	// 周波数分布を画面を描画する
-	int x = -1;
+	int soundData = -1;
 	int j = 0;
 
 	// 軸の間隔
@@ -57,13 +57,13 @@ void DrawSpectrum::Draw(void)
 	{
 		// 対数が同じでない場合のみ値を変える
 		auto log = static_cast<int>((log10(static_cast<double>(a)) * 10));
-		if (log != x)
+		if (log != soundData)
 		{
 			// 描画位置
 			j++;
 
 			// 横軸に対してlogで対数をとる
-			x = static_cast<int>((log10((double)a) * 10));
+			soundData = static_cast<int>((log10((double)a) * 10));
 
 			// パラメーター
 			double Param;

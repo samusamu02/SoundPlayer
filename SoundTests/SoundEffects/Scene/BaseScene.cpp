@@ -6,9 +6,15 @@ BaseScene::BaseScene()
 {
 	auto screenX = lpScenMag.GetScreen_W();
 	auto screenY = lpScenMag.GetScreen_H();
-	SetDrawScreen(DX_SCREEN_BACK);										// 明示的にバックバッファを指定
-	GetDrawScreenSize(&screenX, &screenY);								// 描画先のサイズを取得する(バッファ）
-	screenID_ = MakeScreen(screenX, screenY, true);						// スクリーンのサイズ
+
+	// 明示的にバックバッファを指定
+	SetDrawScreen(DX_SCREEN_BACK);		
+
+	// 描画先のサイズを取得する(バッファ）
+	GetDrawScreenSize(&screenX, &screenY);	
+
+	// スクリーンのサイズ
+	screenID_ = MakeScreen(screenX, screenY, true);						
 }
 
 BaseScene::~BaseScene()
@@ -17,5 +23,6 @@ BaseScene::~BaseScene()
 
 void BaseScene::Draw()
 {
+	// スクリーンの描画
 	DrawGraph(0, 0, screenID_, true);
 }

@@ -5,7 +5,6 @@
 
 GenelateEffectScene::GenelateEffectScene()
 {
-	pitchDown_ = std::make_unique<PitchDown>();
 	Init();
 	DrawOwnScreen();
 }
@@ -16,15 +15,19 @@ GenelateEffectScene::~GenelateEffectScene()
 
 void GenelateEffectScene::Init(void)
 {
-	// 処理なし
+	pitchDown_ = std::make_unique<PitchDown>();
+	wah_ = std::make_unique<Wah>();
+	delay_ = std::make_unique<Delay>();
+	reverb_ = std::make_unique<Reverb>();
+	equalizer_ = std::make_unique<Equalizer>();
 }
 
 uniqueBase GenelateEffectScene::Update(uniqueBase ownScene)
 {
 	DrawOwnScreen();
 
-	// 別スレッド
-	std::thread th_1([&] {pitchDown_->GenelatePitchShiftWaveFile(1.2, soundFile_.beforeFileName, soundFile_.afterFilenName); });
+	// 別スレッドとして処理
+	std::thread th_1([&] {equalizer_->GenelateEquaLizerWaveFile(soundFile_.beforeFileName, soundFile_.afterFilenName); });
 	th_1.join();
 
 	// スレッドの処理が完了したら次のシーンへ
@@ -40,5 +43,5 @@ void GenelateEffectScene::DrawOwnScreen(void)
 {
 	SetDrawScreen(screenID_);
 	ClsDrawScreen();
-	DrawFormatString(10, 0, 0xffffff, L"エフェクトにサウンドを適用中です");
+	DrawFormatString(10, 0, 0xffffff, L"サウンドにエフェクトを適用中です");
 }

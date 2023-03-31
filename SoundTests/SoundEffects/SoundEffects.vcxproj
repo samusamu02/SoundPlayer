@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{ebbe41e3-64af-485b-9792-cf7aa4cb349a}</ProjectGuid>
-    <RootNamespace>pitchshift</RootNamespace>
+    <ProjectGuid>{2505c59d-37b8-49c7-8369-8b6da6a17534}</ProjectGuid>
+    <RootNamespace>SoundEffects</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>pitchup</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -79,12 +78,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath);$(DXLIB_DIR)</ExecutablePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXLIB_DIR)</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(DXLIB_DIR)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <ExecutablePath>$(VC_ExecutablePath_x64);$(CommonExecutablePath);$(DXLIB_DIR)</ExecutablePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(DXLIB_DIR)</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(DXLIB_DIR)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -121,8 +120,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(DXLIB_DIR)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -137,8 +134,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(DXLIB_DIR)</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,17 +144,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PCM\Delay\Delay.cpp" />
+    <ClCompile Include="PCM\Delay\Reverb.cpp" />
+    <ClCompile Include="PCM\Equalizer\Equalizer.cpp" />
     <ClCompile Include="PCM\PCM.cpp" />
     <ClCompile Include="PCM\PCMSet.cpp" />
     <ClCompile Include="PCM\PitchShift\PitchDown.cpp" />
-    <ClCompile Include="PCM\PitchShift\PitchUp.cpp" />
     <ClCompile Include="PCM\PitchShift\PitchShift.cpp" />
+    <ClCompile Include="PCM\PitchShift\PitchUp.cpp" />
     <ClCompile Include="PCM\Wah\Wah.cpp" />
-    <ClCompile Include="Scene\BaseScene.cpp" />
     <ClCompile Include="SceneMag.cpp" />
+    <ClCompile Include="Scene\BaseScene.cpp" />
     <ClCompile Include="Scene\GenelateEffectScene.cpp" />
     <ClCompile Include="Scene\SoundPlayScene.cpp" />
     <ClCompile Include="Scene\SoundSelectScene.cpp" />
+    <ClCompile Include="SoundData\SoundData.cpp" />
     <ClCompile Include="SoundObj\DrawObj\DrawBG.cpp" />
     <ClCompile Include="SoundObj\DrawObj\DrawObj.cpp" />
     <ClCompile Include="SoundObj\DrawObj\DrawObjMag.cpp" />
@@ -167,38 +166,40 @@
     <ClCompile Include="SoundObj\DrawObj\DrawWave.cpp" />
     <ClCompile Include="SoundObj\SoundObj.cpp" />
     <ClCompile Include="SoundObj\SoundObjMag.cpp" />
-    <ClCompile Include="SoundData\SoundData.cpp" />
     <ClCompile Include="Wave\Wave.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PCM\Channel.h" />
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common\iir_filter.h" />
+    <ClInclude Include="common\sinc.h" />
+    <ClInclude Include="PCM\Delay\Delay.h" />
+    <ClInclude Include="PCM\Delay\Reverb.h" />
+    <ClInclude Include="PCM\Equalizer\Equalizer.h" />
     <ClInclude Include="PCM\PCM.h" />
     <ClInclude Include="PCM\PCMSet.h" />
     <ClInclude Include="PCM\PitchShift\PitchDown.h" />
-    <ClInclude Include="PCM\PitchShift\PitchUp.h" />
-    <ClInclude Include="PCM\sinc.h" />
     <ClInclude Include="PCM\PitchShift\PitchShift.h" />
+    <ClInclude Include="PCM\PitchShift\PitchUp.h" />
     <ClInclude Include="PCM\Wah\Wah.h" />
+    <ClInclude Include="SceneMag.h" />
     <ClInclude Include="Scene\BaseScene.h" />
     <ClInclude Include="Scene\GenelateEffectScene.h" />
     <ClInclude Include="Scene\SceneID.h" />
-    <ClInclude Include="SceneMag.h" />
     <ClInclude Include="Scene\SoundPlayScene.h" />
     <ClInclude Include="Scene\SoundSelectScene.h" />
-    <ClInclude Include="SoundObj\DrawObj\DrawSpectrum.h" />
-    <ClInclude Include="SoundObj\SoundFile.h" />
+    <ClInclude Include="SoundData\SoundData.h" />
     <ClInclude Include="SoundObj\DrawObj\DrawBG.h" />
     <ClInclude Include="SoundObj\DrawObj\DrawObj.h" />
     <ClInclude Include="SoundObj\DrawObj\DrawObjMag.h" />
+    <ClInclude Include="SoundObj\DrawObj\DrawSpectrum.h" />
     <ClInclude Include="SoundObj\DrawObj\DrawWave.h" />
+    <ClInclude Include="SoundObj\SoundFile.h" />
     <ClInclude Include="SoundObj\SoundObj.h" />
     <ClInclude Include="SoundObj\SoundObjMag.h" />
-    <ClInclude Include="SoundData\SoundData.h" />
     <ClInclude Include="Wave\PCMDef.h" />
     <ClInclude Include="Wave\Wave.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,8 +8,13 @@ public:
 	SoundObjMag();
 	~SoundObjMag();
 
+	// 初期化処理
 	void Init(void);
+
+	// 更新処理
 	void Update(void);
+
+	// 描画処理
 	void Draw(void);
 private:
 	// 描画関係オブジェクト
