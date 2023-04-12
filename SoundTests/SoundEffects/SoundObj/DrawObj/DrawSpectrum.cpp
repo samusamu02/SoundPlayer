@@ -72,7 +72,8 @@ void DrawSpectrum::Draw(void)
 			Param = pow(paramList[a], 0.5f) * 0.8f;
 
 			// 振幅スペクトルの描画(右側にずらして描画）
-			DrawBox(((screen_w_ / 2) + 50) + j * offset, screen_h_ - (int)(Param * screen_h_), ((screen_w_ / 2) + 50) + j * offset + 4, screen_h_, 0x00ff00, true);
+			DrawBox(((screen_w_ / 2) + 50) + j * offset, screen_h_ - (int)(Param * screen_h_), 
+				((screen_w_ / 2) + 50) + j * offset + 4, screen_h_, 0x00ff00, true);
 		}
 	}
 }

@@ -28,17 +28,17 @@ uniqueBase GenelateEffectScene::Update(uniqueBase ownScene)
 	DrawOwnScreen();
 
 	// 別スレッドとして処理
-	//std::thread th_1([&] {pitchDown_->GenelatePitchShiftWaveFile(1.2,soundFile_.beforeFileName, soundFile_.afterFilenName); });
+	//std::thread th_1([&] {pitchUp_->GenelatePitchShiftWaveFile(0.8,soundFile_.beforeFileName, soundFile_.afterFilenName); });
 	//th_1.join();
 	
-	std::thread th_1([&] {equalizer_->GenelateEquaLizerWaveFile(soundFile_.beforeFileName, soundFile_.afterFilenName); });
-	th_1.join();
+	//std::thread th_1([&] {equalizer_->GenelateEquaLizerWaveFile(soundFile_.beforeFileName, soundFile_.afterFilenName); });
+	//th_1.join();
 
 	// スレッドの処理が完了したら次のシーンへ
-	if (th_1.joinable() == false)
-	{
-		return std::make_unique<SoundPlayScene>();
-	}
+	//if (th_1.joinable() == false)
+	//{
+	//	return std::make_unique<SoundPlayScene>();
+	//}
 
 	return ownScene;
 }
@@ -47,5 +47,17 @@ void GenelateEffectScene::DrawOwnScreen(void)
 {
 	SetDrawScreen(screenID_);
 	ClsDrawScreen();
+
+	int y = 0;
+
+	if (CheckHitKey(KEY_INPUT_DOWN) == 0)
+	{
+		y++;
+	}
+
+	DrawFormatString(10, y, 0xffffff, L"■");
+
+	DrawFormatString(10, 0, 0xffffff, L"適用するサウンドエフェクトを選んでください");
+
 	DrawFormatString(10, 0, 0xffffff, L"サウンドにエフェクトを適用中です");
 }
