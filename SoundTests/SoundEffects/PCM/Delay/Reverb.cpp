@@ -16,14 +16,14 @@ void Reverb::Init(void)
 
 void Reverb::ChannelL_Init(void)
 {
-	channelL_->a = 0.5;
-	channelL_->d = pcm1_->fs * 0.05;
+	channelL_->attenuation = 0.5;
+	channelL_->delay = pcm1_->fs * 0.05;
 }
 
 void Reverb::ChannelR_Init(void)
 {
-	channelR_->a = 0.5;
-	channelR_->d = pcm1_->fs * 0.05;
+	channelR_->attenuation = 0.5;
+	channelR_->delay = pcm1_->fs * 0.05;
 }
 
 void Reverb::GenelateReverbWaveFile(const wchar_t* fileName, const wchar_t* afterFileName)

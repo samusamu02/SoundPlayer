@@ -27,19 +27,19 @@ void Delay::Init(void)
 void Delay::ChannelL_Init(void)
 {
 	// 減衰率
-	channelL_->a = 0.5;
+	channelL_->attenuation = 0.5;
 
 	// 遅延時間
-	channelL_->d = pcm1_->fs * 0.375;
+	channelL_->delay = pcm1_->fs * 0.375;
 }
 
 void Delay::ChannelR_Init(void)
 {
 	// 減衰率
-	channelR_->a = 0.5;
+	channelR_->attenuation = 0.5;
 
 	// 遅延時間
-	channelR_->d = pcm1_->fs * 0.375;
+	channelR_->delay = pcm1_->fs * 0.375;
 }
 
 void Delay::ChannelL_Delay(void)
@@ -51,12 +51,12 @@ void Delay::ChannelL_Delay(void)
 
 		for (int i = 1;i <= repeat_; i++)
 		{
-			int m = static_cast<int>(static_cast<double>(n) - static_cast<double>(i) * channelL_->d);
+			int m = static_cast<int>(static_cast<double>(n) - static_cast<double>(i) * channelL_->delay);
 
 			if (m >= 0)
 			{
 				// 過去の音データをミックスする
-				pcm1_->sL[n] += pow(channelL_->a, static_cast<double>(i)) * pcm0_->sL[m];
+				pcm1_->sL[n] += pow(channelL_->attenuation, static_cast<double>(i)) * pcm0_->sL[m];
 			}
 		}
 	}
@@ -71,12 +71,12 @@ void Delay::ChannelR_Delay(void)
 
 		for (int i = 1; i <= repeat_; i++)
 		{
-			int m = static_cast<int>(static_cast<double>(n) - static_cast<double>(i) * channelR_->d);
+			int m = static_cast<int>(static_cast<double>(n) - static_cast<double>(i) * channelR_->delay);
 
 			if (m >= 0)
 			{
 				// 過去の音データをミックスする
-				pcm1_->sR[n] += pow(channelR_->a, static_cast<double>(i)) * pcm0_->sR[m];
+				pcm1_->sR[n] += pow(channelR_->attenuation, static_cast<double>(i)) * pcm0_->sR[m];
 			}
 		}
 	}

@@ -66,8 +66,8 @@ protected:
 	/// 新しくピッチシフトが適用されたwavファイルを生成する
 	/// </summary>
 	/// <param name="rate">ピッチ変更の倍率</param>
-	/// <param name="fileName">ピッチシフトが適用前のファイル</param>
-	/// <param name="afterFileName">ピッチシフトが適用後のファイル</param>
+	/// <param name="fileName">適用前のファイル</param>
+	/// <param name="afterFileName">適用後のファイル</param>
 	virtual void GenelatePitchShiftWaveFile(const double rate, const wchar_t* fileName, const wchar_t* afterFileName) = 0;
 
 	// PCMの初期化のオブジェクト

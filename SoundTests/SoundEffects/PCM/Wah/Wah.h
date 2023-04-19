@@ -23,16 +23,16 @@ private:
     {
         double fc;                  // 中心周波数
         double q_;                  // クオリティファクタ
-        std::array<double, 3> a;    // IIRフィルター用係数
-        std::array<double, 3> d;    // IIRフィルター用係数
+        std::array<double, 3> attenuation;    // IIRフィルター用係数
+        std::array<double, 3> delay;    // IIRフィルター用係数
     };
 
     struct ChannelR
     {
         double fc;                  // 中心周波数
         double q_;                  // クオリティファクタ
-        std::array<double, 3> a;    // IIRフィルター用係数
-        std::array<double, 3> d;    // IIRフィルター用係数
+        std::array<double, 3> attenuation;    // IIRフィルター用係数
+        std::array<double, 3> delay;    // IIRフィルター用係数
     };
 
     // PCMの初期化のオブジェクト

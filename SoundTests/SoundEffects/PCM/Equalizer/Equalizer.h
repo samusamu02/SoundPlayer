@@ -23,7 +23,7 @@ private:
         double fc;
         double Q;
         double g;
-        std::array<double, 3> a;
+        std::array<double, 3> attenuation;
         std::array<double, 3> b;
         std::array<std::array<double, 3>, 3> A;
         std::array<std::array<double, 3>, 3> B;
@@ -34,7 +34,7 @@ private:
         double fc;
         double Q;
         double g;
-        std::array<double, 3> a;
+        std::array<double, 3> attenuation;
         std::array<double, 3> b;
         std::array<std::array<double, 3>, 3> A;
         std::array<std::array<double, 3>, 3> B;

@@ -11,24 +11,41 @@ public:
     Delay();
     virtual ~Delay();
 
+    // 初期化
     virtual void Init(void);
+
+    // 左チャンネルの初期化
     virtual void ChannelL_Init(void);
+
+    // 右チャンネルの初期化
     virtual void ChannelR_Init(void);
     virtual void ChannelL_Delay(void);
     virtual void ChannelR_Delay(void);
+
+    /// <summary>
+    /// 新しくディレイが適用されたwavファイルを生成する
+    /// </summary>
+    /// <param name="fileName">適用前ファイル</param>
+    /// <param name="afterFileName">適用後ファイル</param>
     void GenelateDelayWaveFile(const wchar_t* fileName, const wchar_t* afterFileName);
 
 protected:
     struct ChannelL
     {
-        double a;
-        double d;
+        // 減衰率
+        double attenuation;
+
+        // 遅延時間
+        double delay;
     };
 
     struct ChannelR
     {
-        double a;
-        double d;
+        // 減衰率
+        double attenuation;
+
+        // 遅延時間
+        double delay;
     };
 
     // PCMの初期化のオブジェクト
@@ -45,6 +62,6 @@ protected:
 
     // 繰り返し回数
     int repeat_;
-public:
+private:
 };
 
