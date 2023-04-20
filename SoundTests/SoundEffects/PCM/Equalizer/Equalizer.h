@@ -16,6 +16,12 @@ public:
     virtual void ChannelR_Init(void);
     virtual void ChannelL_Equalizer(void);
     virtual void ChannelR_Equalizer(void);
+
+    /// <summary>
+    /// 新しくイコライザーが適用されたwavファイルを生成する
+    /// </summary>
+    /// <param name="fileName">適用前ファイル</param>
+    /// <param name="afterFileName">適用後ファイル</param>
     void GenelateEquaLizerWaveFile(const wchar_t* fileName, const wchar_t* afterFileName);
 private:
     struct ChannelL
