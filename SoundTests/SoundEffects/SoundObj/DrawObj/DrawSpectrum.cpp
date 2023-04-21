@@ -53,23 +53,23 @@ void DrawSpectrum::Draw(void)
 	// 軸の間隔
 	int offset = 15;
 	// サンプル数分処理を行う
-	for (int attenuation = 0; attenuation < fftSampleNum_; attenuation++)
+	for (int attenuation_ = 0; attenuation_ < fftSampleNum_; attenuation_++)
 	{
 		// 対数が同じでない場合のみ値を変える
-		auto log = static_cast<int>((log10(static_cast<double>(attenuation)) * 10));
+		auto log = static_cast<int>((log10(static_cast<double>(attenuation_)) * 10));
 		if (log != soundData)
 		{
 			// 描画位置
 			j++;
 
 			// 横軸に対してlogで対数をとる
-			soundData = static_cast<int>((log10((double)attenuation) * 10));
+			soundData = static_cast<int>((log10((double)attenuation_) * 10));
 
 			// パラメーター
 			double Param;
 
 			// 関数から取得できる値を描画に適した値に調整
-			Param = pow(paramList[attenuation], 0.5f) * 0.8f;
+			Param = pow(paramList[attenuation_], 0.5f) * 0.8f;
 
 			// 振幅スペクトルの描画(右側にずらして描画）
 			DrawBox(((screen_w_ / 2) + 50) + j * offset, screen_h_ - (int)(Param * screen_h_), 

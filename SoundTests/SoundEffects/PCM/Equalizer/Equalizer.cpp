@@ -26,154 +26,154 @@ void Equalizer::Init(void)
 	delaylineNum_ = 2;
 }
 
-void Equalizer::ChannelL_Init(void)
+void Equalizer::ChannelL_IIR(void)
 {
 	// 遮断周波数
-	channelL_->fc = 10.0 / pcm0_->fs;
+	channelL_->cf_ = 10.0 / pcm0_->fs;
 
 	// クオリティファクタ
-	channelL_->Q = 1.0 / sqrt(2.0);
-
-	channelL_->g = -1.0;
+	channelL_->q_Factor_ = 1.0 / sqrt(2.0);
+	channelL_->gain_ = -1.0;
 
 	// IIRフィルタの設計
-	IIR_low_shelving(channelL_->fc, channelL_->Q, channelL_->g, channelL_->attenuation.data(), channelL_->b.data());
+	IIR_low_shelving(channelL_->cf_, channelL_->q_Factor_, channelL_->gain_, channelL_->coefficients_a_.data(), channelL_->coefficients_b_.data());
 	for (int m = 0; m <= delaylineNum_; m++)
 	{
-		channelL_->A[0][m] = channelL_->attenuation[m];
+		channelL_->coefficients_A_[0][m] = channelL_->coefficients_a_[m];
 	}
 	for (int m = 0; m <= delaylineNum_; m++)
 	{
-		channelL_->B[0][m] = channelL_->b[m];
+		channelL_->coefficients_B_[0][m] = channelL_->coefficients_b_[m];
 	}
 
 	// 中心周波数
-	channelL_->fc = 50.0 / pcm0_->fs;
+	channelL_->cf_ = 50.0 / pcm0_->fs;
 
 	// クオリティファクタ
-	channelL_->Q = 1.0 / sqrt(2.0);
-
-	channelL_->g = 1.0;
+	channelL_->q_Factor_ = 1.0 / sqrt(2.0);
+	channelL_->gain_ = 1.0;
 
 	// IIRフィルタの設計
-	IIR_peaking(channelL_->fc, channelL_->Q, channelL_->g, channelL_->attenuation.data(), channelL_->b.data());
+	IIR_peaking(channelL_->cf_, channelL_->q_Factor_, channelL_->gain_, channelL_->coefficients_a_.data(), channelL_->coefficients_b_.data());
 	for (int m = 0; m <= delaylineNum_; m++)
 	{
-		channelL_->A[1][m] = channelL_->attenuation[m];
+		channelL_->coefficients_A_[1][m] = channelL_->coefficients_a_[m];
 	}
 	for (int m = 0; m <= delaylineNum_; m++)
 	{
-		channelL_->B[1][m] = channelL_->b[m];
+		channelL_->coefficients_B_[1][m] = channelL_->coefficients_b_[m];
 	}
 
 	// 遮断周波数
-	channelL_->fc = 100.0 / pcm0_->fs;
+	channelL_->cf_ = 100.0 / pcm0_->fs;
 
 	// クオリティファクタ
-	channelL_->Q = 1.0 / sqrt(2.0);
-
-	channelL_->g = -1.0;
+	channelL_->q_Factor_ = 1.0 / sqrt(2.0);
+	channelL_->gain_ = -1.0;
 
 	// IIRフィルタの設計
-	IIR_high_shelving(channelL_->fc, channelL_->Q, channelL_->g, channelL_->attenuation.data(), channelL_->b.data());
+	IIR_high_shelving(channelL_->cf_, channelL_->q_Factor_, channelL_->gain_, channelL_->coefficients_a_.data(), channelL_->coefficients_b_.data());
 	for (int m = 0; m <= delaylineNum_; m++)
 	{
-		channelL_->A[2][m] = channelL_->attenuation[m];
+		channelL_->coefficients_A_[2][m] = channelL_->coefficients_a_[m];
 	}
 	for (int m = 0; m <= delaylineNum_; m++)
 	{
-		channelL_->B[2][m] = channelL_->b[m];
+		channelL_->coefficients_B_[2][m] = channelL_->coefficients_b_[m];
 	}
 }
 
-void Equalizer::ChannelR_Init(void)
+void Equalizer::ChannelR_IIR(void)
 {
 	// 遮断周波数
-	channelR_->fc = 10.0 / pcm0_->fs;
+	channelR_->cf_ = 10.0 / pcm0_->fs;
 
 	// クオリティファクタ
-	channelR_->Q = 1.0 / sqrt(2.0);
-
-	channelR_->g = -1.0;
+	channelR_->q_Factor_ = 1.0 / sqrt(2.0);
+	channelR_->gain_ = -1.0;
 
 	// IIRフィルタの設計
-	IIR_low_shelving(channelR_->fc, channelR_->Q, channelR_->g, channelR_->attenuation.data(), channelR_->b.data());
+	IIR_low_shelving(channelR_->cf_, channelR_->q_Factor_, channelR_->gain_, channelR_->coefficients_a_.data(), channelR_->coefficients_b_.data());
 	for (int m = 0; m <= delaylineNum_; m++)
 	{
-		channelR_->A[0][m] = channelR_->attenuation[m];
+		channelR_->coefficients_A_[0][m] = channelR_->coefficients_a_[m];
 	}
 	for (int m = 0; m <= delaylineNum_; m++)
 	{
-		channelR_->B[0][m] = channelR_->b[m];
+		channelR_->coefficients_B_[0][m] = channelR_->coefficients_b_[m];
 	}
 
 	// 中心周波数
-	channelR_->fc = 50.0 / pcm0_->fs;
+	channelR_->cf_ = 50.0 / pcm0_->fs;
 
 	// クオリティファクタ
-	channelR_->Q = 1.0 / sqrt(2.0);
-
-	channelR_->g = 1.0;
+	channelR_->q_Factor_ = 1.0 / sqrt(2.0);
+	channelR_->gain_ = 1.0;
 
 	// IIRフィルタの設計
-	IIR_peaking(channelR_->fc, channelR_->Q, channelR_->g, channelR_->attenuation.data(), channelR_->b.data());
+	IIR_peaking(channelR_->cf_, channelR_->q_Factor_, channelR_->gain_, channelR_->coefficients_a_.data(), channelR_->coefficients_b_.data());
 	for (int m = 0; m <= delaylineNum_; m++)
 	{
-		channelR_->A[1][m] = channelR_->attenuation[m];
+		channelR_->coefficients_A_[1][m] = channelR_->coefficients_a_[m];
 	}
 	for (int m = 0; m <= delaylineNum_; m++)
 	{
-		channelR_->B[1][m] = channelR_->b[m];
+		channelR_->coefficients_B_[1][m] = channelR_->coefficients_b_[m];
 	}
 
 	// 遮断周波数
-	channelR_->fc = 100.0 / pcm0_->fs;
+	channelR_->cf_ = 100.0 / pcm0_->fs;
 
 	// クオリティファクタ
-	channelR_->Q = 1.0 / sqrt(2.0);
-
-	channelR_->g = -1.0;
+	channelR_->q_Factor_ = 1.0 / sqrt(2.0);
+	channelR_->gain_ = -1.0;
 
 	// IIRフィルタの設計
-	IIR_high_shelving(channelR_->fc, channelR_->Q, channelR_->g, channelR_->attenuation.data(), channelR_->b.data());
+	IIR_high_shelving(channelR_->cf_, channelR_->q_Factor_, channelR_->gain_, channelR_->coefficients_a_.data(), channelR_->coefficients_b_.data());
 	for (int m = 0; m <= delaylineNum_; m++)
 	{
-		channelR_->A[2][m] = channelR_->attenuation[m];
+		channelR_->coefficients_A_[2][m] = channelR_->coefficients_a_[m];
 	}
 	for (int m = 0; m <= delaylineNum_; m++)
 	{
-		channelR_->B[2][m] = channelR_->b[m];
+		channelR_->coefficients_B_[2][m] = channelR_->coefficients_b_[m];
 	}
 }
 
 void Equalizer::ChannelL_Equalizer(void)
 {
-	// イコライザ（3帯域)
+	// 左チャンネルのイコライザ処理
 	for (int i = 0; i < 3; i++)
 	{
 		for (int n = 0; n < pcm1_->length; n++)
 		{
+			// 出力信号バッファの値を0にリセット
 			pcm1_->sL[n] = 0.0;
 		}
 
 		for (int n = 0; n < pcm1_->length; n++)
 		{
+
+			// FIRフィルタリング
 			for (int m = 0; m <= delaylineNum_; m++)
 			{
 				if (n - m >= 0)
 				{
-					pcm1_->sL[n] += channelL_->B[i][m] * pcm0_->sL[n - m];
+					pcm1_->sL[n] += channelL_->coefficients_B_[i][m] * pcm0_->sL[n - m];
 				}
 			}
+
+			// IIRフィルタリング
 			for (int m = 1; m <= delaylineNum_; m++)
 			{
 				if (n - m >= 0)
 				{
-					pcm1_->sL[n] += -channelL_->A[i][m] * pcm1_->sL[n - m];
+					pcm1_->sL[n] += -channelL_->coefficients_A_[i][m] * pcm1_->sL[n - m];
 				}
 			}
 		}
 
+		// データのコピー
 		for (int n = 0; n < pcm1_->length; n++)
 		{
 			pcm0_->sL[n] = pcm1_->sL[n];
@@ -183,7 +183,7 @@ void Equalizer::ChannelL_Equalizer(void)
 
 void Equalizer::ChannelR_Equalizer(void)
 {
-	// イコライザ（3帯域)
+	//右チャンネルのイコライザ処理(以下同じ処理のたコメント省略）
 	for (int i = 0; i < 3; i++)
 	{
 		for (int n = 0; n < pcm1_->length; n++)
@@ -197,14 +197,14 @@ void Equalizer::ChannelR_Equalizer(void)
 			{
 				if (n - m >= 0)
 				{
-					pcm1_->sR[n] += channelR_->B[i][m] * pcm0_->sR[n - m];
+					pcm1_->sR[n] += channelR_->coefficients_B_[i][m] * pcm0_->sR[n - m];
 				}
 			}
 			for (int m = 1; m <= delaylineNum_; m++)
 			{
 				if (n - m >= 0)
 				{
-					pcm1_->sR[n] += -channelR_->A[i][m] * pcm1_->sR[n - m];
+					pcm1_->sR[n] += -channelR_->coefficients_A_[i][m] * pcm1_->sR[n - m];
 				}
 			}
 		}
@@ -228,10 +228,10 @@ void Equalizer::GenelateEquaLizerWaveFile(const wchar_t* fileName, const wchar_t
 	Init();
 
 	// 左チャンネルの初期化
-	ChannelL_Init();
+	ChannelL_IIR();
 
 	// 右チャンネルの初期化
-	ChannelR_Init();
+	ChannelR_IIR();
 
 	// 左チャンネルのワウ処理
 	ChannelL_Equalizer();

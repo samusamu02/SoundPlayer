@@ -9,6 +9,22 @@
 #include "../PCM/Delay/Reverb.h"
 #include "../PCM/Equalizer/Equalizer.h"
 
+// それぞれのテキストの位置
+constexpr int PITCHUP_Y = 240;
+constexpr int PITCHDOWN_Y = 270;
+constexpr int REVERB_Y = 300;
+constexpr int EQUALIZER_Y = 330;
+
+// エフェクトの種類
+enum class Effect
+{
+    PitchUp,		// ピッチアップ
+    PitchDown,		// ピッチダウン
+    Reverb,			// リバーブ
+    Equalizer,		// イコライザー
+    Max				// 項目数
+};
+
 class GenelateEffectScene :
     public BaseScene
 {
@@ -45,5 +61,8 @@ private:
         // サウンド再生シーン
         return SceneID::GenelateEffect;
     };
+
+    // 現在の選択の状態
+    int nowSelect;
 };
 

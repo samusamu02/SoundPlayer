@@ -33,30 +33,31 @@ protected:
     struct ChannelL
     {
         // 減衰率
-        double attenuation;
+        double attenuation_;
 
         // 遅延時間
-        double delay;
+        double delay_;
     };
 
     struct ChannelR
     {
         // 減衰率
-        double attenuation;
+        double attenuation_;
 
         // 遅延時間
-        double delay;
+        double delay_;
     };
 
     // PCMの初期化のオブジェクト
     std::unique_ptr<PCMSet> pcmSet_;
 
-    // ピッチシフト用のオブジェクト
+    // PCM
     std::unique_ptr<STEREO_PCM> pcm0_;
     std::unique_ptr<STEREO_PCM> pcm1_;
 
     // 左チャンネル
     std::unique_ptr<ChannelL> channelL_;
+
     // 右チャンネル
     std::unique_ptr<ChannelR> channelR_;
 

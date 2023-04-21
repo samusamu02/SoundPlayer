@@ -42,21 +42,21 @@ void Wah::ChannelL_Wah(void)
 		channelL_->q_ = 2.0;
 
 		// IIRフィルタの設計
-		IIR_resonator(channelL_->fc, channelL_->q_, channelL_->attenuation.data(), channelL_->delay.data());
+		IIR_resonator(channelL_->fc, channelL_->q_, channelL_->attenuation_.data(), channelL_->delay_.data());
 
 		// フィルタ処理
 		for (int m = 0; m <= delaylineNum_; m++)
 		{
 			if (n - m >= 0)
 			{
-				pcm1_->sL[n] += channelL_->delay[m] * pcm0_->sL[n - m];
+				pcm1_->sL[n] += channelL_->delay_[m] * pcm0_->sL[n - m];
 			}
 		}
 		for (int m = 1; m <= delaylineNum_; m++)
 		{
 			if (n - m >= 0)
 			{
-				pcm1_->sL[n] += -channelL_->attenuation[m] * pcm1_->sL[n - m];
+				pcm1_->sL[n] += -channelL_->attenuation_[m] * pcm1_->sL[n - m];
 			}
 		}
 
@@ -72,20 +72,20 @@ void Wah::ChannelR_Wah(void)
 
 		channelR_->q_ = 2.0;
 
-		IIR_resonator(channelR_->fc, channelR_->q_, channelR_->attenuation.data(), channelR_->delay.data());
+		IIR_resonator(channelR_->fc, channelR_->q_, channelR_->attenuation_.data(), channelR_->delay_.data());
 
 		for (int m = 0; m <= delaylineNum_; m++)
 		{
 			if (n - m >= 0)
 			{
-				pcm1_->sR[n] += channelR_->delay[m] * pcm0_->sR[n - m];
+				pcm1_->sR[n] += channelR_->delay_[m] * pcm0_->sR[n - m];
 			}
 		}
 		for (int m = 1; m <= delaylineNum_; m++)
 		{
 			if (n - m >= 0)
 			{
-				pcm1_->sR[n] += -channelR_->attenuation[m] * pcm1_->sR[n - m];
+				pcm1_->sR[n] += -channelR_->attenuation_[m] * pcm1_->sR[n - m];
 			}
 		}
 

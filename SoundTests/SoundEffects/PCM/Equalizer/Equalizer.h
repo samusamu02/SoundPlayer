@@ -11,10 +11,19 @@ public:
     Equalizer();
     ~Equalizer();
 
+    // 初期化
     virtual void Init(void);
-    virtual void ChannelL_Init(void);
-    virtual void ChannelR_Init(void);
+
+    // 左チャンネルのIIRフィルター処理
+    virtual void ChannelL_IIR(void);
+
+    // 右チャンネルのIIRフィルター処理
+    virtual void ChannelR_IIR(void);
+
+    // 左チャンネルのイコライザー処理
     virtual void ChannelL_Equalizer(void);
+
+    // 右チャンネルのイコライザー処理
     virtual void ChannelR_Equalizer(void);
 
     /// <summary>
@@ -26,24 +35,24 @@ public:
 private:
     struct ChannelL
     {
-        double fc;
-        double Q;
-        double g;
-        std::array<double, 3> attenuation;
-        std::array<double, 3> b;
-        std::array<std::array<double, 3>, 3> A;
-        std::array<std::array<double, 3>, 3> B;
+        double cf_;          // 中央周波数
+        double q_Factor_;    // クオリティファクタ   
+        double gain_;        // ゲイン
+        std::array<double, 3> coefficients_a_;                      // フィルターの分子係数A
+        std::array<double, 3> coefficients_b_;                      // フィルターの分子係数B
+        std::array<std::array<double, 3>, 3> coefficients_A_;       // フィルターの分母係数A
+        std::array<std::array<double, 3>, 3> coefficients_B_;       // フィルターの分母係数B
     };
 
     struct ChannelR
     {
-        double fc;
-        double Q;
-        double g;
-        std::array<double, 3> attenuation;
-        std::array<double, 3> b;
-        std::array<std::array<double, 3>, 3> A;
-        std::array<std::array<double, 3>, 3> B;
+        double cf_;          // 中央周波数
+        double q_Factor_;    // クオリティファクタ   
+        double gain_;        // ゲイン
+        std::array<double, 3> coefficients_a_;                      // フィルターの分子係数A
+        std::array<double, 3> coefficients_b_;                      // フィルターの分子係数B
+        std::array<std::array<double, 3>, 3> coefficients_A_;       // フィルターの分母係数A
+        std::array<std::array<double, 3>, 3> coefficients_B_;       // フィルターの分母係数B
     };
 
     // PCMの初期化のオブジェクト

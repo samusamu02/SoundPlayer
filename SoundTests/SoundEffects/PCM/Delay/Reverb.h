@@ -7,6 +7,7 @@ public:
     Reverb();
     ~Reverb();
 
+    // ‰Šú‰»ˆ—
     virtual void Init(void);
     virtual void ChannelL_Init(void);
     virtual void ChannelR_Init(void);

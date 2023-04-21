@@ -1,18 +1,18 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-inline double sinc(double soundData)
+inline double sinc(double x)
 {
-  double shiftData;
+  double y;
   
-  if (soundData == 0.0)
+  if (x == 0.0)
   {
-    shiftData = 1.0;
+    y = 1.0;
   }
   else
   {
-    shiftData = sin(soundData) / soundData;
+    y = sin(x) / x;
   }
   
-  return shiftData;
+  return y;
 }

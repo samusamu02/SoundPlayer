@@ -11,19 +11,22 @@ Reverb::~Reverb()
 
 void Reverb::Init(void)
 {
+	// 繰り返し回数
 	repeat_ = 10;
 }
 
 void Reverb::ChannelL_Init(void)
 {
-	channelL_->attenuation = 0.5;
-	channelL_->delay = pcm1_->fs * 0.05;
+	// リバーブ用の変数の初期化
+	channelL_->attenuation_ = 0.5;
+	channelL_->delay_ = pcm1_->fs * 0.05;
 }
 
 void Reverb::ChannelR_Init(void)
 {
-	channelR_->attenuation = 0.5;
-	channelR_->delay = pcm1_->fs * 0.05;
+	// リバーブ用の変数の初期化
+	channelR_->attenuation_ = 0.5;
+	channelR_->delay_ = pcm1_->fs * 0.05;
 }
 
 void Reverb::GenelateReverbWaveFile(const wchar_t* fileName, const wchar_t* afterFileName)

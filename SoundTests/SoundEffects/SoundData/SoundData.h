@@ -32,11 +32,8 @@ private:
     SoundData();
     ~SoundData();
 
-    // ソフトサウンドハンドル
-    int softSoundHandle_;
-
-    // サウンドハンドル
-    int soundHandle_;
+    // サウンドのファイル
+    SoundFile soundFile_;
 
     // サンプル総数
     long long totalSampleCount_;
@@ -44,7 +41,10 @@ private:
     // 現在のサンプルの位置の取得
     long long drawStartSampleCount_;
 
-    // サウンドのファイル
-    SoundFile soundFile_;
+    // ソフトサウンドハンドル
+    int softSoundHandle_;
+
+    // サウンドハンドル
+    int soundHandle_;
 };
 
