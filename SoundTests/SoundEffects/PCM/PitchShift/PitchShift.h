@@ -15,30 +15,30 @@ protected:
 
 	struct ChannelL
 	{
-		double search_min;					// 探索範囲の下限
-		double search_max;					// 探索範囲の上限
-		double in_pos;						// 入力データの現在の位置
-		double out_pos;						// 出力データの現在の位置
-		double currentIndex;				// 現在のサンプルのインデックス
-		double nextIndex;					// 次のサンプルのインデックス
+		double search_min_;						// 探索範囲の下限
+		double search_max_;						// 探索範囲の上限
+		double in_pos_;							// 入力データの現在の位置
+		double out_pos_;						// 出力データの現在の位置
+		double currentIndex_;					// 現在のサンプルのインデックス
+		double nextIndex_;						// 次のサンプルのインデックス
 
-		std::vector<double> soundData;				// 元の音声データを格納するための変数
-		std::vector<double> shiftData;				// サンプルをずらすための変数
-		std::vector<double> correlation;			// originalSoundData_とshiftedSoundData_の相関関数を求めるための変数
+		std::vector<double> soundData_;			// 元の音声データを格納するための変数
+		std::vector<double> shiftData_;			// サンプルをずらすための変数
+		std::vector<double> correlation_;		// originalSoundData_とshiftedSoundData_の相関関数を求めるための変数
 	};
 
 	struct ChannelR
 	{
-		double search_min;					// 探索範囲の下限
-		double search_max;					// 探索範囲の上限
-		double in_pos;						// 入力データの現在の位置
-		double out_pos;						// 出力データの現在の位置
-		double currentIndex;				// 現在のサンプルのインデックス
-		double nextIndex;					// 次のサンプルのインデックス
+		double search_min_;						// 探索範囲の下限
+		double search_max_;						// 探索範囲の上限
+		double in_pos_;							// 入力データの現在の位置
+		double out_pos_;						// 出力データの現在の位置
+		double currentIndex_;					// 現在のサンプルのインデックス
+		double nextIndex_;						// 次のサンプルのインデックス
 
-		std::vector<double> soundData;			// 元の音声データを格納するための変数
-		std::vector<double> shiftData;			// サンプルをずらすための変数
-		std::vector<double> correlation;		// originalSoundData_とshiftedSoundData_の相関関数を求めるための変数
+		std::vector<double> soundData_;			// 元の音声データを格納するための変数
+		std::vector<double> shiftData_;			// サンプルをずらすための変数
+		std::vector<double> correlation_;		// originalSoundData_とshiftedSoundData_の相関関数を求めるための変数
 	};
 
 	// 初期化処理

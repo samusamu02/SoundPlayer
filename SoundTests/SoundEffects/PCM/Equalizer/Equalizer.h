@@ -11,26 +11,26 @@ public:
     Equalizer();
     ~Equalizer();
 
-    // 初期化
+    // 初期化処理
     virtual void Init(void);
 
-    // 左チャンネルのIIRフィルター処理
+    // 左チャンネルのIIRフィルター処理処理
     virtual void ChannelL_IIR(void);
 
-    // 右チャンネルのIIRフィルター処理
+    // 右チャンネルのIIRフィルター処理処理
     virtual void ChannelR_IIR(void);
 
-    // 左チャンネルのイコライザー処理
+    // 左チャンネルのイコライザー処理処理
     virtual void ChannelL_Equalizer(void);
 
-    // 右チャンネルのイコライザー処理
+    // 右チャンネルのイコライザー処理処理
     virtual void ChannelR_Equalizer(void);
 
     /// <summary>
     /// 新しくイコライザーが適用されたwavファイルを生成する
     /// </summary>
-    /// <param name="fileName">適用前ファイル</param>
-    /// <param name="afterFileName">適用後ファイル</param>
+    /// <param name="fileName">適用前のファイル</param>
+    /// <param name="afterFileName">適用後のファイル</param>
     void GenelateEquaLizerWaveFile(const wchar_t* fileName, const wchar_t* afterFileName);
 private:
     struct ChannelL

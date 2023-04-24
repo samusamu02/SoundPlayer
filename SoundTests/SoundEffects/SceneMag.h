@@ -24,7 +24,7 @@ public:
 	int GetScreen_W(void);
 
 private:
-	// システムの初期化を行う
+	// システムの初期化処理
 	bool SysInit();
 
 	// システムの初期化の状態

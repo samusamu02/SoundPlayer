@@ -24,63 +24,63 @@ void PitchDown::Init(void)
 void PitchDown::ChannelL_Init(void)
 {
 	// 左チャンネルの変数の初期化
-	channelL_->search_min = static_cast<int>(pcm1_->fs * 0.005);
-	channelL_->search_max = static_cast<int>(pcm1_->fs * 0.02);
+	channelL_->search_min_ = static_cast<int>(pcm1_->fs * 0.005);
+	channelL_->search_max_ = static_cast<int>(pcm1_->fs * 0.02);
 
-	channelL_->soundData.resize(correlationSize_);
-	channelL_->shiftData.resize(correlationSize_);
-	channelL_->correlation.resize(channelL_->search_max + 1.0);
+	channelL_->soundData_.resize(correlationSize_);
+	channelL_->shiftData_.resize(correlationSize_);
+	channelL_->correlation_.resize(channelL_->search_max_ + 1.0);
 
-	channelL_->in_pos = 0;
-	channelL_->out_pos = 0;
+	channelL_->in_pos_ = 0;
+	channelL_->out_pos_ = 0;
 }
 
 void PitchDown::ChannelR_Init(void)
 {
 	// 右チャンネルの変数の初期化
-	channelR_->search_min = static_cast<int>(pcm1_->fs * 0.005);
-	channelR_->search_max = static_cast<int>(pcm1_->fs * 0.02);
+	channelR_->search_min_ = static_cast<int>(pcm1_->fs * 0.005);
+	channelR_->search_max_ = static_cast<int>(pcm1_->fs * 0.02);
 
-	channelR_->soundData.resize(correlationSize_);
-	channelR_->shiftData.resize(correlationSize_);
-	channelR_->correlation.resize(channelR_->search_max + 1.0);
+	channelR_->soundData_.resize(correlationSize_);
+	channelR_->shiftData_.resize(correlationSize_);
+	channelR_->correlation_.resize(channelR_->search_max_ + 1.0);
 
-	channelR_->in_pos = 0;
-	channelR_->out_pos = 0;
+	channelR_->in_pos_ = 0;
+	channelR_->out_pos_ = 0;
 }
 
 void PitchDown::ChannelL_Timestretching(void)
 {
-	while (channelL_->in_pos + channelL_->search_max * 2 < pcm0_->length)
+	while (channelL_->in_pos_ + channelL_->search_max_ * 2 < pcm0_->length)
 	{
 		for (int n = 0; n < correlationSize_; n++)
 		{
 			// 元の音データのコピー
-			channelL_->soundData[n] = pcm0_->sL[channelL_->in_pos + n];
+			channelL_->soundData_[n] = pcm0_->sL[channelL_->in_pos_ + n];
 		}
 
 		// 相関関数の範囲の初期化
 		peak_ = 0.0;
-		double p = channelL_->search_min;
+		double p = channelL_->search_min_;
 
-		for (int m = channelL_->search_min; m <= channelL_->search_max; m++)
+		for (int m = channelL_->search_min_; m <= channelL_->search_max_; m++)
 		{
 			for (int n = 0; n < correlationSize_; n++)
 			{
 				// mサンプルずらした音データ
-				channelL_->shiftData[n] = pcm0_->sL[channelL_->in_pos + m + n];
+				channelL_->shiftData_[n] = pcm0_->sL[channelL_->in_pos_ + m + n];
 			}
 
 			// 相関関数の計算
-			channelL_->correlation[m] = 0.0;
+			channelL_->correlation_[m] = 0.0;
 			for (int n = 0; n < correlationSize_; n++)
 			{
-				channelL_->correlation[m] += channelL_->soundData[n] * channelL_->shiftData[n];
+				channelL_->correlation_[m] += channelL_->soundData_[n] * channelL_->shiftData_[n];
 			}
-			if (channelL_->correlation[m] > peak_)
+			if (channelL_->correlation_[m] > peak_)
 			{
 				// 相関関数のピーク
-				peak_ = channelL_->correlation[m];
+				peak_ = channelL_->correlation_[m];
 
 				// 波形の周期
 				p = m;
@@ -91,55 +91,55 @@ void PitchDown::ChannelL_Timestretching(void)
 		for (int n = 0; n < p; n++)
 		{
 			// 単調減少の重み付け
-			pcm1_->sL[channelL_->out_pos + n] = pcm0_->sL[channelL_->in_pos + n] * (p - n) / p;
+			pcm1_->sL[channelL_->out_pos_ + n] = pcm0_->sL[channelL_->in_pos_ + n] * (p - n) / p;
 			// 単調増加の重み付け
-			pcm1_->sL[channelL_->out_pos + n] += pcm0_->sL[channelL_->in_pos + p + n] * n / p;
+			pcm1_->sL[channelL_->out_pos_ + n] += pcm0_->sL[channelL_->in_pos_ + p + n] * n / p;
 		}
 
 		// 重み付けの範囲を超えた部分は等間隔でサンプリング
 		int q = static_cast<int>(p / (rate_ - 1.0) + 0.5);
 		for (int n = p; n < q; n++)
 		{
-			if (channelL_->in_pos + p + n >= pcm0_->length)
+			if (channelL_->in_pos_ + p + n >= pcm0_->length)
 			{
 				break;
 			}
-			pcm1_->sL[channelL_->out_pos + n] = pcm0_->sL[channelL_->in_pos + p + n];
+			pcm1_->sL[channelL_->out_pos_ + n] = pcm0_->sL[channelL_->in_pos_ + p + n];
 		}
 
 		// posの更新
-		channelL_->in_pos += p + q;
-		channelL_->out_pos += q;
+		channelL_->in_pos_ += p + q;
+		channelL_->out_pos_ += q;
 	}
 }
 
 void PitchDown::ChannelR_Timestretching(void)
 {
 	// 左チャンネルと同じ処理を行う(以下同様の処理の為のコメント省略)
-	while (channelR_->in_pos + channelR_->search_max * 2 < pcm0_->length)
+	while (channelR_->in_pos_ + channelR_->search_max_ * 2 < pcm0_->length)
 	{
 		for (int n = 0; n < correlationSize_; n++)
 		{
-			channelR_->soundData[n] = pcm0_->sR[channelR_->in_pos + n];
+			channelR_->soundData_[n] = pcm0_->sR[channelR_->in_pos_ + n];
 		}
 
 		peak_ = 0.0;
-		int p = channelR_->search_min;
+		int p = channelR_->search_min_;
 
-		for (int m = channelR_->search_min; m <= channelR_->search_max; m++)
+		for (int m = channelR_->search_min_; m <= channelR_->search_max_; m++)
 		{
 			for (int n = 0; n < correlationSize_; n++)
 			{
-				channelR_->shiftData[n] = pcm0_->sR[channelR_->in_pos + m + n];
+				channelR_->shiftData_[n] = pcm0_->sR[channelR_->in_pos_ + m + n];
 			}
-			channelR_->correlation[m] = 0.0;
+			channelR_->correlation_[m] = 0.0;
 			for (int n = 0; n < correlationSize_; n++)
 			{
-				channelR_->correlation[m] += channelR_->soundData[n] * channelR_->shiftData[n];
+				channelR_->correlation_[m] += channelR_->soundData_[n] * channelR_->shiftData_[n];
 			}
-			if (channelR_->correlation[m] > peak_)
+			if (channelR_->correlation_[m] > peak_)
 			{
-				peak_ = channelR_->correlation[m];
+				peak_ = channelR_->correlation_[m];
 
 				p = m;
 			}
@@ -147,22 +147,22 @@ void PitchDown::ChannelR_Timestretching(void)
 
 		for (int n = 0; n < p; n++)
 		{
-			pcm1_->sR[channelR_->out_pos + n] = pcm0_->sR[channelR_->in_pos + n] * (p - n) / p;
-			pcm1_->sR[channelR_->out_pos + n] += pcm0_->sR[channelR_->in_pos + p + n] * n / p;
+			pcm1_->sR[channelR_->out_pos_ + n] = pcm0_->sR[channelR_->in_pos_ + n] * (p - n) / p;
+			pcm1_->sR[channelR_->out_pos_ + n] += pcm0_->sR[channelR_->in_pos_ + p + n] * n / p;
 		}
 
 		int q = static_cast<int>(p / (rate_ - 1.0) + 0.5);
 		for (int n = p; n < q; n++)
 		{
-			if (channelR_->in_pos + p + n >= pcm0_->length)
+			if (channelR_->in_pos_ + p + n >= pcm0_->length)
 			{
 				break;
 			}
-			pcm1_->sR[channelR_->out_pos + n] = pcm0_->sR[channelR_->in_pos + p + n];
+			pcm1_->sR[channelR_->out_pos_ + n] = pcm0_->sR[channelR_->in_pos_ + p + n];
 		}
 
-		channelR_->in_pos += p + q;
-		channelR_->out_pos += q;
+		channelR_->in_pos_ += p + q;
+		channelR_->out_pos_ += q;
 	}
 }
 
@@ -175,21 +175,21 @@ void PitchDown::ChannelL_Resampling(void)
 		timeIndex_ = pitch_ * n;
 
 		// データのコピー
-		channelL_->currentIndex = static_cast<int>(timeIndex_);
+		channelL_->currentIndex_ = static_cast<int>(timeIndex_);
 
 		// 整数と浮動小数で分ける
-		if (timeIndex_ == channelL_->currentIndex)
+		if (timeIndex_ == channelL_->currentIndex_)
 		{
-			channelL_->nextIndex = channelL_->currentIndex;
+			channelL_->nextIndex_ = channelL_->currentIndex_;
 		}
 		else
 		{
 			// 浮動小数の場合は+1をする
-			channelL_->nextIndex = channelL_->currentIndex + 1;
+			channelL_->nextIndex_ = channelL_->currentIndex_ + 1;
 		}
 
 		// 窓関数とsinc関数を用いて新しくpcmデータを計算する
-		for (int m = channelL_->nextIndex - hanningSize_ / 2; m <= channelL_->currentIndex + hanningSize_ / 2; m++)
+		for (int m = channelL_->nextIndex_ - hanningSize_ / 2; m <= channelL_->currentIndex_ + hanningSize_ / 2; m++)
 		{
 			if (m >= 0 && m < pcm1_->length)
 			{
@@ -207,18 +207,18 @@ void PitchDown::ChannelR_Resampling(void)
 	{
 		timeIndex_ = pitch_ * n;
 
-		channelR_->currentIndex = static_cast<int>(timeIndex_);
+		channelR_->currentIndex_ = static_cast<int>(timeIndex_);
 
-		if (timeIndex_ == channelR_->currentIndex)
+		if (timeIndex_ == channelR_->currentIndex_)
 		{
-			channelR_->nextIndex = channelR_->currentIndex;
+			channelR_->nextIndex_ = channelR_->currentIndex_;
 		}
 		else
 		{
-			channelR_->nextIndex = channelR_->currentIndex + 1;
+			channelR_->nextIndex_ = channelR_->currentIndex_ + 1;
 		}
 
-		for (int m = channelR_->nextIndex - hanningSize_ / 2; m <= channelR_->currentIndex + hanningSize_ / 2; m++)
+		for (int m = channelR_->nextIndex_ - hanningSize_ / 2; m <= channelR_->currentIndex_ + hanningSize_ / 2; m++)
 		{
 			if (m >= 0 && m < pcm1_->length)
 			{

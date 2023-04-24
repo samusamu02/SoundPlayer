@@ -1,25 +1,22 @@
 #pragma once
-#include <thread>
+#include <functional>
 #include "BaseScene.h"
 #include "../SoundObj/SoundFile.h"
 #include "../PCM/PitchShift/PitchUp.h"
 #include "../PCM/PitchShift/PitchDown.h"
 #include "../PCM/Wah/Wah.h"
-#include "../PCM/Delay/Delay.h"
 #include "../PCM/Delay/Reverb.h"
 #include "../PCM/Equalizer/Equalizer.h"
 
-// それぞれのテキストの位置
-constexpr int PITCHUP_Y = 240;
-constexpr int PITCHDOWN_Y = 270;
-constexpr int REVERB_Y = 300;
-constexpr int EQUALIZER_Y = 330;
+// 関数オブジェクトの宣言
+using EffectFunc = std::function<void()>;
 
 // エフェクトの種類
 enum class Effect
 {
     PitchUp,		// ピッチアップ
     PitchDown,		// ピッチダウン
+    Wah,            // ワウ
     Reverb,			// リバーブ
     Equalizer,		// イコライザー
     Max				// 項目数
@@ -32,28 +29,18 @@ public:
     GenelateEffectScene();
     ~GenelateEffectScene();
 private:
+    // 初期化処理
     void Init(void)override;
+
+    /// <summary>
+    /// 更新処理(次のシーン処理等を行う）
+    /// </summary>
+    /// <param name="ownScene">シーンの取得</param>
+    /// <returns></returns>
     uniqueBase Update(uniqueBase ownScene)override;
+
+    // 描画処理
     void DrawOwnScreen(void)override;
-
-    // ピッチシフトのオブジェクト
-    std::unique_ptr<PitchUp> pitchUp_;
-    std::unique_ptr<PitchDown> pitchDown_;
-
-    // ワウのオブジェクト
-    std::unique_ptr<Wah> wah_;
-
-    // ディレイ
-    std::unique_ptr<Delay> delay_;
-
-    // リバーブ
-    std::unique_ptr<Reverb> reverb_;
-    
-    // イコライザ
-    std::unique_ptr<Equalizer> equalizer_;
-
-    // サウンドファイル
-    SoundFile soundFile_;
 
     // シーンID取得
     SceneID GetSceneID(void)override
@@ -62,7 +49,30 @@ private:
         return SceneID::GenelateEffect;
     };
 
+    // ピッチシフトのオブジェクト
+    std::unique_ptr<PitchUp> pitchUp_;
+    std::unique_ptr<PitchDown> pitchDown_;
+
+    // ワウのオブジェクト
+    std::unique_ptr<Wah> wah_;
+
+    // リバーブ
+    std::unique_ptr<Reverb> reverb_;
+
+    // イコライザ
+    std::unique_ptr<Equalizer> equalizer_;
+
+    // サウンドファイル
+    SoundFile soundFile_;
+
     // 現在の選択の状態
-    int nowSelect;
+    int nowSelect_;
+
+    // それぞれのテキストの位置
+    int pitchUpY_ = 240;
+    int pitchDownY_ = 270;
+    int wahY_ = 300;
+    int reverbY_ = 330;
+    int equalizerY_ = 360;
 };
 

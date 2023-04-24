@@ -11,22 +11,26 @@ public:
     Delay();
     virtual ~Delay();
 
-    // 初期化
+    // 初期化処理
     virtual void Init(void);
 
-    // 左チャンネルの初期化
+    // 左チャンネルの初期化処理
     virtual void ChannelL_Init(void);
 
-    // 右チャンネルの初期化
+    // 右チャンネルの初期化処理
     virtual void ChannelR_Init(void);
+
+    // 左チャンネルのディレイ処理
     virtual void ChannelL_Delay(void);
+
+    // 右チャンネルのディレイ処理
     virtual void ChannelR_Delay(void);
 
     /// <summary>
     /// 新しくディレイが適用されたwavファイルを生成する
     /// </summary>
-    /// <param name="fileName">適用前ファイル</param>
-    /// <param name="afterFileName">適用後ファイル</param>
+    /// <param name="fileName">適用前のファイル</param>
+    /// <param name="afterFileName">適用後のファイル</param>
     void GenelateDelayWaveFile(const wchar_t* fileName, const wchar_t* afterFileName);
 
 protected:

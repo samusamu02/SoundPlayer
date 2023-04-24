@@ -36,27 +36,27 @@ void Wah::ChannelL_Wah(void)
 	for (int n = 0; n < pcm1_->length; n++)
 	{
 		// 中心周波数
-		channelL_->fc = (1000.0 + depth_ * sin(2.0 * M_PI * rate_ * n / pcm1_->fs)) / pcm1_->fs;
+		channelL_->cf_ = (1000.0 + depth_ * sin(2.0 * M_PI * rate_ * n / pcm1_->fs)) / pcm1_->fs;
 
 		// クオリティファクタ
-		channelL_->q_ = 2.0;
+		channelL_->q_Factor_ = 2.0;
 
 		// IIRフィルタの設計
-		IIR_resonator(channelL_->fc, channelL_->q_, channelL_->attenuation_.data(), channelL_->delay_.data());
+		IIR_resonator(channelL_->cf_, channelL_->q_Factor_, channelL_->coefficients_a_.data(), channelL_->coefficients_b_.data());
 
 		// フィルタ処理
 		for (int m = 0; m <= delaylineNum_; m++)
 		{
 			if (n - m >= 0)
 			{
-				pcm1_->sL[n] += channelL_->delay_[m] * pcm0_->sL[n - m];
+				pcm1_->sL[n] += channelL_->coefficients_b_[m] * pcm0_->sL[n - m];
 			}
 		}
 		for (int m = 1; m <= delaylineNum_; m++)
 		{
 			if (n - m >= 0)
 			{
-				pcm1_->sL[n] += -channelL_->attenuation_[m] * pcm1_->sL[n - m];
+				pcm1_->sL[n] += -channelL_->coefficients_a_[m] * pcm1_->sL[n - m];
 			}
 		}
 
@@ -72,20 +72,20 @@ void Wah::ChannelR_Wah(void)
 
 		channelR_->q_ = 2.0;
 
-		IIR_resonator(channelR_->fc, channelR_->q_, channelR_->attenuation_.data(), channelR_->delay_.data());
+		IIR_resonator(channelR_->fc, channelR_->q_, channelR_->coefficients_a_.data(), channelR_->coefficients_b_.data());
 
 		for (int m = 0; m <= delaylineNum_; m++)
 		{
 			if (n - m >= 0)
 			{
-				pcm1_->sR[n] += channelR_->delay_[m] * pcm0_->sR[n - m];
+				pcm1_->sR[n] += channelR_->coefficients_b_[m] * pcm0_->sR[n - m];
 			}
 		}
 		for (int m = 1; m <= delaylineNum_; m++)
 		{
 			if (n - m >= 0)
 			{
-				pcm1_->sR[n] += -channelR_->attenuation_[m] * pcm1_->sR[n - m];
+				pcm1_->sR[n] += -channelR_->coefficients_a_[m] * pcm1_->sR[n - m];
 			}
 		}
 

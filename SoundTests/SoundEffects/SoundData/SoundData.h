@@ -14,7 +14,7 @@ public:
         return s_Instance;
     }
 
-    // サウンドの初期化
+    // サウンドの初期化処理
     void SoundDataInit(const wchar_t* fileName);
 
     // ソフトハンドルの取得
