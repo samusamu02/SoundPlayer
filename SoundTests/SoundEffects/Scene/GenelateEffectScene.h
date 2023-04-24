@@ -49,6 +49,8 @@ private:
         return SceneID::GenelateEffect;
     };
 
+    int KeyStateAll(int KeyBuf[]);
+
     // ピッチシフトのオブジェクト
     std::unique_ptr<PitchUp> pitchUp_;
     std::unique_ptr<PitchDown> pitchDown_;
@@ -69,10 +71,12 @@ private:
     int nowSelect_;
 
     // それぞれのテキストの位置
-    int pitchUpY_ = 240;
-    int pitchDownY_ = 270;
-    int wahY_ = 300;
-    int reverbY_ = 330;
-    int equalizerY_ = 360;
+    int selecterPosX_;
+    int stringPosX_;
+    int pitchUpPosY_;
+    int pitchDownPosY_;
+    int wahPosY_;
+    int reverbPosY_;
+    int equalizerPosY_;
 };
 
