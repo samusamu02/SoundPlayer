@@ -8,13 +8,13 @@ public:
     ~Reverb();
 
     // 初期化処理
-    virtual void Init(void);
+    void Init(void) override;
 
     // リバーブ用の左チャンネルの変数の初期化処理
-    virtual void ChannelL_Init(void);
+    void ChannelL_Init(void) override;
 
     // リバーブ用の右チャンネルの変数の初期化処理
-    virtual void ChannelR_Init(void);
+    void ChannelR_Init(void) override;
 
     /// <summary>
     /// 新しくリバーブが適用されたwavファイルを生成する

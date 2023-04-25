@@ -35,6 +35,9 @@ private:
     // 初期化処理
     void Init(void)override;
 
+    // 座標の初期化
+    void Init_Pos(void);
+
     /// <summary>
     /// 更新処理(次のシーン処理等を行う）
     /// </summary>
@@ -59,10 +62,10 @@ private:
     // ワウのオブジェクト
     std::unique_ptr<Wah> wah_;
 
-    // リバーブ
+    // リバーブのオブジェクト
     std::unique_ptr<Reverb> reverb_;
 
-    // イコライザ
+    // イコライザのオブジェクト
     std::unique_ptr<Equalizer> equalizer_;
 
     // サウンドファイル
@@ -72,9 +75,11 @@ private:
     int nowSelect_;
 
     // それぞれのテキストの位置
+    // X座標
     int selecterPosX_;
     int stringPosX_;
 
+    // Y座標
     std::vector<int> y_Coordinates_;
     int pitchUpPosY_;
     int pitchDownPosY_;

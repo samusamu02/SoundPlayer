@@ -12,26 +12,40 @@ public:
     ~Equalizer();
 
     // 初期化処理
-    virtual void Init(void);
+    void Init(void) override;
 
-    // 左チャンネルのIIRフィルター処理処理
-    virtual void ChannelL_IIR(const double coefficient_A, const double coefficient_B, const double coefficient_C);
+    /// <summary>
+    /// 左チャンネルのIIRフィルター処理処理
+    /// </summary>
+    /// <param name="coefficient_A">遮断周波数</param>
+    /// <param name="coefficient_B">中央周波数</param>
+    /// <param name="coefficient_C">遮断周波数</param>
+    void ChannelL_IIR(const double coefficient_A, const double coefficient_B, const double coefficient_C);
 
-    // 右チャンネルのIIRフィルター処理処理
-    virtual void ChannelR_IIR(const double coefficient_A, const double coefficient_B, const double coefficient_C);
+    /// <summary>
+    /// 右チャンネルのIIRフィルター処理処理
+    /// </summary>
+    /// <param name="coefficient_A">遮断周波数</param>
+    /// <param name="coefficient_B">中央周波数</param>
+    /// <param name="coefficient_C">遮断周波数</param>
+    void ChannelR_IIR(const double coefficient_A, const double coefficient_B, const double coefficient_C);
 
     // 左チャンネルのイコライザー処理処理
-    virtual void ChannelL_Equalizer(void);
+    void ChannelL_Equalizer(void);
 
     // 右チャンネルのイコライザー処理処理
-    virtual void ChannelR_Equalizer(void);
+    void ChannelR_Equalizer(void);
 
     /// <summary>
     /// 新しくイコライザーが適用されたwavファイルを生成する
     /// </summary>
-    /// <param name="fileName">適用前のファイル</param>
-    /// <param name="afterFileName">適用後のファイル</param>
-    void GenelateEquaLizerWaveFile(const double coefficient_A,const double coefficient_B,const double coefficient_C,const wchar_t* fileName, const wchar_t* afterFileName);
+    /// <param name="coefficient_A">遮断周波数</param>
+    /// <param name="coefficient_B">中央周波数</param>
+    /// <param name="coefficient_C">遮断周波数</param>
+    /// <param name="fileName">適用前ファイル</param>
+    /// <param name="afterFileName">適用後ファイル</param>
+    void GenelateEquaLizerWaveFile(const double coefficient_A,const double coefficient_B,const double coefficient_C,
+        const wchar_t* fileName, const wchar_t* afterFileName);
 private:
     struct ChannelL
     {

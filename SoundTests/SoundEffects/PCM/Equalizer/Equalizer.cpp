@@ -183,7 +183,7 @@ void Equalizer::ChannelL_Equalizer(void)
 
 void Equalizer::ChannelR_Equalizer(void)
 {
-	//右チャンネルのイコライザ処理(以下同じ処理のたコメント省略）
+	//右チャンネルのイコライザ処理(以下同じ処理の為コメント省略）
 	for (int i = 0; i < 3; i++)
 	{
 		for (int n = 0; n < pcm1_->length; n++)

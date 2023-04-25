@@ -5,12 +5,12 @@
 
 PCMSet::PCMSet()
 {
-	// “Á‚É‚È‚µ
+	// ˆ—‚È‚µ
 }
 
 PCMSet::~PCMSet()
 {
-	// “Á‚É‚È‚µ
+	// ˆ—‚È‚µ
 }
 
 void PCMSet::PCMSetPitchShift(MONO_PCM& after, MONO_PCM& before,double rate)

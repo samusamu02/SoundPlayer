@@ -6,6 +6,7 @@
 	GenelateEffectScene::GenelateEffectScene()
 	{
 		Init();
+		Init_Pos();
 		DrawOwnScreen();
 	}
 
@@ -21,32 +22,29 @@
 		wah_ = std::make_unique<Wah>();
 		reverb_ = std::make_unique<Reverb>();
 		equalizer_ = std::make_unique<Equalizer>();
-
+		
 		// 現在のメニューセレクトの状態
 		nowSelect_ = static_cast<int>(Effect::PitchUp);
+	}
 
+	void GenelateEffectScene::Init_Pos(void)
+	{
 		// それぞれの文字列の位置
-		selecterPosX_ = 20;			// セレクターの文字列の位置
-		stringPosX_ = 40;			// エフェクトの文字列の共通の位置X
+		// X座標
+		selecterPosX_ = 20;				// セレクターの文字列の位置
+		stringPosX_ = 40;				// エフェクトの文字列の共通の位置X
 
-		pitchUpPosY_ = 100;				// ピッチアップの文字列の位置Y
-		pitchDownPosY_ = 140;			// ピッチダウンの文字列の位置Y
-		wahPosY_ = 180;					// ワウの文字列の位置Y
-		reverbPosY_ = 220;				// リバーブの文字列の位置Y
-		equalizerPosY_Bass_ = 260;		// イコライザー(低音)の文字列の位置Y
-		equalizerPosY_Middle_ = 300;	// イコライザー(中音)の文字列の位置Y
-		equalizerPosY_Treble_ = 340;	// イコライザー(高音)の文字列の位置Y
-
+		// Y座標
 		// それぞれのY座標を格納
 		y_Coordinates_ =
 		{
-			pitchUpPosY_,
-			pitchDownPosY_,
-			wahPosY_,
-			reverbPosY_,
-			equalizerPosY_Bass_,
-			equalizerPosY_Middle_,
-			equalizerPosY_Treble_
+			pitchUpPosY_ = 100,					// ピッチアップの文字列の位置Y
+			pitchDownPosY_ = 140,				// ピッチダウンの文字列の位置Y
+			wahPosY_ = 180,						// ワウの文字列の位置Y
+			reverbPosY_ = 220,					// リバーブの文字列の位置Y
+			equalizerPosY_Bass_ = 260,			// イコライザー(低音)の文字列の位置Y
+			equalizerPosY_Middle_ = 300,		// イコライザー(中音)の文字列の位置Y
+			equalizerPosY_Treble_ = 340,		// イコライザー(高音)の文字列の位置Y
 		};
 	}
 
@@ -77,7 +75,6 @@
 			[&] {equalizer_->GenelateEquaLizerWaveFile(10,50,100,soundFile_.beforeFileName, soundFile_.afterFilenName); },
 			[&] {equalizer_->GenelateEquaLizerWaveFile(500,1000,3000,soundFile_.beforeFileName, soundFile_.afterFilenName); },
 			[&] {equalizer_->GenelateEquaLizerWaveFile(4000,4500,5000,soundFile_.beforeFileName, soundFile_.afterFilenName); }
-
 		};
 
 		// エンターが押されたら次のシーンへ
