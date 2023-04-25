@@ -63,7 +63,7 @@ void PitchDown::ChannelL_Timestretching(void)
 		peak_ = 0.0;
 		double p = channelL_->search_min_;
 
-		for (int m = channelL_->search_min_; m <= channelL_->search_max_; m++)
+		for (int m = static_cast<int>(channelL_->search_min_); m <= static_cast<int>(channelL_->search_max_); m++)
 		{
 			for (int n = 0; n < correlationSize_; n++)
 			{

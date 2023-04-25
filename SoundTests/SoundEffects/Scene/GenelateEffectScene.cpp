@@ -75,7 +75,7 @@
 			[&] {wah_->GenelateWahWaveFile(soundFile_.beforeFileName, soundFile_.afterFilenName); },
 			[&] {reverb_->GenelateReverbWaveFile(soundFile_.beforeFileName, soundFile_.afterFilenName); },
 			[&] {equalizer_->GenelateEquaLizerWaveFile(10,50,100,soundFile_.beforeFileName, soundFile_.afterFilenName); },
-			[&] {equalizer_->GenelateEquaLizerWaveFile(500,1000,1500,soundFile_.beforeFileName, soundFile_.afterFilenName); },
+			[&] {equalizer_->GenelateEquaLizerWaveFile(500,1000,3000,soundFile_.beforeFileName, soundFile_.afterFilenName); },
 			[&] {equalizer_->GenelateEquaLizerWaveFile(4000,4500,5000,soundFile_.beforeFileName, soundFile_.afterFilenName); }
 
 		};
