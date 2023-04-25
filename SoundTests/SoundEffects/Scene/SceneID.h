@@ -3,7 +3,7 @@
 // シーンの種類
 enum class SceneID
 {
-	SoundSelect,
-	GenelateEffect,
-	SoundPlay
+	SoundSelect,		// サウンドファイルチェック
+	GenelateEffect,		// エフェクト選択
+	SoundPlay			// サウンド再生
 };

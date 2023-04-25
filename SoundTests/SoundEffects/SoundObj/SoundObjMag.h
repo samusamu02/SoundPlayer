@@ -26,4 +26,3 @@ private:
 	// ループカウント
 	int loopCount_;
 };
-

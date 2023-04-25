@@ -15,10 +15,10 @@ public:
     virtual void Init(void);
 
     // 左チャンネルのIIRフィルター処理処理
-    virtual void ChannelL_IIR(void);
+    virtual void ChannelL_IIR(const double coefficient_A, const double coefficient_B, const double coefficient_C);
 
     // 右チャンネルのIIRフィルター処理処理
-    virtual void ChannelR_IIR(void);
+    virtual void ChannelR_IIR(const double coefficient_A, const double coefficient_B, const double coefficient_C);
 
     // 左チャンネルのイコライザー処理処理
     virtual void ChannelL_Equalizer(void);
@@ -31,7 +31,7 @@ public:
     /// </summary>
     /// <param name="fileName">適用前のファイル</param>
     /// <param name="afterFileName">適用後のファイル</param>
-    void GenelateEquaLizerWaveFile(const wchar_t* fileName, const wchar_t* afterFileName);
+    void GenelateEquaLizerWaveFile(const double coefficient_A,const double coefficient_B,const double coefficient_C,const wchar_t* fileName, const wchar_t* afterFileName);
 private:
     struct ChannelL
     {

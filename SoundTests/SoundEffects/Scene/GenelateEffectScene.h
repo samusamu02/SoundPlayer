@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include <vector>
 #include "BaseScene.h"
 #include "../SoundObj/SoundFile.h"
 #include "../PCM/PitchShift/PitchUp.h"
@@ -14,12 +15,14 @@ using EffectFunc = std::function<void()>;
 // エフェクトの種類
 enum class Effect
 {
-    PitchUp,		// ピッチアップ
-    PitchDown,		// ピッチダウン
-    Wah,            // ワウ
-    Reverb,			// リバーブ
-    Equalizer,		// イコライザー
-    Max				// 項目数
+    PitchUp,		    // ピッチアップ
+    PitchDown,		    // ピッチダウン
+    Wah,                // ワウ
+    Reverb,			    // リバーブ
+    Equalizer_Base,		// イコライザー(低音)
+    Equalizer_Middle,   // イコライザー(中音)
+    Equalizer_Treble,   // イコライザー(高音)
+    Max				    // 項目数
 };
 
 class GenelateEffectScene :
@@ -49,8 +52,6 @@ private:
         return SceneID::GenelateEffect;
     };
 
-    int KeyStateAll(int KeyBuf[]);
-
     // ピッチシフトのオブジェクト
     std::unique_ptr<PitchUp> pitchUp_;
     std::unique_ptr<PitchDown> pitchDown_;
@@ -73,10 +74,14 @@ private:
     // それぞれのテキストの位置
     int selecterPosX_;
     int stringPosX_;
+
+    std::vector<int> y_Coordinates_;
     int pitchUpPosY_;
     int pitchDownPosY_;
     int wahPosY_;
     int reverbPosY_;
-    int equalizerPosY_;
+    int equalizerPosY_Bass_;
+    int equalizerPosY_Middle_;
+    int equalizerPosY_Treble_;
 };
 

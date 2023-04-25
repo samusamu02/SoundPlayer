@@ -26,10 +26,10 @@ void Equalizer::Init(void)
 	delaylineNum_ = 2;
 }
 
-void Equalizer::ChannelL_IIR(void)
+void Equalizer::ChannelL_IIR(const double coefficient_A, const double coefficient_B, const double coefficient_C)
 {
 	// 遮断周波数
-	channelL_->cf_ = 10.0 / pcm0_->fs;
+	channelL_->cf_ = coefficient_A / pcm0_->fs;
 
 	// クオリティファクタ
 	channelL_->q_Factor_ = 1.0 / sqrt(2.0);
@@ -47,7 +47,7 @@ void Equalizer::ChannelL_IIR(void)
 	}
 
 	// 中心周波数
-	channelL_->cf_ = 50.0 / pcm0_->fs;
+	channelL_->cf_ = coefficient_B / pcm0_->fs;
 
 	// クオリティファクタ
 	channelL_->q_Factor_ = 1.0 / sqrt(2.0);
@@ -65,7 +65,7 @@ void Equalizer::ChannelL_IIR(void)
 	}
 
 	// 遮断周波数
-	channelL_->cf_ = 100.0 / pcm0_->fs;
+	channelL_->cf_ = coefficient_C / pcm0_->fs;
 
 	// クオリティファクタ
 	channelL_->q_Factor_ = 1.0 / sqrt(2.0);
@@ -83,10 +83,10 @@ void Equalizer::ChannelL_IIR(void)
 	}
 }
 
-void Equalizer::ChannelR_IIR(void)
+void Equalizer::ChannelR_IIR(const double coefficient_A, const double coefficient_B, const double coefficient_C)
 {
 	// 遮断周波数
-	channelR_->cf_ = 10.0 / pcm0_->fs;
+	channelR_->cf_ = coefficient_A / pcm0_->fs;
 
 	// クオリティファクタ
 	channelR_->q_Factor_ = 1.0 / sqrt(2.0);
@@ -104,7 +104,7 @@ void Equalizer::ChannelR_IIR(void)
 	}
 
 	// 中心周波数
-	channelR_->cf_ = 50.0 / pcm0_->fs;
+	channelR_->cf_ = coefficient_B / pcm0_->fs;
 
 	// クオリティファクタ
 	channelR_->q_Factor_ = 1.0 / sqrt(2.0);
@@ -122,7 +122,7 @@ void Equalizer::ChannelR_IIR(void)
 	}
 
 	// 遮断周波数
-	channelR_->cf_ = 100.0 / pcm0_->fs;
+	channelR_->cf_ = coefficient_C / pcm0_->fs;
 
 	// クオリティファクタ
 	channelR_->q_Factor_ = 1.0 / sqrt(2.0);
@@ -216,7 +216,7 @@ void Equalizer::ChannelR_Equalizer(void)
 	}
 }
 
-void Equalizer::GenelateEquaLizerWaveFile(const wchar_t* fileName, const wchar_t* afterFileName)
+void Equalizer::GenelateEquaLizerWaveFile(const double coefficient_A, const double coefficient_B, const double coefficient_C,const wchar_t* fileName, const wchar_t* afterFileName)
 {
 	// wavファイルの読み込み
 	lpWave.WaveRead(*pcm0_, fileName);
@@ -228,10 +228,10 @@ void Equalizer::GenelateEquaLizerWaveFile(const wchar_t* fileName, const wchar_t
 	Init();
 
 	// 左チャンネルの初期化
-	ChannelL_IIR();
+	ChannelL_IIR(coefficient_A, coefficient_B, coefficient_C);
 
 	// 右チャンネルの初期化
-	ChannelR_IIR();
+	ChannelR_IIR(coefficient_A, coefficient_B, coefficient_C);
 
 	// 左チャンネルのワウ処理
 	ChannelL_Equalizer();

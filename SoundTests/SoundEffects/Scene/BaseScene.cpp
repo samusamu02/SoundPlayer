@@ -4,6 +4,7 @@
 
 BaseScene::BaseScene()
 {
+	// スクリーンサイズ取得
 	auto screenX = lpScenMag.GetScreen_W();
 	auto screenY = lpScenMag.GetScreen_H();
 

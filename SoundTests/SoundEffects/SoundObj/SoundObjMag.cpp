@@ -29,11 +29,11 @@ void SoundObjMag::Update(void)
 	if (loopCount_ == 0)
 	{
 		// 変換前のサウンドハンドルの取得
-		auto beforesoundHandle = lpSoundSet.GetSoundHandle();
+		auto beforeSoundHandle = lpSoundSet.GetSoundHandle();
 		// 総サンプル数の取得
 		auto totalSampleCount = lpSoundSet.GetTotalSampleCount();
 		// 現在のサウンド数の取得
-		auto samplePos = GetCurrentPositionSoundMem(beforesoundHandle);
+		auto samplePos = GetCurrentPositionSoundMem(beforeSoundHandle);
 
 		// 最後まで再生されるか右矢印キーを入力すると変換後のサウンドを再生する
 		if (samplePos == totalSampleCount || 
@@ -41,13 +41,13 @@ void SoundObjMag::Update(void)
 		{
 			// 変換後のサウンドを再生する
 			// 変換前のサウンドハンドルの削除
-			DeleteSoundMem(beforesoundHandle);
+			DeleteSoundMem(beforeSoundHandle);
 			// 新しくサウンドハンドルのセット
 			lpSoundSet.SoundDataInit(soundFile_.afterFilenName);	
 			// 変換後のサウンドハンドルの取得
-			auto afuterSoundHandle = lpSoundSet.GetSoundHandle();
+			auto afterSoundHandle = lpSoundSet.GetSoundHandle();
 			// 再生
-			PlaySoundMem(afuterSoundHandle, DX_PLAYTYPE_BACK);
+			PlaySoundMem(afterSoundHandle, DX_PLAYTYPE_BACK);
 			// ループカウントを1にする
 			loopCount_ = 1;
 		}
