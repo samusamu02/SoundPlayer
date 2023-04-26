@@ -25,6 +25,9 @@
 		
 		// 現在のメニューセレクトの状態
 		nowSelect_ = static_cast<int>(Effect::PitchUp);
+
+		// SEのロード
+		selectSE_ = LoadSoundMem(L"Sound/select.mp3");
 	}
 
 	void GenelateEffectScene::Init_Pos(void)
@@ -55,14 +58,20 @@
 		// セレクトの状態の変化
 		if (CheckHitKey(KEY_INPUT_DOWN) == 1)
 		{
+			PlaySoundMem(selectSE_, DX_PLAYTYPE_BACK);
+
 			// セレクトを一つ下げる
 			nowSelect_ = (nowSelect_ + 1) % static_cast<int>(Effect::Max);
+
 		}
 
 		if (CheckHitKey(KEY_INPUT_UP) == 1)
 		{
+			PlaySoundMem(selectSE_, DX_PLAYTYPE_BACK);
+
 			// セレクトを一つ上げる
 			nowSelect_ = (nowSelect_ + (static_cast<int>(Effect::Max) - 1)) % static_cast<int>(Effect::Max);
+
 		}
 
 		// 関数オブジェクト

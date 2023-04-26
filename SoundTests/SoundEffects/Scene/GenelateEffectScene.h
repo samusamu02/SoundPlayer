@@ -88,5 +88,7 @@ private:
     int equalizerPosY_Bass_;
     int equalizerPosY_Middle_;
     int equalizerPosY_Treble_;
+
+    int selectSE_;
 };
 
