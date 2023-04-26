@@ -32,5 +32,7 @@ private:
 
     // サウンドオブジェクト
     std::unique_ptr<SoundObjMag> soundObjMag_;
+
+    bool viewFlag_;
 };
 

@@ -25,6 +25,8 @@ void SoundPlayScene::Init(void)
 	// サウンドの再生
 	auto soundHandle = lpSoundSet.GetSoundHandle();
 	PlaySoundMem(soundHandle, DX_PLAYTYPE_BACK);
+
+	viewFlag_ = true;
 }
 
 uniqueBase SoundPlayScene::Update(uniqueBase ownScene)
@@ -44,6 +46,12 @@ uniqueBase SoundPlayScene::Update(uniqueBase ownScene)
 		return std::make_unique<SoundSelectScene>();
 	}
 
+	// 右キーが押されたフラグをfalseにする
+	if (CheckHitKey(KEY_INPUT_RIGHT))
+	{
+		viewFlag_ = false;
+	}
+
 	// 自分のシーンを返す
 	return ownScene;
 }
@@ -53,9 +61,27 @@ void SoundPlayScene::DrawOwnScreen(void)
 	SetDrawScreen(screenID_);
 	ClsDrawScreen();
 
-	DrawFormatString(10, 0, 0xffffff, L"右キーを入力するとスキップできます");
-	DrawFormatString(10, 30, 0xffffff, L"スペースキーを入力すると最初のシーンに戻ります");
-
 	// サウンドオブジェクトの描画処理
 	soundObjMag_->Draw();
+
+	// y座標
+	int y = 0;
+
+	if (viewFlag_ == true)
+	{
+		DrawFormatString(10, y, 0xffffff, L"右キーを入力するとエフェクト適用後のサウンドファイルを再生できます");
+	}
+
+	// フラグの状態によりy座標を変える
+	switch (viewFlag_)
+	{
+	case true:
+		DrawFormatString(10, 30, 0xffffff, L"スペースキーを入力すると最初のシーンに戻ります");
+		break;
+	case false:
+		DrawFormatString(10, y, 0xffffff, L"スペースキーを入力すると最初のシーンに戻ります");
+	default:
+		break;
+	}
+
 }
