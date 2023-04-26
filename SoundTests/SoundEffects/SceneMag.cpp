@@ -61,7 +61,7 @@ bool SceneMag::SysInit()
 	// アイコンの生成
 	SetWindowIconID(001);
 
-	SetWindowText(L"ピッチアップ変更テスト");
+	SetWindowText(L"サウンドエフェクト研究");
 
 	// ＤＸライブラリ初期化処理
 	if (DxLib_Init() == -1)

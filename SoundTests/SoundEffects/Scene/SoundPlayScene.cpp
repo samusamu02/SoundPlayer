@@ -80,6 +80,7 @@ void SoundPlayScene::DrawOwnScreen(void)
 		break;
 	case false:
 		DrawFormatString(10, y, 0xffffff, L"スペースキーを入力すると最初のシーンに戻ります");
+		break;
 	default:
 		break;
 	}
