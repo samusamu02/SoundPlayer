@@ -31,6 +31,9 @@ public:
 	// シーン情報取得
 	virtual SceneID GetSceneID(void) = 0;
 protected:
+	// キー入力
+	char keyState_[256];
+
 	// スクリーン情報
 	int screenID_;
 private:
