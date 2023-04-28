@@ -43,6 +43,8 @@ uniqueBase SoundPlayScene::Update(uniqueBase ownScene)
 		// メモリにあるサウンドデータの削除
 		auto soundHandle = lpSoundSet.GetSoundHandle();
 		DeleteSoundMem(soundHandle);
+
+		// 最初のシーンに戻る
 		return std::make_unique<SoundSelectScene>();
 	}
 
@@ -73,16 +75,5 @@ void SoundPlayScene::DrawOwnScreen(void)
 	}
 
 	// フラグの状態によりy座標を変える
-	switch (viewFlag_)
-	{
-	case true:
-		DrawFormatString(10, 30, 0xffffff, L"スペースキーを入力すると最初のシーンに戻ります");
-		break;
-	case false:
-		DrawFormatString(10, y, 0xffffff, L"スペースキーを入力すると最初のシーンに戻ります");
-		break;
-	default:
-		break;
-	}
-
+	DrawFormatString(10,viewFlag_ ? 30 : y, 0xffffff, L"スペースキーを入力すると最初のシーンに戻ります");
 }

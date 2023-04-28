@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
 #include <vector>
+#include <string>
 #include "BaseScene.h"
 #include "../SoundObj/SoundFile.h"
 #include "../PCM/PitchShift/PitchUp.h"
@@ -35,8 +36,17 @@ private:
     // 初期化処理
     void Init(void)override;
 
+    // 項目選択の初期化
+    void Init_Select(void);
+    
+    // エフェクト名の初期化
+    void Init_EffectNames(void);
+
     // 座標の初期化
-    void Init_Pos(void);
+    void Init_StringPos(void);
+
+    // 画像の初期化
+    void Init_Image(void);
 
     /// <summary>
     /// 更新処理(次のシーン処理等を行う）
@@ -47,6 +57,9 @@ private:
 
     // 描画処理
     void DrawOwnScreen(void)override;
+
+    // セレクターの状態変化
+    void ChangeSelect(void);
 
     // シーンID取得
     SceneID GetSceneID(void)override
@@ -68,6 +81,12 @@ private:
     // イコライザのオブジェクト
     std::unique_ptr<Equalizer> equalizer_;
 
+    // キーコードとエフェクトの対応を配列で管理
+    std::vector < std::pair<int, Effect>> keyEffects_;
+
+    // それぞれのエフェクト名の保存
+    std::vector<std::wstring> effectNames_;
+
     // サウンドファイル
     SoundFile soundFile_;
 
@@ -76,7 +95,6 @@ private:
 
     // それぞれのテキストの位置
     // X座標
-    int selecterPosX_;
     int stringPosX_;
 
     // Y座標
@@ -89,6 +107,27 @@ private:
     int equalizerPosY_Middle_;
     int equalizerPosY_Treble_;
 
-    int selectSE_;
+    // セレクターの位置
+    int selecterPosX_;
+    int selecterPosY_;
+
+    // 画像描画
+    int loadingImg_;
+
+    // 画像の座標
+    int imagPosX_;
+    int imagPosY_;
+
+    // 画像の拡大率
+    double rate_;
+
+    // 画像の回転
+    double angele_;
+
+    // 回転スピード
+    double angleSpeed_;
+
+    // 時間
+    double time_;
 };
 

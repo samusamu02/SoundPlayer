@@ -202,7 +202,7 @@ void PitchDown::ChannelL_Resampling(void)
 
 void PitchDown::ChannelR_Resampling(void)
 {
-	// 左チャンネルと同じ処理を行う(以下同様の処理の為のコメント省略)
+	// 右チャンネルと同じ処理を行う(以下同様の処理の為のコメント省略)
 	for (int n = 0; n < pcm2_->length; n++)
 	{
 		timeIndex_ = pitch_ * n;

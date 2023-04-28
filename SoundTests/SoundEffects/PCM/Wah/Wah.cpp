@@ -65,7 +65,7 @@ void Wah::ChannelL_Wah(void)
 
 void Wah::ChannelR_Wah(void)
 {
-	// 左チャンネルと同じ処理を行う(以下同様の処理の為のコメント省略)
+	// 右チャンネルと同じ処理を行う(以下同様の処理の為のコメント省略)
 	for (int n = 0; n < pcm1_->length; n++)
 	{
 		channelR_->fc = (1000.0 + depth_ * sin(2.0 * M_PI * rate_ * n / pcm1_->fs)) / pcm1_->fs;

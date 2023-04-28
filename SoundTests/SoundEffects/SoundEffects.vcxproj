@@ -143,8 +143,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Input\Controller.cpp" />
-    <ClCompile Include="Input\KeyInput.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PCM\Delay\Delay.cpp" />
     <ClCompile Include="PCM\Delay\Reverb.cpp" />
@@ -176,9 +174,6 @@
   <ItemGroup>
     <ClInclude Include="common\iir_filter.h" />
     <ClInclude Include="common\sinc.h" />
-    <ClInclude Include="Input\Controller.h" />
-    <ClInclude Include="Input\InputID.h" />
-    <ClInclude Include="Input\KeyInput.h" />
     <ClInclude Include="PCM\Delay\Delay.h" />
     <ClInclude Include="PCM\Delay\Reverb.h" />
     <ClInclude Include="PCM\Equalizer\Equalizer.h" />

@@ -4,6 +4,8 @@
 
 // エラー対策
 class BaseScene;
+
+// 基底クラスを保存
 using uniqueBase = std::unique_ptr<BaseScene>;
 
 class BaseScene
