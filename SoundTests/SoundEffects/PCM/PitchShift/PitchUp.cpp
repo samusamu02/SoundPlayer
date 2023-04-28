@@ -51,6 +51,7 @@ void PitchUp::ChannelR_Init(void)
 
 void PitchUp::ChannelL_Timestretching(void)
 {
+	// 左チャンネルのタイムストレッチ処理
 	while (channelL_->in_pos_ + channelL_->search_max_ * 2 < pcm0_->length)
 	{
 		for (int n = 0; n < correlationSize_; n++)
@@ -206,7 +207,7 @@ void PitchUp::ChannelL_Resampling(void)
 
 void PitchUp::ChannelR_Resampling(void)
 {
-	// 左チャンネルと同じ処理を行う(以下同様の処理の為のコメント省略)
+	// 右チャンネルと同じ処理を行う(以下同様の処理の為のコメント省略)
 	for (int n = 0; n < pcm2_->length; n++)
 	{
 		timeIndex_ = pitch_ * n;
@@ -267,6 +268,6 @@ void PitchUp::GenelatePitchShiftWaveFile(const double rate ,const wchar_t* fileN
 	// 右チャンネルのリサンプリング
 	ChannelR_Resampling();
 
-	// 書き込み
+	// wavファイルの出力
 	lpWave.WaveWrite(*pcm2_, afterFileName);
 }

@@ -36,6 +36,5 @@ private:
 
 	// 右チャンネルのリサンプリング処理
 	void ChannelR_Resampling(void) override;
-
 };
 

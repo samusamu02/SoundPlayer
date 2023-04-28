@@ -32,7 +32,7 @@ void Wah::Init(void)
 
 void Wah::ChannelL_Wah(void)
 {
-	// ワウ
+	// 左チャンネルのワウ処理
 	for (int n = 0; n < pcm1_->length; n++)
 	{
 		// 中心周波数

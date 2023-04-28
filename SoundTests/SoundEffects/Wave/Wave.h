@@ -23,10 +23,8 @@ public:
 
     bool GetFlag();     // フラグの状態を取得
 
-
-    bool writeFinish; // 書き込みフラグ
+    bool writeFinish;   // 書き込みフラグ
 private:
-
     Wave();
     ~Wave();
 };

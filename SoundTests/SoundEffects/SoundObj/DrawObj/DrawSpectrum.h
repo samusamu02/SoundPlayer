@@ -18,6 +18,7 @@ private:
     // FFTに使うサンプル数
     int fftSampleNum_;
 
+    // スクリーンサイズ
     int screen_w_;
     int screen_h_;
 };

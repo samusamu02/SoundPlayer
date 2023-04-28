@@ -51,6 +51,7 @@ void PitchDown::ChannelR_Init(void)
 
 void PitchDown::ChannelL_Timestretching(void)
 {
+	// 左チャンネルのタイムストレッチ処理
 	while (channelL_->in_pos_ + channelL_->search_max_ * 2 < pcm0_->length)
 	{
 		for (int n = 0; n < correlationSize_; n++)
@@ -115,7 +116,7 @@ void PitchDown::ChannelL_Timestretching(void)
 
 void PitchDown::ChannelR_Timestretching(void)
 {
-	// 左チャンネルと同じ処理を行う(以下同様の処理の為のコメント省略)
+	// 右チャンネルのタイムストレッチ処理（以下同様の処理の為のコメント省略）
 	while (channelR_->in_pos_ + channelR_->search_max_ * 2 < pcm0_->length)
 	{
 		for (int n = 0; n < correlationSize_; n++)
@@ -236,7 +237,7 @@ void PitchDown::GenelatePitchShiftWaveFile(const double rate, const wchar_t* fil
 	// タイムストレッチの伸縮率を代入
 	rate_ = rate;
 
-	// 	// 元のPCMとエフェクトを適用するPCMの値をセットする
+	// 元のPCMとエフェクトを適用するPCMの値をセットする
 	pcmSet_->PCMSetPitchShift(*pcm1_, *pcm0_, rate_);
 
 	// 変数初期化
@@ -263,6 +264,6 @@ void PitchDown::GenelatePitchShiftWaveFile(const double rate, const wchar_t* fil
 	// 右チャンネルのリサンプリング
 	ChannelR_Resampling();
 
-	// 書き込み
+	// wavファイルの出力
 	lpWave.WaveWrite(*pcm2_, afterFileName);
 }

@@ -45,6 +45,7 @@ void Delay::ChannelR_Init(void)
 
 void Delay::ChannelL_Delay(void)
 {
+	// 左チャンネルのディレイ処理
 	for (int n = 0; n < pcm1_->length; n++)
 	{
 		// 現在の時刻の音データ
@@ -65,6 +66,7 @@ void Delay::ChannelL_Delay(void)
 
 void Delay::ChannelR_Delay(void)
 {
+	// 右チャンネルのディレイ処理
 	for (int n = 0; n < pcm1_->length; n++)
 	{
 		// 現在の時刻の音データ

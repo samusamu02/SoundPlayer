@@ -26,6 +26,7 @@ void SoundPlayScene::Init(void)
 	auto soundHandle = lpSoundSet.GetSoundHandle();
 	PlaySoundMem(soundHandle, DX_PLAYTYPE_BACK);
 
+	// ƒtƒ‰ƒO‚Ì‰Šú‰»
 	viewFlag_ = true;
 }
 

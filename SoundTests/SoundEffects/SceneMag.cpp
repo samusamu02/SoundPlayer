@@ -90,5 +90,5 @@ SceneMag::SceneMag()
 
 SceneMag::~SceneMag()
 {
-	// ˆ—‚Ì‚È‚µ
+	// ˆ—‚È‚µ
 }

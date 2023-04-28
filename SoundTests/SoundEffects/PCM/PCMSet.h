@@ -33,7 +33,6 @@ public:
     /// <param name="after">コピーする変数</param>
     /// <param name="before">元データ</param>
     void PCMSetNormal(STEREO_PCM& after, STEREO_PCM& before);
-
 private:
 };
 

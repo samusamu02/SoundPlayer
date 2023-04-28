@@ -17,12 +17,12 @@ private:
     // サウンドのファイル場所
     SoundFile soundFile_;
 
-
+    // スクリーンサイズ
     int screen_w_;
     int screen_h_;
+
+    // サンプル数
     LONGLONG drawStartSampleCount_;
     LONGLONG totalSampleCount_;
-
-
 };
 
