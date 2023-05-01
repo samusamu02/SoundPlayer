@@ -16,6 +16,8 @@ public:
     // 16bitのwavの読み込み
     void WaveRead(MONO_PCM& pcm, const wchar_t* file_name);                 // モノラル
     void WaveRead(STEREO_PCM& pcm, const wchar_t* file_name);               // ステレオ
+    
+    // ワン、ツー、ワン、ツー、ワンツー
 
     // 16bitのwavの書き込み
     bool WaveWrite(MONO_PCM& pcm, const wchar_t* file_name);                // モノラル
