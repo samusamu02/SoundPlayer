@@ -7,7 +7,7 @@ class PCM
 public:
 	PCM();
 	virtual ~PCM();
-	virtual void Init() = 0;
+	virtual void Init(void) = 0;
 private:
 };
 

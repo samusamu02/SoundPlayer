@@ -15,7 +15,7 @@ public:
 	virtual ~BaseScene();
 
 	// 初期化
-	virtual void Init() = 0;
+	virtual void Init(void) = 0;
 
 	/// <summary>
 	/// 更新処理（次のシーンへ送る)
@@ -25,10 +25,10 @@ public:
 	virtual uniqueBase Update(uniqueBase ownScene) = 0;
 
 	// 描画処理
-	virtual void Draw();
+	virtual void Draw(void);
 
 	// 自分のシーンでの描画処理
-	virtual void DrawOwnScreen() = 0;
+	virtual void DrawOwnScreen(void) = 0;
 
 	// シーン情報取得
 	virtual SceneID GetSceneID(void) = 0;

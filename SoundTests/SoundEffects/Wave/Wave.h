@@ -23,7 +23,7 @@ public:
     bool WaveWrite(MONO_PCM& pcm, const wchar_t* file_name);                // モノラル
     bool WaveWrite(STEREO_PCM& pcm, const wchar_t* file_name);              // ステレオ
 
-    bool GetFlag();     // フラグの状態を取得
+    bool GetFlag(void);     // フラグの状態を取得
 
     bool writeFinish;   // 書き込みフラグ
 private:
